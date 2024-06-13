@@ -10,13 +10,14 @@ mkdir /mnt/netbsd
 fdisk -l | grep /dev
 read -p 'Select the disk /dev node to build netbsd on. (sdxx) > ' DISKTOUSE
 mount /dev/$DISKTOUSE /mnt/netbsd
-#rm -Rf /mnt/netbsd/tmp
-#mkdir /mnt/netbsd/tmp
 cd /
-#ln -s /mnt/netbsd/tmp /tmp
-#rm -Rf /mnt/netbsd/netbsd
 mkdir /mnt/netbsd/netbsd
 cd /mnt/netbsd/netbsd
+#list available versions
+curl https://ftp.netbsd.org/pub/NetBSD/README -O
+echo" The following Versions of NetBSD are available:"
+cat README | grep NetBSD-
+read -p 'select enter to continue> ' CONTINUE
 #download sources using curl
 #curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-9.3/source/sets/gnusrc.tgz -O
 #local
@@ -50,19 +51,19 @@ cd /mnt/netbsd/netbsd/usr/src
 #read -p 'select enter to continue> ' CONTINUE
 #build netbsd itself
 ./build.sh -U -u -m amd64 -x release
-#read -p 'select enter to continue> ' CONTINUE
 ./build.sh -U -u -m amd64 sourcesets
-#read -p 'select enter to continue> ' CONTINUE
 #build ISOs
 ./build.sh -U -u -m amd64 iso-image
-#read -p 'select enter to continue> ' CONTINUE
-./build.sh -U -u -m amd64 iso-image-source
-#read -p 'select enter to continue> ' CONTINUE
+./build.sh -U -u -m amd64 iso-image-sourceE
 ./build.sh -U -u -m amd64 install-image
-#read -p 'select enter to continue> ' CONTINUE
 ./build.sh -U -u -m amd64 live-image
-#read -p 'select enter to continue> ' CONTINUE
 mkdir /mnt/netbsd/media
 tar -czvf /mnt/netbsd/media/binary.tar.gz /mnt/netbsd/netbsd/usr/src/obj/releasedir/amd64/binary/
-cp /mnt/netbsd/netbsd/usr/src/obj/releasedir/images/NetBSD-9.3-amd64-install.img.gz /mnt/netbsd/media
+cp /mnt/netbsd/netbsd/usr/src/obj/releasedir/images/*.img.gz /mnt/netbsd/media
 cp /mnt/netbsd/netbsd/usr/src/obj/releasedir/amd64/installation/cdrom/boot.iso /mnt/netbsd/media
+gzip -d /mnt/netbsd/media/*.img.gz
+echo "install media build is now complete. the results can be found at /mnt/netbsd/media."
+echo "You will find three files in the directory. binary.tar.gz is an archive of all of the build packages."
+echo "it can be used to update a system. boot.iso is a cd sized image that can be used to boot the system conjunction with"
+echo "binary.tar.gz. The last file is NetBSD-(version)-amd64-install.img. This is the full install file that most users will"
+echo "boot to install NetBSD."  
