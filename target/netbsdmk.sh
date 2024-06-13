@@ -16,24 +16,33 @@ cd /mnt/netbsd/netbsd
 #list available versions
 curl https://ftp.netbsd.org/pub/NetBSD/README -O
 echo" The following Versions of NetBSD are available:"
-cat README | grep NetBSD-
-read -p 'select enter to continue> ' CONTINUE
+cat README | grep NetBSD- | grep -v archive
+read -p 'Which version do you want to build? (number only)> ' VER
 #download sources using curl
-#curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-9.3/source/sets/gnusrc.tgz -O
+while getopts L flag; 
+do
+     case "${flag}" in
+        L) REMOTE="local";; #download from the local repositories
+     esac
+done
+echo $REMOTE
 #local
-curl http://192.168.2.102/netbsd/gnusrc.tgz -O
-#curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-9.3/source/sets/sharesrc.tgz -O
-#local
-curl http://192.168.2.102/netbsd/sharesrc.tgz -O
-#curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-9.3/source/sets/src.tgz -O
-#local
-curl http://192.168.2.102/netbsd/src.tgz -O
-#curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-9.3/source/sets/syssrc.tgz -O 
-#local
-curl http://192.168.2.102/netbsd/syssrc.tgz -O
-#curl ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-9.3/source/sets/xsrc.tgz -O
-#local
-curl http://192.168.2.102/netbsd/xsrc.tgz -O
+if test "$REMOTE" = "local"; then 
+   echo "local"
+   curl http://192.168.2.102/netbsd/NetBSD-$VER/gnusrc.tgz -O
+   curl http://192.168.2.102/netbsd/NetBSD-$VER/sharesrc.tgz -O
+   curl http://192.168.2.102/netbsd/NetBSD-$VER/src.tgz -O
+   curl http://192.168.2.102/netbsd/NetBSD-$VER/syssrc.tgz -O
+   curl http://192.168.2.102/netbsd/NetBSD-$VER/xsrc.tgz -O
+
+else
+   curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-$VER/source/sets/gnusrc.tgz -O
+   curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-$VER/source/sets/sharesrc.tgz -O
+   curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-$VER/source/sets/src.tgz -O
+   curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-$VER/source/sets/syssrc.tgz -O 
+   curl  ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-$VER/source/sets/xsrc.tgz -O
+fi
+
 #untar the sources and run them through gzip
 gzip -d  *.tgz
 tar -xvf /mnt/netbsd/netbsd/gnusrc.tar
