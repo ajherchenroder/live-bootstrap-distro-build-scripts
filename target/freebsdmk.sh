@@ -51,8 +51,8 @@ TARGET="amd64"
 TARGET_ARCH="amd64"
 KERNEL="GENERIC"
 ## Set to use world- and kernel-specific make(1) flags.
-WORLD_FLAGS="-j $(sysctl -n hw.ncpu)"
-KERNEL_FLAGS="-j $(( $(( $(sysctl -n hw.ncpu) + 1 )) / 2 ))"
+WORLD_FLAGS="-j $(nproc) "
+KERNEL_FLAGS="-j $(nproc)"
 ## Set miscellaneous 'make release' settings.
 #NOPORTS=
 #NOSRC=
