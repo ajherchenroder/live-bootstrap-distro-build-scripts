@@ -10,6 +10,10 @@ export XCC=clang
 export XCXX=clang++
 export XCPP=clang-cpp
 export XLD=ld.lld
+export MAKEOBJDIRPREFIX=/mnt/freebsd/release
+export TARGET=amd64
+export TARGET_ARCH=amd64
+
 #
 mkdir /mnt/freebsd
 fdisk -l | grep /dev
@@ -30,9 +34,9 @@ cd /mnt/freebsd/usr/src/release
 mkdir /mnt/freebsd/release
 # cross build start
 cd /mnt/freebsd/usr/src/tools/build
-python3 MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 cleanworld
-python3 MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildworld
-python3 MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildkernel
+./make.py  -j $(nproc) cleanworld
+./make.py -j $(nproc) buildworld
+./make.py -j $(nproc) buildkernel
 
 
 
