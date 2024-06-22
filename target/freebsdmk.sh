@@ -34,9 +34,9 @@ cd /mnt/freebsd/usr/src/release
 mkdir /mnt/freebsd/release
 # cross build start
 cd /mnt/freebsd/usr/src/tools/build
-./make.py  -j $(nproc) cleanworld
-./make.py -j $(nproc) buildworld
-./make.py -j $(nproc) buildkernel
+./make.py  -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 cleanworld
+./make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildworld
+./make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildkernel
 
 
 
