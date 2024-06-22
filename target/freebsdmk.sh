@@ -20,8 +20,8 @@ git clone -o freebsd https://git.FreeBSD.org/doc.git /mnt/freebsd/usr/doc
 git clone -o freebsd https://git.FreeBSD.org/ports.git /mnt/freebsd/usr/ports
 # list branches to build 
 cd /mnt/freebsd/usr/src
-git branch -r | grep stable
-read -p 'Which version do you want to build? (number only)> ' VER
+#git branch -r | grep stable
+#read -p 'Which version do you want to build? (number only)> ' VER
 # switch to the selected branch
 #
 cd /mnt/freebsd/usr/src
@@ -44,8 +44,8 @@ GITROOT="https://git.freebsd.org/"
 GITSRC="src.git"
 GITPORTS="ports.git"
 ## Set the src/, ports/, and doc/ branches or tags.
-SRCBRANCH="stable/$VER"
-PORTBRANCH="stable/$VER"
+SRCBRANCH=stable/14
+PORTBRANCH=stable/14
 ## Set to override the default target architecture.
 TARGET="amd64"
 TARGET_ARCH="amd64"
