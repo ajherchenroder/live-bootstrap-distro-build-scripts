@@ -26,17 +26,13 @@ read -p 'Which version do you want to build? (number only)> ' VER
 #
 cd /mnt/freebsd/usr/src
 git checkout stable/$VER
-cd /mnt/freebsd/usr/doc
-git checkout stable/$VER
-cd /mnt/freebsd/usr/ports
-git checkout stable/$VER
 cd /mnt/freebsd/usr/src/release
 mkdir /mnt/freebsd/release
 # cross build start
 cd /mnt/freebsd/usr/src/tools/build
-MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 cleanworld
-MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildworld
-MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildkernel
+python3 MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 cleanworld
+python3 MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildworld
+python3 MAKEOBJDIRPREFIX=/mnt/freebsd/release make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 buildkernel
 
 
 
