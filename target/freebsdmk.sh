@@ -11,7 +11,7 @@ export XCXX=clang++
 export XCPP=clang-cpp
 export XLD=ld
 export MAKEOBJDIRPREFIX=/mnt/freebsd/working
-export DESTDIR=/mnt/freebsd/release
+#export DESTDIR=/mnt/freebsd/release
 export TARGET=amd64
 export TARGET_ARCH=amd64
 
@@ -39,7 +39,7 @@ cd /mnt/freebsd/usr/src/tools/build
 ./make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 cleanworld
 ./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 buildworld
 ./make.py -j2 TARGET=amd64 TARGET_ARCH=amd64 buildkernel
-./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 distributeworld
-read -p 'press enter to continue ' PAUSE
-./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 distributekernel
+#./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 distributeworld
+#read -p 'press enter to continue ' PAUSE
+#./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 distributekernel
 
