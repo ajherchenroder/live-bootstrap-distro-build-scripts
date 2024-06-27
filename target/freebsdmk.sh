@@ -38,7 +38,9 @@ mkdir /mnt/freebsd/working
 cd /mnt/freebsd/usr/src/tools/build
 ./make.py -j $(nproc) TARGET=amd64 TARGET_ARCH=amd64 cleanworld
 ./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 buildworld
-./make.py -j2 TARGET=amd64 TARGET_ARCH=amd64 buildkernel
+./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 buildkernel
+./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 release
+./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 DESTDIR=/mnt/freebsd/release install 
 #./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 distributeworld
 #read -p 'press enter to continue ' PAUSE
 #./make.py -j2 --host-bindir=/usr/bin TARGET=amd64 TARGET_ARCH=amd64 distributekernel
