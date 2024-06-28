@@ -18,8 +18,12 @@ fi
 #download gentoo files
 mkdir /gentoosources
 cd /gentoosources
-curl http://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs -O -L
-curl https://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2 -O -L
+#local
+curl http://192.168.2.102/gentoo/gentoo-current.xz.sqfs -O -L
+curl http://192.168.2.102/gentoo/portage-3.0.65.tar.bz2 -O -L
+
+#curl http://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs -O -L
+#curl https://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2 -O -L
 ## Symlink python (needed for portage)
 ln -sv python3 /usr/bin/python
 
