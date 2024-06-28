@@ -29,7 +29,7 @@ mkdir /mnt/gentoo
 fdisk -l | grep /dev
 read -p 'Select the disk /dev node to build gentoo on. (sdxx) > ' DISKTOUSE
 mount /dev/$DISKTOUSE /mnt/gentoo
-if FULLBUILD==2 ; then
+if [FULLBUILD==2] ; then
    read -p 'Select the disk /dev node to install the final gentoo on. (sdx) > ' DISKTOUSE2
 fi
 #download gentoo files
@@ -80,8 +80,8 @@ EOF
 #EOF
 
 #profile (set to ver 23)
-#mkdir -p /etc/portage/profile
-#ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make.profile
+mkdir -p /etc/portage/profile
+ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make.profile
 
 # Install baselayout
 emerge -O1 sys-apps/baselayout
