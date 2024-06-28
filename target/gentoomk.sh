@@ -12,7 +12,7 @@ mkdir /mnt/gentoo
 fdisk -l | grep /dev
 read -p 'Select the disk /dev node to build gentoo on. (sdxx) > ' DISKTOUSE
 mount /dev/$DISKTOUSE /mnt/gentoo
-if FULLBUILD==1 ; then
+if FULLBUILD==2 ; then
    read -p 'Select the disk /dev node to install the final gentoo on. (sdx) > ' DISKTOUSE2
 fi
 #download gentoo files
