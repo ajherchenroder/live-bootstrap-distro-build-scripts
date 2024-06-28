@@ -19,27 +19,27 @@ fi
 mkdir /gentoosources
 cd /gentoosources
 #local
-curl http://192.168.2.102/gentoo/gentoo-current.xz.sqfs -O -L
+curl http://192.168.2.102/gentoo/portage-latest.tar.bz2 -O -L
 curl http://192.168.2.102/gentoo/portage-3.0.65.tar.bz2 -O -L
 
-#curl http://distfiles.gentoo.org/snapshots/squashfs/gentoo-current.xz.sqfs -O -L
+#curl http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2 -O -L
 #curl https://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2 -O -L
 ## Symlink python (needed for portage)
 ln -sv python3 /usr/bin/python
-
+#
 # Install portage
 tar -xvf portage-3.0.65.tar.bz2
 cd portage-3.0.65
 meson setup --prefix /usr build
 meson install -C build
-
+cd /gentoosources
+rm -Rf portage-3.0.65
+#
 # Configure portage
-mkdir /mnt/tmp
+tar -xpvf portage-latest.tar.bz2
+cd portage
 mkdir -p /var/db/repos/gentoo
-mount /gentoosources/gentoo-*.sqfs /mnt/tmp
-cp -avT /mnt/tmp /var/db/repos/gentoo
-umount /mnt/tmp
-rm -Rf /mnt/tmp
+cp -avT /gentoosources/portage /var/db/repos/gentoo
 
 # Set up passswd and group for portage
 echo 'portage:x:250:250:portage:/var/tmp/portage:/bin/false' >> /etc/passwd
@@ -67,8 +67,8 @@ EOF
 #ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make.profile
 
 # Install baselayout
-#emerge -O1 sys-apps/baselayout
-#source /etc/profile
+emerge -O1 sys-apps/baselayout
+source /etc/profile
 
 # Run bootstrap.sh
 /var/db/repos/gentoo/scripts/bootstrap.sh
