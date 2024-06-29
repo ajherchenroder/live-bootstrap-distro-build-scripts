@@ -79,9 +79,15 @@ EOF
 #sys-devel/gcc -cxx
 #EOF
 
+
 #profile (set to ver 23)
 mkdir -p /etc/portage/profile
 ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make.profile
+
+##break xz dependency issue by telling portage about the xztools we install with lfs
+cat > /etc/portage/profile/package.provided << 'EOF'
+app-arch/xz-utils-5.4.4
+EOF
 
 # Install baselayout
 emerge -O1 sys-apps/baselayout
@@ -96,13 +102,13 @@ emerge -O1 dev-build/meson-format-array app-misc/pax-utils
 
 
 # Run bootstrap.sh
-BOOTSTRAPPED=n
+#BOOTSTRAPPED=n
 echo "the Gentoo bootstrap script may require multiple runs to complete"
-while [BOOTSTRAPPED=="n"];
-do
+#while [BOOTSTRAPPED=="n"];
+#do
  /var/db/repos/gentoo/scripts/bootstrap.sh
 read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-done
+#done
 
 # Install the rest of @system
 emerge -1N sys-devel/gcc  # Install with USE="openmp"
