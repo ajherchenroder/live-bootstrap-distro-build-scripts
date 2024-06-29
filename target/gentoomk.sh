@@ -92,13 +92,18 @@ EOF
 # Install baselayout
 emerge -O1 sys-apps/baselayout
 source /etc/profile
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Break dependency cycles
 emerge -O1 app-alternatives/ninja app-alternatives/yacc app-alternatives/lex app-alternatives/bzip2 app-alternatives/gzip app-alternatives/tar app-alternatives/awk
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
 emerge -O1 sys-libs/libxcrypt
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Install implicit build dependencies
 emerge -O1 dev-build/meson-format-array app-misc/pax-utils
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 
 # Run bootstrap.sh
