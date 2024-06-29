@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # based on gentoo.txt located at https://mid-kid.root.sx/git/mid-kid/bootstrap in the gentoo-2024 folder
 # 
 #MIT License
@@ -19,14 +19,14 @@
 #set up working directory
 #
 #Notes:
-#Live bootstrap doesn't have the lsblk command, using fdisk -l to enumerated the drives.
+#
 #You need to be root to run this script
 #
 #decide where we are going to put things
 echo "This script can make a stage 3 and snapshot tarball or setup and install Gentoo on another drive."
 read -p 'enter 1 for stage 3/snapshot or 2 for full install (default is stage 3/snapshot > ' FULLBUILD
 mkdir /mnt/gentoo
-fdisk -l | grep /dev
+lsblk
 read -p 'Select the disk /dev node to build gentoo on. (sdxx) > ' DISKTOUSE
 mount /dev/$DISKTOUSE /mnt/gentoo
 if [FULLBUILD==2] ; then
@@ -87,13 +87,21 @@ ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make
 emerge -O1 sys-apps/baselayout
 source /etc/profile
 
+# Break dependency cycles
+emerge -O1 app-alternatives/ninja app-alternatives/yacc app-alternatives/lex app-alternatives/bzip2 app-alternatives/gzip app-alternatives/tar app-alternatives/awk
+emerge -O1 sys-libs/libxcrypt
+
+# Install implicit build dependencies
+emerge -O1 dev-build/meson-format-array app-misc/pax-utils
+
+
 # Run bootstrap.sh
 BOOTSTRAPPED=n
-echo "the Gentoo bootstrap script may require multiple runs to complete
-while [BOOTSTRAPPED=="n"]
+echo "the Gentoo bootstrap script may require multiple runs to complete"
+while [BOOTSTRAPPED=="n"];
 do
  /var/db/repos/gentoo/scripts/bootstrap.sh
-read -p 'Did the bootstrap complete sucessfully? (y or n)> ' BOOTSTRAPPED
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 done
 
 # Install the rest of @system
@@ -116,7 +124,7 @@ cp /gentoo-bootstrap.tar.xz /mnt/gentoo/release
 # stop if only building a stage 3
 
 if [FULLBUILD==1] ; then
-   echo "The Gentoo bootstrap stage 3 is located in /mnt/gentoo/release
+   echo "The Gentoo bootstrap stage 3 is located in /mnt/gentoo/release"
    exit 0
 fi
 
