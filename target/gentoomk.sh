@@ -88,4 +88,38 @@ emerge -O1 sys-apps/baselayout
 source /etc/profile
 
 # Run bootstrap.sh
-/var/db/repos/gentoo/scripts/bootstrap.sh
+BOOTSTRAPPED=n
+echo "the Gentoo bootstrap script may require multiple runs to complete
+while [BOOTSTRAPPED=="n"]
+do
+ /var/db/repos/gentoo/scripts/bootstrap.sh
+read -p 'Did the bootstrap complete sucessfully? (y or n)> ' BOOTSTRAPPED
+done
+
+# Install the rest of @system
+emerge -1N sys-devel/gcc  # Install with USE="openmp"
+USE=-pam emerge -1 sys-libs/libcap
+USE=-http2 emerge -1 net-misc/curl
+emerge -1 sys-apps/shadow  # required by everything in acct-user and acct-group
+emerge -DN @system
+
+# Rebuild and install everything into a new root, completely cleaning out LFS
+USE=build emerge --root /mnt/gentoo sys-apps/baselayout
+emerge --root /mnt/gentoo @system
+
+# Pack it up
+
+tar cf /gentoo-bootstrap.tar -C /mnt/gentoo .
+xz -9v /gentoo-bootstrap.tar
+mkdir /mnt/gentoo/release
+cp /gentoo-bootstrap.tar.xz /mnt/gentoo/release
+# stop if only building a stage 3
+
+if [FULLBUILD==1] ; then
+   echo "The Gentoo bootstrap stage 3 is located in /mnt/gentoo/release
+   exit 0
+fi
+
+#Create gentoo chroot
+
+echo "Building the Gentoo Chroot"
