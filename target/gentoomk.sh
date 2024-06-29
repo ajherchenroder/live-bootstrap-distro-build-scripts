@@ -71,7 +71,7 @@ echo 'C.UTF-8 UTF-8' > /etc/locale.gen
 cat > /etc/portage/make.conf << 'EOF'
 FEATURES='-news -pid-sandbox'
 CONFIG_PROTECT='-* /etc/locale.gen'
-USE='-nls'
+USE='-nls ABI_86="64"'
 EOF
 
 ##package.use.force
