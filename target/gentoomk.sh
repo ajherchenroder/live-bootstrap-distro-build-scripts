@@ -53,7 +53,7 @@ cd /gentoosources
 rm -Rf portage-3.0.65
 #
 # Configure portage
-tar -xpvf portage-latest.tar.bz2
+tar -xpf portage-latest.tar.bz2
 cd portage
 mkdir -p /var/db/repos/gentoo
 cp -avT /gentoosources/portage /var/db/repos/gentoo
@@ -95,16 +95,28 @@ source /etc/profile
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Break dependency cycles
-emerge -O1 app-alternatives/ninja app-alternatives/yacc app-alternatives/lex app-alternatives/bzip2 app-alternatives/gzip app-alternatives/tar app-alternatives/awk
+emerge -O1 app-alternatives/ninja 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/yacc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emege -O1 app-alternatives/lex 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/bzip2 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/gzip 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge - app-alternatives/tar 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge app-alternatives/awk
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Install implicit build dependencies
-emerge -O1 dev-build/meson-format-array app-misc/pax-utils
+emerge -O1 dev-build/meson-format-array
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-
+emerge -O1 app-misc/pax-utils
 
 # Run bootstrap.sh
 #BOOTSTRAPPED=n
