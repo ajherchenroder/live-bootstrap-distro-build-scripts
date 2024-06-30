@@ -87,6 +87,14 @@ ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make
 ##break xz dependency issue by telling portage about the xztools we install with lfs
 cat > /etc/portage/profile/package.provided << 'EOF'
 app-arch/xz-utils-5.4.4
+app-alternatives/ninja-1.11.1
+sys-devel/gettext-0.22
+sys-devel/bison-3.8.2
+sys-devel/flex-2.6.4
+app-arch/bzip2-1.08
+sys-apps/gawk-5.2.2
+app-arch/tar-1.35
+app-arch/gzip-1.12
 EOF
 
 # Install baselayout
@@ -95,20 +103,6 @@ source /etc/profile
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Break dependency cycles
-emerge -O1 app-alternatives/ninja 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 app-alternatives/yacc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emege -O1 app-alternatives/lex 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 app-alternatives/bzip2 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 app-alternatives/gzip 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge - app-alternatives/tar 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge app-alternatives/awk
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
