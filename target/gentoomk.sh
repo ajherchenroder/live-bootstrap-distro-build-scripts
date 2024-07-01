@@ -95,6 +95,8 @@ app-arch/bzip2-1.08
 sys-apps/gawk-5.2.2
 app-arch/tar-1.35
 app-arch/gzip-1.12
+app-alternatives/gzip-1
+sys-libs/libxcrypt--4.4.36 
 EOF
 
 # Install baselayout
@@ -104,8 +106,6 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Break dependency cycles
 
-emerge -O1 sys-libs/libxcrypt
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Install implicit build dependencies
 emerge -O1 dev-build/meson-format-array
@@ -117,7 +117,7 @@ emerge -O1 app-misc/pax-utils
 echo "the Gentoo bootstrap script may require multiple runs to complete"
 #while [BOOTSTRAPPED=="n"];
 #do
- /var/db/repos/gentoo/scripts/bootstrap.sh
+/var/db/repos/gentoo/scripts/bootstrap.sh
 read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 #done
 
