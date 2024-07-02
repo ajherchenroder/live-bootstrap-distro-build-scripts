@@ -96,7 +96,7 @@ sys-apps/gawk-5.2.2
 app-arch/tar-1.35
 app-arch/gzip-1.12
 app-alternatives/gzip-1
-app-alternatives/awk
+app-alternatives/awk-4
 sys-libs/libxcrypt--4.4.36 
 EOF
 
