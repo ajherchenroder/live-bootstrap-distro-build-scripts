@@ -75,43 +75,129 @@ USE='-nls ABI_86="64"'
 EOF
 
 ##package.use.force
-#cat > /etc/portage/profile/package.use.force << 'EOF'
-#sys-devel/gcc -cxx
-#EOF
+cat > /etc/portage/profile/package.use.force << 'EOF'
+sys-devel/gcc -cxx
+EOF
 
 
 #profile (set to ver 23)
 mkdir -p /etc/portage/profile
 ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make.profile
 
+#Presetup pkgs
+emerge -O1 net-misc/wget
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 app-misc/ca-certificates
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+USE=-acl emerge -O1 net-misc/rsync
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+#clear logs
+rm -rf /var/lib/portage /var/db/pkg /var/cache/edb /var/log/emerge.log /var/log/portage
+
 ##break xz dependency issue by telling portage about the xztools we install with lfs
-cat > /etc/portage/profile/package.provided << 'EOF'
-app-arch/xz-utils-5.4.4
-app-alternatives/ninja-1.11.1
-sys-devel/gettext-0.22
-sys-devel/bison-3.8.2
-sys-devel/flex-2.6.4
-app-arch/bzip2-1.08
-sys-apps/gawk-5.2.2
-app-arch/tar-1.35
-app-arch/gzip-1.12
-app-alternatives/gzip-1
-app-alternatives/awk-4
-sys-libs/libxcrypt--4.4.36 
-EOF
+#cat > /etc/portage/profile/package.provided << 'EOF'
+#app-arch/xz-utils-5.4.4
+#app-alternatives/ninja-1.11.1
+#sys-devel/gettext-0.22
+#sys-devel/bison-3.8.2
+#sys-devel/flex-2.6.4
+#app-arch/bzip2-1.08
+#sys-apps/gawk-5.2.2
+#app-arch/tar-1.35
+#app-arch/gzip-1.12
+#app-alternatives/gzip-1
+#app-alternatives/awk-4
+#sys-libs/libxcrypt--4.4.36 
+#EOF
 
 # Install baselayout
 emerge -O1 sys-apps/baselayout
 source /etc/profile
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-
 # Break dependency cycles
 
+#rebuild tool chain
+#support files
+emerge -O1 sys-apps/gentoo-functions
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-portage/elt-patches 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 sys-devel/gnuconfig
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+#headers
+CTARGET=x86_64-bootstrap-linux-gnu USE=headers-only emerge -O1 sys-kernel/linux-headers
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+CTARGET=x86_64-bootstrap-linux-gnu USE=headers-only PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+gentoo cross compiler
+
+emerge -O1 dev-libs/gmp dev-libs/mpfr dev-libs/mpc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 sys-devel/binutils-config sys-devel/gcc-config
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+CTARGET=x86_64-bootstrap-linux-gnu emerge -O1 sys-devel/binutils
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF=--with-sysroot=/usr/$CTARGET EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran -cxx' emerge -O1 sys-devel/gcc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+CTARGET=x86_64-bootstrap-linux-gnu CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF='--with-sysroot=/usr/$CTARGET --enable-shared' EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Install implicit build dependencies
 emerge -O1 dev-build/meson-format-array
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 app-misc/pax-utils
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -o1 app-alternatives/yacc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# Install final glibc
+/usr/x86_64-bootstrap-linux-gnu/lib64/ld-linux-x86-64.so.2 /usr/x86_64-bootstrap-linux-gnu/sbin/ldconfig
+rm /usr/x86_64-bootstrap-linux-gnu/usr/lib/crti.o  # HACK to avoid ABI test failing in glibc ebuild. sue me.
+CC=x86_64-bootstrap-linux-gnu-gcc CXX=x86_64-bootstrap-linux-gnu-g++ CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# Install final compiler
+CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' emerge -O1 sys-kernel/linux-headers
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' EXTRA_ECONF=--disable-bootstrap USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 sys-devel/binutils
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# Set up python-exec
+mkdir -p /usr/lib/python-exec/python3.11
+ln -sv python3 /usr/lib/python-exec/python3.11/python
+ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
+emerge -O1 dev-lang/python-exec
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# Break dependency cycles
+emerge -O1 app-alternatives/ninja
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/yacc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/lex 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/bzip2
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/gzip
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/tar
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/awk
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 sys-libs/libxcrypt
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# Install implicit build dependencies
+emerge -O1 dev-build/meson-format-array 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-misc/pax-utils
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Run bootstrap.sh
 #BOOTSTRAPPED=n
