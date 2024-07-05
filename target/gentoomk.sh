@@ -86,15 +86,10 @@ ln -svr /var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /etc/portage/make
 
 #Presetup pkgs
 emerge -O1 net-misc/wget
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 app-misc/ca-certificates
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 dev-build/automake
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 dev-build/autoconf
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 USE=-acl emerge -O1 net-misc/rsync
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #clear logs
 rm -rf /var/lib/portage /var/db/pkg /var/cache/edb /var/log/emerge.log /var/log/portage
@@ -123,21 +118,21 @@ source /etc/profile
 #rebuild tool chain
 #support files
 emerge -O1 sys-apps/gentoo-functions
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 app-portage/elt-patches 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-devel/gnuconfig
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #headers
 CTARGET=x86_64-bootstrap-linux-gnu USE=headers-only emerge -O1 sys-kernel/linux-headers
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu USE=headers-only PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 gentoo cross compiler
 
-emerge -O1 dev-libs/gmp dev-libs/mpfr dev-libs/mpc
+emerge -O1 dev-libs/gmp 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 dev-libs/mpfr
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 dev-libs/mpc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-devel/binutils-config sys-devel/gcc-config
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
@@ -150,17 +145,11 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF='--with-sysroot=/usr/$CTARGET --enable-shared' EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
-# Install implicit build dependencies
-emerge -O1 dev-build/meson-format-array
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 app-misc/pax-utils
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -o1 app-alternatives/yacc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-
-# Install final glibc
+#install final glibc 
 /usr/x86_64-bootstrap-linux-gnu/lib64/ld-linux-x86-64.so.2 /usr/x86_64-bootstrap-linux-gnu/sbin/ldconfig
-rm /usr/x86_64-bootstrap-linux-gnu/usr/lib/crti.o  # HACK to avoid ABI test failing in glibc ebuild. sue me.
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+rm /usr/x86_64-bootstrap-linux-gnu/usr/lib/crti.o 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CC=x86_64-bootstrap-linux-gnu-gcc CXX=x86_64-bootstrap-linux-gnu-g++ CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
@@ -197,11 +186,13 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
+
 # Install implicit build dependencies
-emerge -O1 dev-build/meson-format-array 
+emerge -O1 dev-build/meson-format-array
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 app-misc/pax-utils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
 
 # Run bootstrap.sh
 #BOOTSTRAPPED=n
@@ -213,18 +204,24 @@ read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 #done
 
 # Install the rest of @system
-emerge -1N sys-devel/gcc  # Install with USE="openmp"
+USE="openmp" emerge -1N sys-devel/gcc  # Install with USE="openmp"
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 USE=-pam emerge -1 sys-libs/libcap
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 USE=-http2 emerge -1 net-misc/curl
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -1 sys-apps/shadow  # required by everything in acct-user and acct-group
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -DN @system
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE=build emerge --root /mnt/gentoo sys-apps/baselayout
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge --root /mnt/gentoo @system
+read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Pack it up
-
 tar cf /gentoo-bootstrap.tar -C /mnt/gentoo .
 xz -9v /gentoo-bootstrap.tar
 mkdir /mnt/gentoo/release
