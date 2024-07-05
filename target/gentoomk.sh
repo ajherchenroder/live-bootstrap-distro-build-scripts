@@ -89,7 +89,11 @@ emerge -O1 net-misc/wget
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 app-misc/ca-certificates
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-RSYNC_NEEDS_AUTOCONF=0 USE=-acl emerge -O1 net-misc/rsync
+emerge -O1 sys-devel/automake
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 sys-devel/autoconf
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+USE=-acl emerge -O1 net-misc/rsync
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #clear logs
