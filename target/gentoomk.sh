@@ -151,9 +151,7 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #install final glibc 
 /usr/x86_64-bootstrap-linux-gnu/lib64/ld-linux-x86-64.so.2 /usr/x86_64-bootstrap-linux-gnu/sbin/ldconfig
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 rm /usr/x86_64-bootstrap-linux-gnu/usr/lib/crti.o 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CC=x86_64-bootstrap-linux-gnu-gcc CXX=x86_64-bootstrap-linux-gnu-g++ CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
@@ -166,11 +164,12 @@ emerge -O1 sys-devel/binutils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Set up python-exec
-mkdir -p /usr/lib/python-exec/python3.11
-ln -sv python3 /usr/lib/python-exec/python3.11/python
-ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
-emerge -O1 dev-lang/python-exec
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+# moved to after Break dependency cycles because of circular dependencies 
+#mkdir -p /usr/lib/python-exec/python3.11
+#ln -sv python3 /usr/lib/python-exec/python3.11/python
+#ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
+#emerge -O1 dev-lang/python-exec
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Break dependency cycles
 emerge -O1 app-alternatives/ninja
@@ -189,6 +188,14 @@ emerge -O1 app-alternatives/awk
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# Set up python-exec
+mkdir -p /usr/lib/python-exec/python3.11
+ln -sv python3 /usr/lib/python-exec/python3.11/python
+ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
+emerge -O1 dev-lang/python-exec
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
 
 
 # Install implicit build dependencies
