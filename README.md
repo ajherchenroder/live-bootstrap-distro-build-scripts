@@ -12,7 +12,6 @@ working:
 Netbsd
 
 To Do:
-Gentoo
 Debian
 Trunas Scale
 Proxmox
