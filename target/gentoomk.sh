@@ -131,21 +131,13 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 gentoo cross compiler
 
 emerge -O1 dev-libs/gmp 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 dev-libs/mpfr
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
 emerge -O1 dev-libs/mpc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-devel/binutils-config 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-devel/gcc-config
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu emerge -O1 sys-devel/binutils
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF=--with-sysroot=/usr/$CTARGET EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran -cxx' emerge -O1 sys-devel/gcc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF='--with-sysroot=/usr/$CTARGET --enable-shared' EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
@@ -153,13 +145,10 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 /usr/x86_64-bootstrap-linux-gnu/lib64/ld-linux-x86-64.so.2 /usr/x86_64-bootstrap-linux-gnu/sbin/ldconfig
 rm /usr/x86_64-bootstrap-linux-gnu/usr/lib/crti.o 
 CC=x86_64-bootstrap-linux-gnu-gcc CXX=x86_64-bootstrap-linux-gnu-g++ CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Install final compiler
 CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' emerge -O1 sys-kernel/linux-headers
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' EXTRA_ECONF=--disable-bootstrap USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-devel/binutils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
@@ -172,22 +161,23 @@ read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 #read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Break dependency cycles
-emerge -O1 app-alternatives/ninja
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-emerge -O1 app-alternatives/yacc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-emerge -O1 app-alternatives/lex 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 app-alternatives/bzip2
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 app-alternatives/gzip
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-emerge -O1 app-alternatives/tar
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-emerge -O1 app-alternatives/awk
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 sys-libs/libxcrypt
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+# testing without this section
+#emerge -O1 app-alternatives/ninja
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#emerge -O1 app-alternatives/yacc
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#emerge -O1 app-alternatives/lex 
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+#emerge -O1 app-alternatives/bzip2
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+#emerge -O1 app-alternatives/gzip
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#emerge -O1 app-alternatives/tar
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#emerge -O1 app-alternatives/awk
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+#emerge -O1 sys-libs/libxcrypt
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Set up python-exec
 mkdir -p /usr/lib/python-exec/python3.11
