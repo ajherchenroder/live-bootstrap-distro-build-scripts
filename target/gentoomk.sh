@@ -138,7 +138,7 @@ emerge -O1 dev-libs/mpc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-devel/binutils-config 
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-sys-devel/gcc-config
+emerge -O1 sys-devel/gcc-config
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu emerge -O1 sys-devel/binutils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
