@@ -71,6 +71,8 @@ echo 'C.UTF-8 UTF-8' > /etc/locale.gen
 cat > /etc/portage/make.conf << 'EOF'
 FEATURES='-news -pid-sandbox'
 CONFIG_PROTECT='-* /etc/locale.gen'
+CFLAGS="-march=x86-64 -pipe"
+CXXFLAGS="${CFLAGS}"
 USE='-nls ABI_86="64"'
 EOF
 
@@ -134,7 +136,9 @@ emerge -O1 dev-libs/mpfr
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
 emerge -O1 dev-libs/mpc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-emerge -O1 sys-devel/binutils-config sys-devel/gcc-config
+emerge -O1 sys-devel/binutils-config 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+sys-devel/gcc-config
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 CTARGET=x86_64-bootstrap-linux-gnu emerge -O1 sys-devel/binutils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
