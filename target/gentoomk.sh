@@ -70,10 +70,13 @@ echo 'C.UTF-8 UTF-8' > /etc/locale.gen
 #make.conf
 cat > /etc/portage/make.conf << 'EOF'
 FEATURES='-news -pid-sandbox'
+MAKEOPTS="-j2"
+EMERGE_DEFAULT_OPTS="--jobs 1"
 CONFIG_PROTECT='-* /etc/locale.gen'
 CFLAGS="-march=x86-64 -pipe"
 CXXFLAGS="${CFLAGS}"
 USE='-nls ABI_86="64"'
+
 EOF
 
 ##package.use.force
@@ -153,31 +156,46 @@ emerge -O1 sys-devel/binutils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Set up python-exec
-# moved to after Break dependency cycles because of circular dependencies 
-#mkdir -p /usr/lib/python-exec/python3.11
-#ln -sv python3 /usr/lib/python-exec/python3.11/python
-#ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
-#emerge -O1 dev-lang/python-exec
+# changed to a one shot because of circular dependencies 
+mkdir -p /usr/lib/python-exec/python3.11
+ln -sv python3 /usr/lib/python-exec/python3.11/python
+ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
+emerge --oneshot -O1 dev-lang/python-exec
 #read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
+source /etc/profile
 # Break dependency cycles
-# testing without this section
-#emerge -O1 app-alternatives/ninja
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-#emerge -O1 app-alternatives/yacc
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-#emerge -O1 app-alternatives/lex 
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-#emerge -O1 app-alternatives/bzip2
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-#emerge -O1 app-alternatives/gzip
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-#emerge -O1 app-alternatives/tar
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
-#emerge -O1 app-alternatives/awk
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-#emerge -O1 sys-libs/libxcrypt
-#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/ninja
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/yacc
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/lex 
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/bzip2
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 app-alternatives/gzip
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/tar
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+emerge -O1 app-alternatives/awk
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+emerge -O1 sys-libs/libxcrypt
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+#Install them again because they tend to break
+
+emerge -O1 app-alternatives/ninja
+emerge -O1 app-alternatives/yacc
+emerge -O1 app-alternatives/lex 
+emerge -O1 app-alternatives/bzip2
+emerge -O1 app-alternatives/gzip
+emerge -O1 app-alternatives/tar
+emerge -O1 app-alternatives/awk
+emerge -O1 sys-libs/libxcrypt
+read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+
+# third time is the charm
+
 
 # Set up python-exec
 mkdir -p /usr/lib/python-exec/python3.11
