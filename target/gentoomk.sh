@@ -141,7 +141,7 @@ emerge -O1 sys-devel/gcc-config
 CTARGET=x86_64-bootstrap-linux-gnu emerge -O1 sys-devel/binutils
 CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF=--with-sysroot=/usr/$CTARGET EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran -cxx' emerge -O1 sys-devel/gcc
 CTARGET=x86_64-bootstrap-linux-gnu CFLAGS_x86=-m32 PYTHON_COMPAT_OVERRIDE=python3_11 emerge -O1 sys-libs/glibc
-CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF='--with-sysroot=/usr/$CTARGET --enable-shared' EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
+CTARGET=x86_64-bootstrap-linux-gnu EXTRA_ECONF='--with-sysroot=/usr/$CTARGET --enable-shared' EXTRA_EMAKE='MAKE=make MAKE+=libsuffix=../lib64' USE='-sanitize -openmp -fortran' emerge -O1 --deep sys-devel/gcc
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #install final glibc 
@@ -151,16 +151,16 @@ CC=x86_64-bootstrap-linux-gnu-gcc CXX=x86_64-bootstrap-linux-gnu-g++ CFLAGS_x86=
 
 # Install final compiler
 CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' emerge -O1 sys-kernel/linux-headers
-CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' EXTRA_ECONF=--disable-bootstrap USE='-sanitize -openmp -fortran' emerge -O1 sys-devel/gcc
+CC='x86_64-bootstrap-linux-gnu-gcc --sysroot=/' CXX='x86_64-bootstrap-linux-gnu-g++ --sysroot=/' EXTRA_ECONF=--disable-bootstrap USE='-sanitize -openmp -fortran' emerge -O1 --deep sys-devel/gcc
 emerge -O1 sys-devel/binutils
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Set up python-exec
 # changed to a one shot because of circular dependencies 
-mkdir -p /usr/lib/python-exec/python3.11
-ln -sv python3 /usr/lib/python-exec/python3.11/python
-ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
-emerge --oneshot -O1 dev-lang/python-exec
+#mkdir -p /usr/lib/python-exec/python3.11
+#ln -sv python3 /usr/lib/python-exec/python3.11/python
+#ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
+emerge --oneshot --deep -O1 dev-lang/python-exec
 #read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 source /etc/profile
