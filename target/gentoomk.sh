@@ -166,24 +166,24 @@ emerge --oneshot -O1 dev-lang/python-exec
 source /etc/profile
 # Break dependency cycles
 emerge -O1 app-alternatives/ninja
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
 emerge -O1 app-alternatives/yacc
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
 emerge -O1 app-alternatives/lex 
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 app-alternatives/bzip2
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 app-alternatives/gzip
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
 emerge -O1 app-alternatives/tar
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED 
 emerge -O1 app-alternatives/awk
-read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
+#read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #Install them again because they tend to break
-
+emerge -O1 dev-lang/python-exec
 emerge -O1 app-alternatives/ninja
 emerge -O1 app-alternatives/yacc
 emerge -O1 app-alternatives/lex 
@@ -195,16 +195,16 @@ emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # third time is the charm
-
-
-# Set up python-exec
-mkdir -p /usr/lib/python-exec/python3.11
-ln -sv python3 /usr/lib/python-exec/python3.11/python
-ln -svr /usr/bin/python3.11 /usr/lib/python-exec/python3.11/python3
 emerge -O1 dev-lang/python-exec
+emerge -O1 app-alternatives/ninja
+emerge -O1 app-alternatives/yacc
+emerge -O1 app-alternatives/lex 
+emerge -O1 app-alternatives/bzip2
+emerge -O1 app-alternatives/gzip
+emerge -O1 app-alternatives/tar
+emerge -O1 app-alternatives/awk
+emerge -O1 sys-libs/libxcrypt
 read -p 'Did the last step complete successfully? (y or n)> ' BOOTSTRAPPED
-
-
 
 # Install implicit build dependencies
 emerge -O1 dev-build/meson-format-array
