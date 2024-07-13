@@ -75,25 +75,31 @@ do
    read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 done
 
-
-
-
-#make.conf
-#cat > /gentoo/prefix/etc/portage/make.conf << 'EOF'
-#FEATURES='-news -pid-sandbox'
-#MAKEOPTS="-j2"
-#EMERGE_DEFAULT_OPTS="--jobs 1"
-#CONFIG_PROTECT='-* /etc/locale.gen'
-#CFLAGS="-march=x86-64 -pipe"
-#CXXFLAGS="${CFLAGS}"
-#USE='-nls ABI_86="64"'
-#
-#EOF
-
-
+#set up environment
+unset EPREFIX
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE=build emerge --root /mnt/gentoo sys-apps/baselayout
+
+#set up environment continued
+export ROOT="/mnt/gentoo"
+export SYSROOT= "/mnt/gentoo"
+
+#make.conf
+cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
+FEATURES='-news -pid-sandbox'
+MAKEOPTS="-j2"
+EMERGE_DEFAULT_OPTS="--jobs 1"
+CONFIG_PROTECT='-* /etc/locale.gen'
+CFLAGS="-march=x86-64 -pipe"
+CXXFLAGS="${CFLAGS}"
+USE='-nls ABI_86="64"'
+EOF
+
+echo 'nameserver 192.168.2.3' > /mnt/gentoo/etc/resolv.conf
+#echo 'nameserver 1.1.1.1' > /mnt/gentoo/etc/resolv.conf
+echo 'en_US.UTF-8' > /mnt/gentoo/etc/locale.gen
+
 emerge --root /mnt/gentoo @system
 #read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
