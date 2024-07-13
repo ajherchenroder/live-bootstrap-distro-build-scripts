@@ -2457,7 +2457,7 @@ EOF
 			;;
 	esac
 
-	if [[ ${UID} == 0 ]] ; then
+	if [[ ${UID} > 0 ]] ; then
 		cat << EOF
 
 Hmmm, you appear to be root, or at least someone with UID 0.  I really
