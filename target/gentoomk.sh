@@ -51,11 +51,11 @@ export LATEST_TREE_YES=0
 
 #prefix stage 1
 BOOTSTRAPPED="n"
-until [$BOOTSTRAPPED == "y"];
+while [[ "$BOOTSTRAPPED" == "n" ]];
 do
    /target/gentooprefix.sh ${EPREFIX} stage1 
    read -p 'Did the stage 1 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [$BOOTSTRAPPED == "y"]; then
+   if [ "$BOOTSTRAPPED" == "y" ]; then
       break 
    fi
 done
@@ -63,22 +63,22 @@ done
 #prefix stage 2
 
 BOOTSTRAPPED="n"
-until [$BOOTSTRAPPED == "y"];
+while [[ "$BOOTSTRAPPED" == "n" ]];
 do
    /target/gentooprefix.sh ${EPREFIX} stage2 
    read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [$BOOTSTRAPPED == "y"]; then
+   if [ "$BOOTSTRAPPED" == "y" ]; then
       break 
 done
 
 
 #prefix stage 3
 BOOTSTRAPPED="n"
-until [$BOOTSTRAPPED == "y"];
+while [[ "$BOOTSTRAPPED" == "n" ]];
 do
-   /target/gentoorefix.sh ${EPREFIX} stage1 
+   /target/gentoorefix.sh ${EPREFIX} stage3 
    read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [$BOOTSTRAPPED == "y"]; then
+   if [ "$BOOTSTRAPPED" == "y" ]; then
       break 
 done
 
