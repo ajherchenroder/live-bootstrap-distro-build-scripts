@@ -29,7 +29,7 @@ mkdir /mnt/gentoo
 lsblk
 read -p 'Select the disk /dev node to build gentoo on. (sdxx) > ' DISKTOUSE
 mount /dev/$DISKTOUSE /mnt/gentoo
-if [FULLBUILD==2] ; then
+if [$FULLBUILD==2] ; then
    read -p 'Select the disk /dev node to install the final gentoo on. (sdx) > ' DISKTOUSE2
 fi
 mkdir /gentoo
@@ -50,8 +50,8 @@ export PATH="${EPREFIX}/usr/bin:${EPREFIX}/bin:${EPREFIX}/tmp/usr/bin:${EPREFIX}
 export LATEST_TREE_YES=0
 
 #prefix stage 1
-BOOTSTRAPPED ="n"
-until [BOOTSTRAPPED == "y"]
+BOOTSTRAPPED="n"
+until [$BOOTSTRAPPED == "y"]
 do
    /target/bootstrap-prefix.sh ${EPREFIX} stage1 
    read -p 'Did the stage 1 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
@@ -59,8 +59,8 @@ done
 
 #prefix stage 2
 
-BOOTSTRAPPED ="n"
-until [BOOTSTRAPPED == "y"]
+BOOTSTRAPPED="n"
+until [$BOOTSTRAPPED == "y"]
 do
    /target/bootstrap-prefix.sh ${EPREFIX} stage2 
    read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
@@ -68,8 +68,8 @@ done
 
 
 #prefix stage 3
-BOOTSTRAPPED ="n"
-until [BOOTSTRAPPED == "y"]
+BOOTSTRAPPED="n"
+until [$BOOTSTRAPPED == "y"]
 do
    /target/bootstrap-prefix.sh ${EPREFIX} stage1 
    read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
