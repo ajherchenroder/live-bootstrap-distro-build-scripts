@@ -55,6 +55,9 @@ until [$BOOTSTRAPPED == "y"];
 do
    /target/gentooprefix.sh ${EPREFIX} stage1 
    read -p 'Did the stage 1 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+   if [$BOOTSTRAPPED == "y"]; then
+      break 
+   fi
 done
 
 #prefix stage 2
@@ -64,6 +67,8 @@ until [$BOOTSTRAPPED == "y"];
 do
    /target/gentooprefix.sh ${EPREFIX} stage2 
    read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+   if [$BOOTSTRAPPED == "y"]; then
+      break 
 done
 
 
@@ -73,6 +78,8 @@ until [$BOOTSTRAPPED == "y"];
 do
    /target/gentoorefix.sh ${EPREFIX} stage1 
    read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+   if [$BOOTSTRAPPED == "y"]; then
+      break 
 done
 
 #set up environment
