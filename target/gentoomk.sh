@@ -69,6 +69,7 @@ do
    read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
    if [ "$BOOTSTRAPPED" == "y" ]; then
       break 
+   fi
 done
 
 
@@ -76,10 +77,11 @@ done
 BOOTSTRAPPED="n"
 while [[ "$BOOTSTRAPPED" == "n" ]];
 do
-   /target/gentoorefix.sh ${EPREFIX} stage3 
+   /target/gentooprefix.sh ${EPREFIX} stage3 
    read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
    if [ "$BOOTSTRAPPED" == "y" ]; then
       break 
+   fi
 done
 
 #set up environment
