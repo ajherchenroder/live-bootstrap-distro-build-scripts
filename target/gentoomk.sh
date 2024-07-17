@@ -91,6 +91,7 @@ unset EPREFIX
 USE=build emerge --root /mnt/gentoo sys-apps/baselayout
 
 #set up environment continued
+export EPREFIX="/mnt/gentoo"
 export ROOT="/mnt/gentoo"
 export SYSROOT= "/mnt/gentoo"
 
