@@ -85,10 +85,10 @@ do
 done
 
 #set up environment
-#unset EPREFIX
+export EPREFIX=""
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
-USE=build emerge --root /mnt/gentoo sys-apps/baselayout
+USE=build /gentoo/prefix/usr/bin/emerge --root /mnt sys-apps/baselayout
 
 #set up environment continued
 #export EPREFIX="/mnt/gentoo"
