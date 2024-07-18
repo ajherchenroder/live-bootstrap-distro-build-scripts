@@ -50,27 +50,27 @@ export PATH="${EPREFIX}/usr/bin:${EPREFIX}/bin:${EPREFIX}/tmp/usr/bin:${EPREFIX}
 export LATEST_TREE_YES=0
 
 #prefix stage 1
-BOOTSTRAPPED="n"
-while [[ "$BOOTSTRAPPED" == "n" ]];
-do
+#BOOTSTRAPPED="n"
+#while [[ "$BOOTSTRAPPED" == "n" ]];
+#do
    /target/gentooprefix.sh ${EPREFIX} stage1 
-   read -p 'Did the stage 1 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [ "$BOOTSTRAPPED" == "y" ]; then
-      break 
-   fi
-done
+#   read -p 'Did the stage 1 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+#   if [ "$BOOTSTRAPPED" == "y" ]; then
+#      break 
+#   fi
+#done
 
 #prefix stage 2
 
-BOOTSTRAPPED="n"
-while [[ "$BOOTSTRAPPED" == "n" ]];
-do
+#BOOTSTRAPPED="n"
+#while [[ "$BOOTSTRAPPED" == "n" ]];
+#do
    /target/gentooprefix.sh ${EPREFIX} stage2 
-   read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [ "$BOOTSTRAPPED" == "y" ]; then
-      break 
-   fi
-done
+#   read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+#   if [ "$BOOTSTRAPPED" == "y" ]; then
+#      break 
+#   fi
+#done
 
 
 #prefix stage 3
@@ -85,32 +85,32 @@ do
 done
 
 #set up environment
-unset EPREFIX
+#unset EPREFIX
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE=build emerge --root /mnt/gentoo sys-apps/baselayout
 
 #set up environment continued
-export EPREFIX="/mnt/gentoo"
-export ROOT="/mnt/gentoo"
-export SYSROOT= "/mnt/gentoo"
+#export EPREFIX="/mnt/gentoo"
+#export ROOT="/mnt/gentoo"
+#export SYSROOT= "/mnt/gentoo"
 
 #make.conf
-cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
-FEATURES='-news -pid-sandbox'
-MAKEOPTS="-j2"
-EMERGE_DEFAULT_OPTS="--jobs 1"
-CONFIG_PROTECT='-* /etc/locale.gen'
-CFLAGS="-march=x86-64 -pipe"
-CXXFLAGS="${CFLAGS}"
-USE='-nls ABI_86="64"'
-EOF
+#cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
+#FEATURES='-news -pid-sandbox'
+#MAKEOPTS="-j2"
+#EMERGE_DEFAULT_OPTS="--jobs 1"
+#CONFIG_PROTECT='-* /etc/locale.gen'
+#CFLAGS="-march=x86-64 -pipe"
+#CXXFLAGS="${CFLAGS}"
+#USE='-nls ABI_86="64"'
+#EOF
 
-echo 'nameserver 192.168.2.3' > /mnt/gentoo/etc/resolv.conf
+#echo 'nameserver 192.168.2.3' > /mnt/gentoo/etc/resolv.conf
 #echo 'nameserver 1.1.1.1' > /mnt/gentoo/etc/resolv.conf
-echo 'en_US.UTF-8' > /mnt/gentoo/etc/locale.gen
+#echo 'en_US.UTF-8' > /mnt/gentoo/etc/locale.gen
 
-emerge --root /mnt/gentoo @system
+#emerge --root /mnt/gentoo @system
 #read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # Pack it up
