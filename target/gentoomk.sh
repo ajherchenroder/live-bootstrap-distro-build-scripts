@@ -88,7 +88,19 @@ done
 export EPREFIX=""
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
-USE=build /gentoo/prefix/usr/bin/emerge --root /mnt sys-apps/baselayout
+USE=build /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
+
+#download gentoo files
+mkdir /mnt/gentoo/gentoosources
+cd /mnt/gentoo/gentoosources
+#local
+curl http://192.168.2.102/gentoo/portage-latest.tar.bz2 -O -L
+
+#curl http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2 -O -L
+#curl https://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2 -O -L
+
+
+
 
 #set up environment continued
 #export EPREFIX="/mnt/gentoo"
