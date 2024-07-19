@@ -120,6 +120,7 @@ echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 echo "LC_COLLATE="UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
 USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge sys-devel/gcc
+USE=-pam emerge -1 sys-libs/libcap
 
 BOOTSTRAPPED="n"
 while [[ "$BOOTSTRAPPED" == "n" ]];
