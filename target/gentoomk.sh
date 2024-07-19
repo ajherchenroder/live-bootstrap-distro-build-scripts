@@ -85,15 +85,14 @@ do
 done
 #install dependencies
 USE=-pam emerge -1 sys-libs/libcap
-read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 USE=-http2 emerge -1 net-misc/curl
-read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+
 
 #set up environment
 export EPREFIX=""
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
-USE=build /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
+USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
 
 
 #download gentoo files
