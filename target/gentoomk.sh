@@ -103,7 +103,6 @@ cd /mnt/gentoo/gentoosources
 curl http://192.168.2.102/gentoo/portage-latest.tar.bz2 -O -L
 
 #curl http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2 -O -L
-#curl https://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2 -O -L
 
 cd /mnt/gentoo/gentoosources
 tar -xpf portage-latest.tar.bz2
@@ -113,7 +112,7 @@ cp -avT /mnt/gentoo/gentoosources/portage /mnt/gentoo/var/db/repos/gentoo
 
 #set up environment continued
 export ROOT="/mnt/gentoo"
-export PORTAGE_LOGDIR=="/mnt/gentoo/var/log"
+export PORTAGE_LOGDIR="/mnt/gentoo/var/log"
 export FEATURES='-news -pid-sandbox'
 export MAKEOPTS="-j2"
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
@@ -121,9 +120,17 @@ touch /gentoo/prefix/etc/env.d/02locale
 echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 echo "LC_COLLATE="UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
-USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --oneshot sys-devel/gcc
+USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge sys-devel/gcc
 
-#USE="-lzma"  /gentoo/prefix/usr/bin/emerge -n @system
+BOOTSTRAPPED="n"
+while [[ "$BOOTSTRAPPED" == "n" ]];
+do
+   USE="-lzma"  /gentoo/prefix/usr/bin/emerge -n @system
+   read -p 'Did the @system build complete successfully? (y or n)> ' BOOTSTRAPPED
+   if [ "$BOOTSTRAPPED" == "y" ]; then
+      break 
+   fi
+done
 
 
 #make.conf
