@@ -83,12 +83,18 @@ do
       break 
    fi
 done
+#install dependencies
+USE=-pam emerge -1 sys-libs/libcap
+read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
+USE=-http2 emerge -1 net-misc/curl
+read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #set up environment
 export EPREFIX=""
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE=build /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
+
 
 #download gentoo files
 mkdir /mnt/gentoo/gentoosources
@@ -99,13 +105,26 @@ curl http://192.168.2.102/gentoo/portage-latest.tar.bz2 -O -L
 #curl http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2 -O -L
 #curl https://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2 -O -L
 
-
-
+cd /mnt/gentoo/gentoosources
+tar -xpf portage-latest.tar.bz2
+cd portage
+mkdir -p /mnt/gentoo/var/db/repos/gentoo
+cp -avT /mnt/gentoo/gentoosources/portage /mnt/gentoo/var/db/repos/gentoo
 
 #set up environment continued
-#export EPREFIX="/mnt/gentoo"
-#export ROOT="/mnt/gentoo"
-#export SYSROOT= "/mnt/gentoo"
+export ROOT="/mnt/gentoo"
+export PORTAGE_LOGDIR=="/mnt/gentoo/var/log"
+export FEATURES='-news -pid-sandbox'
+export MAKEOPTS="-j2"
+echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
+touch /gentoo/prefix/etc/env.d/02locale
+echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
+echo "LC_COLLATE="UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
+cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
+USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --oneshot sys-devel/gcc
+
+#USE="-lzma"  /gentoo/prefix/usr/bin/emerge -n @system
+
 
 #make.conf
 #cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
