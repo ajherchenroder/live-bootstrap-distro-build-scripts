@@ -86,7 +86,11 @@ done
 #install dependencies
 USE=-pam emerge -1 sys-libs/libcap
 USE=-http2 emerge -1 net-misc/curl
-
+emerge -l sys-apps/local-gen
+read -p 'Did the task complete successfully? (y or n)> ' BOOTSTRAPPED
+echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
+locale-gen
+read -p 'Did the task complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #set up environment
 export EPREFIX=""
@@ -117,21 +121,24 @@ export MAKEOPTS="-j2"
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 touch /gentoo/prefix/etc/env.d/02locale
 echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
-echo "LC_COLLATE="UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
+echo "LC_COLLATE="C.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
-USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge sys-devel/gcc
-USE=-pam emerge -1 sys-libs/libcap
+USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-devel/gcc
+USE=-pam /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
+/gentoo/prefix/usr/bin/emerge -l sys-apps/local-gen
 
 BOOTSTRAPPED="n"
 while [[ "$BOOTSTRAPPED" == "n" ]];
 do
-   USE="-lzma"  /gentoo/prefix/usr/bin/emerge -n @system
+   USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
    read -p 'Did the @system build complete successfully? (y or n)> ' BOOTSTRAPPED
    if [ "$BOOTSTRAPPED" == "y" ]; then
       break 
    fi
 done
 
+
+source /etc/profile
 
 #make.conf
 #cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
