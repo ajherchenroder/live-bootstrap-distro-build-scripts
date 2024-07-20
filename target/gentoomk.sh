@@ -122,21 +122,26 @@ echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 echo "LC_COLLATE="C.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
 USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-devel/gcc
-USE=-pam /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-/gentoo/prefix/usr/bin/emerge -l sys-apps/local-gen
-
-BOOTSTRAPPED="n"
-while [[ "$BOOTSTRAPPED" == "n" ]];
-do
-   USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-   read -p 'Did the @system build complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [ "$BOOTSTRAPPED" == "y" ]; then
-      break 
-   fi
-done
-
-
+/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
+/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/local-gen
 source /etc/profile
+#BOOTSTRAPPED="n"
+#while [[ "$BOOTSTRAPPED" == "n" ]];
+#do
+   USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+   #read -p 'Did the @system build complete successfully? (y or n)> ' BOOTSTRAPPED
+   #if [ "$BOOTSTRAPPED" == "y" ]; then
+     # break 
+   #fi
+#done
+/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
+
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+source /etc/profile
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+
+
+
 
 #make.conf
 #cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
