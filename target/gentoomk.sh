@@ -84,13 +84,11 @@ do
    fi
 done
 #install dependencies
-USE=-pam emerge -1 sys-libs/libcap
-USE=-http2 emerge -1 net-misc/curl
-emerge -l sys-apps/locale-gen
-read -p 'Did the task complete successfully? (y or n)> ' BOOTSTRAPPED
+USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
+USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
+/gentoo/prefix/usr/bin/emerge -l sys-apps/locale-gen
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 /gentoo/prefix/usr/sbin/locale-gen
-read -p 'Did the task complete successfully? (y or n)> ' BOOTSTRAPPED
 
 #set up environment
 export EPREFIX=""
