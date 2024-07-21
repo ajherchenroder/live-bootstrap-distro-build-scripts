@@ -46,6 +46,7 @@ cp -avT /mnt/gentoo/gentoosources/portage /mnt/gentoo/var/db/repos/gentoo
 
 #set up environment continued
 export ROOT="/mnt/gentoo"
+export SYSROOT="/mnt/gentoo"
 export PORTAGE_LOGDIR="/mnt/gentoo/var/log"
 export FEATURES='-news -pid-sandbox'
 export MAKEOPTS="-j2"
@@ -56,7 +57,7 @@ echo "LC_COLLATE="C.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
 USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-devel/gcc
 /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/local-gen
+/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/locale-gen
 source /etc/profile
 #BOOTSTRAPPED="n"
 #while [[ "$BOOTSTRAPPED" == "n" ]];
@@ -73,7 +74,7 @@ USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
 source /etc/profile
 /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/local-gen
+/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/locale-gen
 source /etc/profile
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
 source /etc/profile
