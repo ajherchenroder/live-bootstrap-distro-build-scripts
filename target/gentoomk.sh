@@ -50,129 +50,23 @@ export PATH="${EPREFIX}/usr/bin:${EPREFIX}/bin:${EPREFIX}/tmp/usr/bin:${EPREFIX}
 export LATEST_TREE_YES=0
 
 #prefix stage 1
-#BOOTSTRAPPED="n"
-#while [[ "$BOOTSTRAPPED" == "n" ]];
-#do
-   /target/gentooprefix.sh ${EPREFIX} stage1 
-#   read -p 'Did the stage 1 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-#   if [ "$BOOTSTRAPPED" == "y" ]; then
-#      break 
-#   fi
-#done
+/target/gentooprefix.sh ${EPREFIX} stage1 
+
 
 #prefix stage 2
 
-#BOOTSTRAPPED="n"
-#while [[ "$BOOTSTRAPPED" == "n" ]];
-#do
-   /target/gentooprefix.sh ${EPREFIX} stage2 
-#   read -p 'Did the stage 2 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-#   if [ "$BOOTSTRAPPED" == "y" ]; then
-#      break 
-#   fi
-#done
-
+/target/gentooprefix.sh ${EPREFIX} stage2 
 
 #prefix stage 3
 #requires twice through to complete
 /target/gentooprefix.sh ${EPREFIX} stage3 
 /target/gentooprefix.sh ${EPREFIX} stage3 
 
-#install dependencies
-USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
-USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
-/gentoo/prefix/usr/bin/emerge -l sys-apps/locale-gen
-echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
-/gentoo/prefix/usr/sbin/locale-gen
+#Test trap
+read -p 'Did the initial bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
-#set up environment
-export EPREFIX=""
+# mount and build the partition that will become stage 3
+/target/gentoomk2.sh
 
-# Rebuild and install everything into a new root, completely cleaning out LFS
-USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
-
-
-#download gentoo files
-mkdir /mnt/gentoo/gentoosources
-cd /mnt/gentoo/gentoosources
-#local
-curl http://192.168.2.102/gentoo/portage-latest.tar.bz2 -O -L
-
-#curl http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2 -O -L
-
-cd /mnt/gentoo/gentoosources
-tar -xpf portage-latest.tar.bz2
-cd portage
-mkdir -p /mnt/gentoo/var/db/repos/gentoo
-cp -avT /mnt/gentoo/gentoosources/portage /mnt/gentoo/var/db/repos/gentoo
-
-#set up environment continued
-export ROOT="/mnt/gentoo"
-export PORTAGE_LOGDIR="/mnt/gentoo/var/log"
-export FEATURES='-news -pid-sandbox'
-export MAKEOPTS="-j2"
-echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
-touch /gentoo/prefix/etc/env.d/02locale
-echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
-echo "LC_COLLATE="C.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
-cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
-USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-devel/gcc
-/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/local-gen
-source /etc/profile
-#BOOTSTRAPPED="n"
-#while [[ "$BOOTSTRAPPED" == "n" ]];
-#do
-   USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-   #read -p 'Did the @system build complete successfully? (y or n)> ' BOOTSTRAPPED
-   #if [ "$BOOTSTRAPPED" == "y" ]; then
-     # break 
-   #fi
-#done
-/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-source /etc/profile
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-source /etc/profile
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-source /etc/profile
-#clean up and prep for packaging
-
-mkdir /mnt/gentoo/etc/portage
-
-
-
-#make.conf
-#cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
-#FEATURES='-news -pid-sandbox'
-#MAKEOPTS="-j2"
-#EMERGE_DEFAULT_OPTS="--jobs 1"
-#CONFIG_PROTECT='-* /etc/locale.gen'
-#CFLAGS="-march=x86-64 -pipe"
-#CXXFLAGS="${CFLAGS}"
-#USE='-nls ABI_86="64"'
-#EOF
-
-#echo 'nameserver 192.168.2.3' > /mnt/gentoo/etc/resolv.conf
-#echo 'nameserver 1.1.1.1' > /mnt/gentoo/etc/resolv.conf
-#echo 'en_US.UTF-8' > /mnt/gentoo/etc/locale.gen
-
-#emerge --root /mnt/gentoo @system
-#read -p 'Did the bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-
-# Pack it up
-#tar cf /gentoo-bootstrap.tar -C /mnt/gentoo .
-#xz -9v /gentoo-bootstrap.tar
-#mkdir /mnt/gentoo/release
-#cp /gentoo-bootstrap.tar.xz /mnt/gentoo/release
-# stop if only building a stage 3
-#
-#if [FULLBUILD==1] ; then
-#   echo "The Gentoo bootstrap stage 3 is located in /mnt/gentoo/release"
-#   exit 0
-#fi
-
-#Create gentoo chroot
-
-#echo "Building the Gentoo Chroot"
+#Test trap
+read -p 'post partition build trap2> ' BOOTSTRAPPED
