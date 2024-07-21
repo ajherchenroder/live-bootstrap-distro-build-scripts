@@ -24,7 +24,7 @@ echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 /gentoo/prefix/usr/sbin/locale-gen
 
 #set up environment
-export EPREFIX="/mnt/gentoo"
+export EPREFIX="/"
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
