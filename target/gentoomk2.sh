@@ -24,7 +24,7 @@ echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 /gentoo/prefix/usr/sbin/locale-gen
 
 #set up environment
-export EPREFIX=""
+export EPREFIX="/mnt/gentoo"
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
@@ -48,7 +48,7 @@ cp -avT /mnt/gentoo/gentoosources/portage /mnt/gentoo/var/db/repos/gentoo
 export ROOT="/mnt/gentoo"
 export SYSROOT="/mnt/gentoo"
 export PORTAGE_LOGDIR="/mnt/gentoo/var/log"
-export FEATURES='-news -pid-sandbox'
+export FEATURES="-news -pid-sandbox"
 export MAKEOPTS="-j2"
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 touch /gentoo/prefix/etc/env.d/02locale
