@@ -74,15 +74,10 @@ export LATEST_TREE_YES=0
 
 
 #prefix stage 3
-BOOTSTRAPPED="n"
-while [[ "$BOOTSTRAPPED" == "n" ]];
-do
-   /target/gentooprefix.sh ${EPREFIX} stage3 
-   read -p 'Did the stage 3 bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
-   if [ "$BOOTSTRAPPED" == "y" ]; then
-      break 
-   fi
-done
+#requires twice through to complete
+/target/gentooprefix.sh ${EPREFIX} stage3 
+/target/gentooprefix.sh ${EPREFIX} stage3 
+
 #install dependencies
 USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
@@ -139,7 +134,12 @@ source /etc/profile
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
 source /etc/profile
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+source /etc/profile
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+source /etc/profile
+#clean up and prep for packaging
 
+mkdir /mnt/gentoo/etc/portage
 
 
 
