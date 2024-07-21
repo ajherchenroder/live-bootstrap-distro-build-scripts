@@ -67,11 +67,13 @@ source /etc/profile
      # break 
    #fi
 #done
-/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
 
+/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
 source /etc/profile
+/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/local-gen
 source /etc/profile
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
 source /etc/profile
