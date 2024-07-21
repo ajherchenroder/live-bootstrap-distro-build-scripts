@@ -66,7 +66,7 @@ export LATEST_TREE_YES=0
 read -p 'Did the initial bootstrap complete successfully? (y or n)> ' BOOTSTRAPPED
 
 # mount and build the partition that will become stage 3
-/target/gentoomk2.sh
+su -c /target/gentoomk2.sh
 
 #Test trap
 read -p 'post partition build trap2> ' BOOTSTRAPPED
