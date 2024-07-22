@@ -57,29 +57,28 @@ echo "LC_COLLATE="C.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
 USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-devel/gcc
 /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/locale-gen
 source /etc/profile
 #BOOTSTRAPPED="n"
 #while [[ "$BOOTSTRAPPED" == "n" ]];
 #do
-   USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+   USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
    #read -p 'Did the @system build complete successfully? (y or n)> ' BOOTSTRAPPED
    #if [ "$BOOTSTRAPPED" == "y" ]; then
      # break 
    #fi
 #done
-
-/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+/gentoo/prefix/usr/bin/emerge -l --root=/mnt/gentoo sys-apps/locale-gen
+/gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n sys-libs/libcap
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 source /etc/profile
-/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
-/gentoo/prefix/usr/bin/emerge -l --root /mnt/gentoo sys-apps/locale-gen
+/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n sys-libs/libcap
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 source /etc/profile
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -n @system
+/gentoo/prefix/usr/bin/emerge -n --root /mnt/gentoo sys-apps/locale-gen
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 source /etc/profile
 #clean up and prep for packaging
-
+/gentoo/prefix/usr/bin/emerge -l --root=/mnt/gentoo sys-apps/locale-gen
 mkdir /mnt/gentoo/etc/portage
 
 read -p 'post partition build trap1> ' BOOTSTRAPPED
