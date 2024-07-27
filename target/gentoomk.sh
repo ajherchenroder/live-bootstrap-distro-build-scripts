@@ -62,6 +62,9 @@ export LATEST_TREE_YES=0
 /target/gentooprefix.sh ${EPREFIX} stage3 
 /target/gentooprefix.sh ${EPREFIX} stage3 
 
+#Test trap
+read -p 'post partition build trap> ' BOOTSTRAPPED
+
 # mount and build the partition that will become stage 3
 su -c /target/gentoomk2.sh
 

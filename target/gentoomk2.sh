@@ -17,14 +17,92 @@
 
 
 #install dependencies
+source /gentoo/prefix/etc/profile
+
 USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
+/gentoo/prefix/usr/bin/emerge nano
+/gentoo/prefix/usr/bin/emerge less
+/gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 /gentoo/prefix/usr/bin/emerge -l sys-apps/locale-gen
+/gentoo/prefix/usr/bin/emerge app-arch/zstd
+
+
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 /gentoo/prefix/usr/sbin/locale-gen
+eselect locale set 4
+. /gentoo/prefix/etc/profile
 
-#set up environment
+#set up environment by removing the eeprefix
 export EPREFIX="/"
+
+#create base layout
+USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
+
+#more env setup
+#
+#make a working profile.env
+rm /mnt/gentoo/etc/profile.env
+#working
+cat > /mnt/gentoo/etc/profile.env << 'EOF'
+export CONFIG_PROTECT_MASK='/mnt/gentoo/etc/gentoo-release'
+export INFOPATH='/mnt/gentoo/usr/share/info'
+export MANPATH='/mnt/gentoo/usr/local/share/man:/mnt/gentoo/usr/share/man'
+export PATH='/mnt/gentoo/usr/local/sbin:/mnt/gentoo/usr/local/bin:/mnt/gentoo/usr/sbin:/mnt/gentoo/usr/bin:/mnt/gentoo/sbin:/mnt/gentoo/bin:/mnt/gentoo/opt/bin:/gentoo/prefix/usr/local/sbin:/gentoo/prefix/usr/local/bin:/gentoo/prefix/usr/sbin:/gentoo/prefix/usr/bin:/gentoo/prefix/sbin:/gentoo/prefix/bin:/gentoo/prefix/opt/bin'
+EOF
+
+#make.conf
+mkdir /mnt/gentoo/etc/portage
+#
+#working
+cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
+USE="unicode nls"
+CFLAGS="${CFLAGS} -O2 -pipe"
+CXXFLAGS="${CFLAGS}"
+MAKEOPTS="-j2"
+CONFIG_SHELL="/gentoo/prefix/bin/bash"
+DISTDIR="/mnt/gentoo/var/cache/distfiles"
+# sandbox does not work well on Prefix, bug #490246
+FEATURES="${FEATURES} -usersandbox -sandbox"
+ACCEPT_KEYWORDS="${ARCH} -~${ARCH}"
+EOF
+#
+## copy over the dist files from the prefix to speed thing up
+mkdir /mnt/gentoo/var/cache/distfiles
+cp /gentoo/prefix/var/cache/distfiles/* /mnt/gentoo/var/cache/distfiles
+#
+## copy locale files from the prefix
+cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d
+cp /gentoo/prefix/etc/env.d/02locale
+
+#circular dependency resolution
+EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
+/gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
+
+
+
+
+
+read -p 'post partition build trap1> ' BOOTSTRAPPED
+exit 0
+
+#backup material 
+#
+#make.conf final
+cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
+USE="unicode nls"
+CFLAGS="${CFLAGS} -O2 -pipe"
+CXXFLAGS="${CFLAGS}"
+MAKEOPTS="-j2"
+CONFIG_SHELL="/bin/bash"
+DISTDIR="/var/cache/distfiles"
+# sandbox does not work well on Prefix, bug #490246
+FEATURES="${FEATURES} -usersandbox -sandbox"
+ACCEPT_KEYWORDS="${ARCH} -~${ARCH}"
+EOF
+
+
+
 
 # Rebuild and install everything into a new root, completely cleaning out LFS
 USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
@@ -55,8 +133,8 @@ touch /gentoo/prefix/etc/env.d/02locale
 echo "LANG="en_US.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 echo "LC_COLLATE="C.UTF-8"" >> /gentoo/prefix/etc/env.d/02locale
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d/02locale
-USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-devel/gcc
-/gentoo/prefix/usr/bin/emerge --root /mnt/gentoo -1 sys-libs/libcap
+USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
+/gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -1 sys-libs/libcap
 source /etc/profile
 #BOOTSTRAPPED="n"
 #while [[ "$BOOTSTRAPPED" == "n" ]];
@@ -81,4 +159,36 @@ source /etc/profile
 /gentoo/prefix/usr/bin/emerge -l --root=/mnt/gentoo sys-apps/locale-gen
 mkdir /mnt/gentoo/etc/portage
 
-read -p 'post partition build trap1> ' BOOTSTRAPPED
+
+* The following users have non-existent shells!
+ * adm - /gentoo/prefix/bin/false
+ * bin - /gentoo/prefix/bin/false
+ * daemon - /gentoo/prefix/bin/false
+ * halt - /gentoo/prefix/sbin/halt
+ * lp - /gentoo/prefix/bin/false
+ * news - /gentoo/prefix/bin/false
+ * nobody - /gentoo/prefix/bin/false
+ * operator - /gentoo/prefix/sbin/nologin
+ * portage - /gentoo/prefix/bin/false
+ * root - /gentoo/prefix/bin/bash
+ * shutdown - /gentoo/prefix/sbin/shutdown
+ * sync - /gentoo/prefix/bin/sync
+ * uucp - /gentoo/prefix/bin/false
+
+#working
+cat > /mnt/gentoo/etc/profile.env << 'EOF'
+export CONFIG_PROTECT_MASK='/mnt/gentoo/etc/gentoo-release'
+export INFOPATH='/mnt/gentoo/usr/share/info'
+export MANPATH='/mnt/gentoo/usr/local/share/man:/mnt/gentoo/usr/share/man'
+export PATH='/mnt/gentoo/usr/local/sbin:/mnt/gentoo/usr/local/bin:/mnt/gentoo/usr/sbin:/mnt/gentoo/usr/bin:/mnt/gentoo/sbin:/mnt/gentoo/bin:/mnt/gentoo/opt/bin:/gentoo/prefix/usr/local/sbin:/gentoo/prefix/usr/local/bin:/gentoo/prefix/usr/sbin:/gentoo/prefix/usr/bin:/gentoo/prefix/sbin:/gentoo/prefix/bin:/gentoo/prefix/opt/bin'
+EOF
+
+#final
+cat > /mnt/gentoo/etc/profile.env << 'EOF'
+export CONFIG_PROTECT_MASK='/etc/gentoo-release'
+export INFOPATH='/usr/share/info'
+export MANPATH='/usr/local/share/man:/usr/share/man'
+export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin'
+export ROOTPATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin'
+EOF
+
