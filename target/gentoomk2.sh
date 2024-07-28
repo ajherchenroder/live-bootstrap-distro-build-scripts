@@ -26,7 +26,8 @@ USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
 /gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 /gentoo/prefix/usr/bin/emerge -l sys-apps/locale-gen
 /gentoo/prefix/usr/bin/emerge app-arch/zstd
-
+/gentoo/prefix/usr/bin/emerge sys-libs/libxcrypt
+/gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 /gentoo/prefix/usr/sbin/locale-gen
@@ -70,6 +71,8 @@ EOF
 ## copy over the dist files from the prefix to speed thing up
 mkdir /mnt/gentoo/var/cache/distfiles
 cp /gentoo/prefix/var/cache/distfiles/* /mnt/gentoo/var/cache/distfiles
+mkdir /mnt/gentoo/var/db/repos/
+cp -r /gentoo/prefix/var/db/repos/* /mnt/gentoo/var/db/repos/
 #
 ## copy locale files from the prefix
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d
@@ -77,16 +80,13 @@ cp /gentoo/prefix/etc/env.d/02locale
 
 #circular dependency resolution
 EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
+/gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
 /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 
-
-
-
-
-read -p 'post partition build trap1> ' BOOTSTRAPPED
-exit 0
-
-#backup material 
+#reconfigure files for run outside the prefix 
+rm -RF /mnt/gentoo/etc/portage/make.conf
 #
 #make.conf final
 cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
@@ -101,11 +101,20 @@ FEATURES="${FEATURES} -usersandbox -sandbox"
 ACCEPT_KEYWORDS="${ARCH} -~${ARCH}"
 EOF
 
+#all done drop back to the main build
+read -p 'post partition build trap1> ' BOOTSTRAPPED
+exit 0
 
 
 
-# Rebuild and install everything into a new root, completely cleaning out LFS
-USE="build -split-usr" /gentoo/prefix/usr/bin/emerge --root /mnt/gentoo sys-apps/baselayout
+
+
+
+
+
+#backup material 
+
+
 
 
 #download gentoo files

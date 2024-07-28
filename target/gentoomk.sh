@@ -68,5 +68,49 @@ read -p 'post partition build trap> ' BOOTSTRAPPED
 # mount and build the partition that will become stage 3
 su -c /target/gentoomk2.sh
 
+mkdir /output
+tar cf /output/gentoo-livebootstrap-stage3.tar -C /mnt/gentoo 
+xz -9v /output/gentoo-livebootstrap-stage3.tar 
+echo "The live bootstrap stage 3 file is located in the /output directory"
+if [$FULLBUILD="1"]; then
+   #Test trap then exit
+   read -p 'post partition stage3 trap> ' BOOTSTRAPPED
+   exit 0
+fi
+
+#set up disks for the final system using GPT and UEFI
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/$DISKTOUSE2
+  g # clear the in memory partition table
+  n # new partition
+  1 # partition number 1
+    # default - start at beginning of disk 
+  +1G # 8G swap parttion
+  t # change type
+  1 # UEFI
+  n # new partition
+  2 # partion number 2
+    # default, start immediately after preceding partition
+  +8G # 8G swap parttion
+  t # change type
+  2 # select partition 2
+  19 # linux swap
+  n # new partition
+  3 # partion number 3
+    # default, start immediately after preceding partition
+    # default use the rest of the disk
+  w # write the partition table
+  q # and we're done
+EOF
 #Test trap
 read -p 'post partition build trap2> ' BOOTSTRAPPED
+
+#format file systems
+#format the UEFI partion to vfat 
+mkfs.vfat /dev/$DISKTOUSE2'1'
+# Setup and enable a swap partition
+mkswap /dev/$DISKTOUSE2'1'
+swapon /dev/$DISKTOUSE2'1' 
+# format the rest of the partitions
+mkfs.ext4 /dev/$DISKTOUSE'3'
+
+
