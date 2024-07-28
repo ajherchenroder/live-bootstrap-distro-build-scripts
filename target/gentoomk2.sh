@@ -84,9 +84,10 @@ EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gent
 /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 
 #reconfigure files for run outside the prefix 
-rm -RF /mnt/gentoo/etc/portage/make.conf
+rm -Rf /mnt/gentoo/etc/portage/make.conf
 #
 #make.conf final
 cat > /mnt/gentoo/etc/portage/make.conf << 'EOF'
