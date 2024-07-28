@@ -108,9 +108,11 @@ read -p 'post partition build trap2> ' BOOTSTRAPPED
 #format the UEFI partion to vfat 
 mkfs.vfat /dev/$DISKTOUSE2'1'
 # Setup and enable a swap partition
-mkswap /dev/$DISKTOUSE2'1'
-swapon /dev/$DISKTOUSE2'1' 
+mkswap /dev/$DISKTOUSE2'2'
+swapon /dev/$DISKTOUSE2'2' 
 # format the rest of the partitions
-mkfs.ext4 /dev/$DISKTOUSE'3'
+mkfs.ext4 /dev/$DISKTOUSE2'3'
 
+#Test trap
+read -p 'system build build trap> ' BOOTSTRAPPED
 
