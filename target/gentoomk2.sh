@@ -77,6 +77,8 @@ cp -r /gentoo/prefix/var/db/repos/* /mnt/gentoo/var/db/repos/
 ## copy locale files from the prefix
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d
 cp /gentoo/prefix/etc/env.d/02locale
+source /mnt/gentoo/etc/profile
+
 
 #circular dependency resolution
 EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc

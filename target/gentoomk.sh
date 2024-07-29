@@ -24,7 +24,7 @@
 #
 #decide where we are going to put things
 echo "This script can make a stage 3 and snapshot tarball or setup and install Gentoo on another drive."
-read -p 'enter 1 for stage 3/snapshot or 2 for full install (default is stage 3/snapshot > ' FULLBUILD
+read -p 'enter 1 for a stage 3 snapshot or 2 for full install (default is stage 3/snapshot > ' FULLBUILD
 mkdir /mnt/gentoo
 lsblk
 read -p 'Select the disk /dev node to build gentoo on. (sdxx) > ' DISKTOUSE
@@ -62,8 +62,6 @@ export LATEST_TREE_YES=0
 /target/gentooprefix.sh ${EPREFIX} stage3 
 /target/gentooprefix.sh ${EPREFIX} stage3 
 
-#Test trap
-read -p 'post partition build trap> ' BOOTSTRAPPED
 
 # mount and build the partition that will become stage 3
 su -c /target/gentoomk2.sh
