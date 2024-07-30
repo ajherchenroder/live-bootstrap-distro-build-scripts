@@ -51,6 +51,7 @@ export INFOPATH='/mnt/gentoo/usr/share/info'
 export MANPATH='/mnt/gentoo/usr/local/share/man:/mnt/gentoo/usr/share/man'
 export PATH='/mnt/gentoo/usr/local/sbin:/mnt/gentoo/usr/local/bin:/mnt/gentoo/usr/sbin:/mnt/gentoo/usr/bin:/mnt/gentoo/sbin:/mnt/gentoo/bin:/mnt/gentoo/opt/bin:/gentoo/prefix/usr/local/sbin:/gentoo/prefix/usr/local/bin:/gentoo/prefix/usr/sbin:/gentoo/prefix/usr/bin:/gentoo/prefix/sbin:/gentoo/prefix/bin:/gentoo/prefix/opt/bin'
 EOF
+source /mnt/gentoo/etc/profile
 
 #make.conf
 mkdir /mnt/gentoo/etc/portage
@@ -81,12 +82,12 @@ source /mnt/gentoo/etc/profile
 
 
 #circular dependency resolution
-EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
-/gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
-/gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
-USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
+EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
+EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 
 #reconfigure files for run outside the prefix 
 rm -Rf /mnt/gentoo/etc/portage/make.conf
