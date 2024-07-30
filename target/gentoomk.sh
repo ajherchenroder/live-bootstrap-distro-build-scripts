@@ -62,6 +62,7 @@ export LATEST_TREE_YES=0
 /target/gentooprefix.sh ${EPREFIX} stage3 
 /target/gentooprefix.sh ${EPREFIX} stage3 
 
+exit 0
 
 # mount and build the partition that will become stage 3
 su -c /target/gentoomk2.sh
