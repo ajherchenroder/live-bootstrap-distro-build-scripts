@@ -77,7 +77,6 @@ cp -r /gentoo/prefix/var/db/repos/* /mnt/gentoo/var/db/repos/
 #
 ## copy locale files from the prefix
 cp /gentoo/prefix/etc/env.d/02locale /mnt/gentoo/etc/env.d
-cp /gentoo/prefix/etc/env.d/02locale
 source /mnt/gentoo/etc/profile
 
 
@@ -85,6 +84,10 @@ source /mnt/gentoo/etc/profile
 EPREFIX="/" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
+USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
+EPREFIX="/" USE=-pam /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
+/gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
+EPREFIX="/" /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -1 sys-apps/util-linux
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
