@@ -86,7 +86,7 @@ EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcry
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
 USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 EPREFIX="/" USE=-pam /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
-/gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -1 sys-apps/util-linux
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
