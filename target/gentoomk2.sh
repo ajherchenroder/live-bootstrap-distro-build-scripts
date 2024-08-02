@@ -34,7 +34,7 @@ USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
 /gentoo/prefix/usr/bin/emerge app-arch/zstd
 /gentoo/prefix/usr/bin/emerge sys-libs/libxcrypt
 /gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
-
+/gentoo/prefix/usr/bin/emerge sys-apps/systemd-utils
 #move some files to trick pkg-config
 #cp -r /gentoo/prefix/usr/include/libmount /usr/include/
 
@@ -91,12 +91,14 @@ source /mnt/gentoo/etc/profile
 
 
 #circular dependency resolution
+ln -s /gentoo/prefix/usr/src/linux* /mnt/gentoo/usr/src/linux
 EPREFIX="/" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
-USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 EPREFIX="/" USE=-pam /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
+source /mnt/gentoo/etc/profile
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+source /mnt/gentoo/etc/profile
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
