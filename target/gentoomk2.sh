@@ -91,7 +91,7 @@ source /mnt/gentoo/etc/profile
 
 
 #circular dependency resolution
-ln -s /gentoo/prefix/usr/src/linux* /mnt/gentoo/usr/src/linux
+ln -s /gentoo/prefix/usr/src/linux /mnt/gentoo/usr/src/linux
 EPREFIX="/" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
