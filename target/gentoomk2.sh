@@ -19,11 +19,15 @@
 #install dependencies
 source /gentoo/prefix/etc/profile
 
+/gentoo/prefix/usr/bin/emerge sys-kernel/gentoo-sources
+cd /gentoo/prefix/usr/src/linux*
+make mrproper
+make defconfig
+ln -s /gentoo/prefix/usr/src/linux* /gentoo/prefix/usr/src/linux
 USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
 /gentoo/prefix/usr/bin/emerge nano
 /gentoo/prefix/usr/bin/emerge less
-/gentoo/prefix/usr/bin/emerge --ask sys-kernel/gentoo-source
 #USE="xattr" /gentoo/prefix/usr/bin/emerge sys-apps/coreutils
 /gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 /gentoo/prefix/usr/bin/emerge -l sys-apps/locale-gen
