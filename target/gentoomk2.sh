@@ -95,7 +95,8 @@ ln -s /gentoo/prefix/usr/src/linux* /mnt/gentoo/usr/src/linux
 EPREFIX="/" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-libs/libxcrypt
 EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-linux
-EPREFIX="/" USE=-pam /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
+EPREFIX="/" USE="-pam" /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
+EPREFIX="/" USE="-split-usr -boot -kernel-install -kmod udev -test" /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  sys-apps/systemd-utils
 source /mnt/gentoo/etc/profile
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 source /mnt/gentoo/etc/profile
