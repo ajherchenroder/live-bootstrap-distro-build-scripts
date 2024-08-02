@@ -23,11 +23,17 @@ USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
 /gentoo/prefix/usr/bin/emerge nano
 /gentoo/prefix/usr/bin/emerge less
+/gentoo/prefix/usr/bin/emerge --ask sys-kernel/gentoo-source
+#USE="xattr" /gentoo/prefix/usr/bin/emerge sys-apps/coreutils
 /gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 /gentoo/prefix/usr/bin/emerge -l sys-apps/locale-gen
 /gentoo/prefix/usr/bin/emerge app-arch/zstd
 /gentoo/prefix/usr/bin/emerge sys-libs/libxcrypt
 /gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
+
+#move some files to trick pkg-config
+#cp -r /gentoo/prefix/usr/include/libmount /usr/include/
+
 
 echo "en_US.UTF-8 UTF-8" >> /gentoo/prefix/etc/locale.gen
 /gentoo/prefix/usr/sbin/locale-gen
@@ -87,7 +93,6 @@ EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-li
 USE=-pam /gentoo/prefix/usr/bin/emerge -1 sys-libs/libcap
 EPREFIX="/" USE=-pam /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
-##/gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
