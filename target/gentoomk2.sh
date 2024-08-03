@@ -98,11 +98,11 @@ EPREFIX="/" /gentoo/prefix/usr/bin/emerge -1 --root=/mnt/gentoo sys-apps/util-li
 EPREFIX="/" USE="-pam" /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-libs/libcap
 EPREFIX="/" USE="-split-usr -boot -kernel-install -kmod udev -test" /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  sys-apps/systemd-utils
 source /mnt/gentoo/etc/profile
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
 source /mnt/gentoo/etc/profile
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
 
 #reconfigure files for run outside the prefix 
 rm -Rf /mnt/gentoo/etc/portage/make.conf
