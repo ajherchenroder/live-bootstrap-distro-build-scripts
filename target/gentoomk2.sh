@@ -35,6 +35,9 @@ USE=-http2 /gentoo/prefix/usr/bin/emerge -1 net-misc/curl
 /gentoo/prefix/usr/bin/emerge sys-libs/libxcrypt
 /gentoo/prefix/usr/bin/emerge -1 sys-apps/util-linux
 /gentoo/prefix/usr/bin/emerge sys-apps/systemd-utils
+/gentoo/prefix/usr/bin/emerge --deep -n @system
+EPREFIX="/" USE="-pam" /gentoo/prefix/usr/bin/emerge --root=/ sys-libs/libcap
+
 #move some files to trick pkg-config
 #cp -r /gentoo/prefix/usr/include/libmount /usr/include/
 
@@ -100,9 +103,10 @@ EPREFIX="/" USE="-split-usr -boot -kernel-install -kmod udev -test" /gentoo/pref
 source /mnt/gentoo/etc/profile
 EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
 source /mnt/gentoo/etc/profile
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
-EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo  @system
+USE="-lzma" EXTRA_ECONF=--disable-bootstrap   /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo sys-devel/gcc
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
+EPREFIX="/" USE="-lzma"  /gentoo/prefix/usr/bin/emerge --root=/mnt/gentoo -n @system
 
 #reconfigure files for run outside the prefix 
 rm -Rf /mnt/gentoo/etc/portage/make.conf
