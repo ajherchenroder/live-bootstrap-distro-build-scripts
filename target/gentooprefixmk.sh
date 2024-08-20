@@ -61,6 +61,9 @@ export LATEST_TREE_YES=0
 /target/gentooprefix.sh ${EPREFIX} stage3 
 
 
+
+exit 0
+
 # mount and build the partition that will become stage 3
 # UEFI or MBR boot
 #MBR
@@ -96,8 +99,8 @@ EOF
 # Setup a swap partition
 mkswap /dev/$DISKTOUSE2'2'
 # format the target partitions
-mkfs.ext4 -T small /dev/$DISKTOUSE'1'
-mkfs.ext4 /dev/$DISKTOUSE'3'
+mkfs.ext4 -T small /dev/$DISKTOUSE2'1'
+mkfs.ext4 /dev/$DISKTOUSE2'3'
 fi
 #UEFI
 #setup GPT partitions
@@ -129,8 +132,8 @@ EOF
 # Setup a swap partition
 mkswap /dev/$DISKTOUSE2'2'
 # format the target partitions
-mkfs.vfat -F32 /dev/$DISKTOUSE'1' #EFI partition needs FAT32
-mkfs.ext4 /dev/$DISKTOUSE'3'
+mkfs.vfat -F32 /dev/$DISKTOUSE2'1' #EFI partition needs FAT32
+mkfs.ext4 /dev/$DISKTOUSE2'3'
 #
 #build MBR GRUB
 if test "$BOOTMETH" = "1"; then 
@@ -294,23 +297,22 @@ EOF
 # Create the customized portion for the fstab
 # for mbr boot
 if test "$BOOTMETH" = "1"; then 
-   sed -i "s/<zzz>/$DISKTOUSE"3"/g" /etc/fstab
-   sed -i "s/<xxx>/$DISKTOUSE"1"/g" /etc/fstab
-   sed -i "s/<yyy>/$DISKTOUSE"2"/g" /etc/fstab
+   sed -i "s/<zzz>/$DISKTOUSE2"3"/g" /etc/fstab
+   sed -i "s/<xxx>/$DISKTOUSE2"1"/g" /etc/fstab
+   sed -i "s/<yyy>/$DISKTOUSE2"2"/g" /etc/fstab
    sed -i "s/<fff1>/ext4/g" /etc/fstab
    sed -i "s/<fff2>/vfat/g" /etc/fstab
 else #for UEFI/GPT
-   sed -i "s/<zzz>/$DISKTOUSE"3"/g" /etc/fstab
-   sed -i "s/<xxx>/$DISKTOUSE"1"/g" /etc/fstab
-   sed -i "s/<yyy>/$DISKTOUSE"2"/g" /etc/fstab
+   sed -i "s/<zzz>/$DISKTOUSE2"3"/g" /etc/fstab
+   sed -i "s/<xxx>/$DISKTOUSE2"1"/g" /etc/fstab
+   sed -i "s/<yyy>/$DISKTOUSE2"2"/g" /etc/fstab
    sed -i "s/<fff1>/ext4/g" /etc/fstab
    sed -i "s/<fff2>/ext4/g" /etc/fstab
    echo "efivarfs /sys/firmware/efi/efivars efivarfs defaults 0 0" >> /etc/fstab  
 fi
 ##mount the target drive in preparation for copying
-mkdir /mnt/gentoo
-mount /dev/$DISKTOUSE'3' /mnt/gentoo
-mount /dev/$DISKTOUSE'1' /mnt/gentoo/boot
+mount /dev/$DISKTOUSE2'3' /mnt/gentoo
+mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
 #copy files over
 cp -R /boot/ /mnt/gentoo/boot/
 cp -R /etc/ /mnt/gentoo/
@@ -332,7 +334,7 @@ mkdir /mnt/gentoo/run
 # set up grub on the new disk
 # for mbr boot
 if test "$BOOTMETH" = "1"; then 
-   grub-install --target i386-pc /dev/$DISKTOUSE
+   grub-install --target i386-pc /dev/$DISKTOUSE2
    cat > /boot/grub/grub.cfg << "EOF"
    # Begin /boot/grub/grub.cfg
    set default=0
