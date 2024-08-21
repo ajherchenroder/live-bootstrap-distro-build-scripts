@@ -95,8 +95,8 @@ EOF
 # Setup a swap partition
 mkswap /dev/$DISKTOUSE2'2'
 # format the target partitions
-mkfs.ext4 -T small /dev/$DISKTOUSE2'1'
-mkfs.ext4 /dev/$DISKTOUSE2'3'
+mkfs.ext4 -F -T small /dev/$DISKTOUSE2'1'
+mkfs.ext4 -F /dev/$DISKTOUSE2'3'
 fi
 #UEFI
 #setup GPT partitions
@@ -133,6 +133,7 @@ mkfs.ext4 /dev/$DISKTOUSE2'3'
 #
 #build MBR GRUB
 if test "$BOOTMETH" = "1"; then 
+   cd /sources
    tar -xvf grub-2.06.tar.xz
    cd grub-2.06
    patch -Np1 -i ../grub-2.06-upstream_fixes-1.patch
@@ -144,6 +145,7 @@ if test "$BOOTMETH" = "1"; then
    rm -Rf grub-2.06
 #build UEFI Grub
 else
+   cd /sources   
    tar -xvf grub-2.06.tar.xz
    cd grub-2.06
    patch -Np1 -i ../grub-2.06-upstream_fixes-1.patch
@@ -177,7 +179,7 @@ else
 fi
 ## grab the gentoo kernel sources and build them under lfs
 mkdir /usr/src/linux
-/gentoo/prefix/usr/bin/emerge --onshot sys-kernel/gentoo-sources
+/gentoo/prefix/usr/bin/emerge --oneshot sys-kernel/gentoo-sources
 cp -r /gentoo/prefix/usr/src/*gentoo/* /usr/src/linux
 cd /usr/src/linux
 make defconfig
@@ -343,7 +345,7 @@ if test "$BOOTMETH" = "1"; then
    menuentry "GNU/Linux, Linux 6.4.12-lfs-12.0" {
            linux   /vmlinuz root=/dev/sda2 ro net.ifnames=0
    }
-   EOF
+EOF
 else 
    grub-install --target=x86_64-efi --removable
    grub-install --bootloader-id=LFS --recheck
@@ -368,7 +370,7 @@ else
    menuentry "Firmware Setup" {
      fwsetup
    }
-   EOF
+EOF
    
 echo "Gentoo Prefix installed. Reboot into the new system and run /gentoo/prefix/startprefix to enter the prfix"
 
