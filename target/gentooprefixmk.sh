@@ -97,7 +97,7 @@ mkswap -f /dev/$DISKTOUSE2'2'
 # format the target partitions
 mkfs.ext4 -F -T small /dev/$DISKTOUSE2'1'
 mkfs.ext4 -F /dev/$DISKTOUSE2'3'
-fi
+else
 #UEFI
 #setup GPT partitions
   sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/$DISKTOUSE2
@@ -130,6 +130,7 @@ mkswap -f /dev/$DISKTOUSE2'2'
 # format the target partitions
 mkfs.vfat -I -F32 /dev/$DISKTOUSE2'1' #EFI partition needs FAT32
 mkfs.ext4 -F /dev/$DISKTOUSE2'3'
+fi
 #
 #build MBR GRUB
 if test "$BOOTMETH" = "1"; then 
