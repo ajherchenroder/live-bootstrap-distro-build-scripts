@@ -93,7 +93,7 @@ if test "$BOOTMETH" = "1"; then
 EOF
 #format partitions
 # Setup a swap partition
-mkswap /dev/$DISKTOUSE2'2'
+mkswap -f /dev/$DISKTOUSE2'2'
 # format the target partitions
 mkfs.ext4 -F -T small /dev/$DISKTOUSE2'1'
 mkfs.ext4 -F /dev/$DISKTOUSE2'3'
@@ -126,10 +126,10 @@ fi
 EOF
 #format partitions
 # Setup a swap partition
-mkswap /dev/$DISKTOUSE2'2'
+mkswap -f /dev/$DISKTOUSE2'2'
 # format the target partitions
-mkfs.vfat -F32 /dev/$DISKTOUSE2'1' #EFI partition needs FAT32
-mkfs.ext4 /dev/$DISKTOUSE2'3'
+mkfs.vfat -I -F32 /dev/$DISKTOUSE2'1' #EFI partition needs FAT32
+mkfs.ext4 -F /dev/$DISKTOUSE2'3'
 #
 #build MBR GRUB
 if test "$BOOTMETH" = "1"; then 
@@ -183,6 +183,7 @@ mkdir /usr/src/linux
 cp -r /gentoo/prefix/usr/src/*gentoo/* /usr/src/linux
 cd /usr/src/linux
 make defconfig
+make
 make modules_install
 # bzImage kernel is in /usr/src/linux/arch/x86/boot/ we will move it when we set up for grub
 # install LFS bootscripts
@@ -197,7 +198,7 @@ chmod +x /usr/lib/udev/init-net-rules.sh
 bash /usr/lib/udev/init-net-rules.sh
 #dhcpcd and network setup
 cd /sources
-tar -Xvf dhcpcd-10.0.2.tar.xz
+tar -xvf dhcpcd-10.0.2.tar.xz
 cd dhcpcd-10.0.2
 ./configure --prefix=/usr --sysconfdir=/etc  --libexecdir=/usr/lib/dhcpcd --dbdir=/var/lib/dhcpcd \
 --runstatedir=/run  --disable-privsep
@@ -310,6 +311,7 @@ else #for UEFI/GPT
 fi
 ##mount the target drive in preparation for copying
 mount /dev/$DISKTOUSE2'3' /mnt/gentoo
+mkdir /mnt/gentoo/boot
 mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
 #copy files over
 cp -R /boot/ /mnt/gentoo/boot/
@@ -371,7 +373,7 @@ else
      fwsetup
    }
 EOF
-   
+fi  
 echo "Gentoo Prefix installed. Reboot into the new system and run /gentoo/prefix/startprefix to enter the prfix"
 
 
