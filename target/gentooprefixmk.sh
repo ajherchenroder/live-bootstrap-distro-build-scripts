@@ -87,7 +87,7 @@ EOF
 # Setup a swap partition
 mkswap -f /dev/$DISKTOUSE2'1'
 # format the target partitions
-mkfs.ext4 -F /dev/$DISKTOUSE2'3'
+mkfs.ext4 -F /dev/$DISKTOUSE2'2'
 else
 #UEFI
 #setup GPT partitions
