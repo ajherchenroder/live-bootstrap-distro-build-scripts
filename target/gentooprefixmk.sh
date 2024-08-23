@@ -71,20 +71,12 @@ if test "$BOOTMETH" = "1"; then
   p # primary partition
   1 # partition number 1
     # default - start at beginning of disk 
-  +1G # 1G boot parttion
+  +8G # 8G swap parttion
   t # change type
-  83 # linux
+  82 # linux
   n # new partition
   p # primary partition
   2 # partion number 2
-    # default, start immediately after preceding partition
-  +8G # swap partion
-  t # change type
-  2 # partion number 2
-  82 # linux swap
-  n # new partition
-  p # primary partition
-  3 # partion number 3
     # default, start immediately after preceding partition
     # default use the rest of the disk
   a # mark a partition
@@ -93,9 +85,8 @@ if test "$BOOTMETH" = "1"; then
 EOF
 #format partitions
 # Setup a swap partition
-mkswap -f /dev/$DISKTOUSE2'2'
+mkswap -f /dev/$DISKTOUSE2'1'
 # format the target partitions
-mkfs.ext4 -F -T small /dev/$DISKTOUSE2'1'
 mkfs.ext4 -F /dev/$DISKTOUSE2'3'
 else
 #UEFI
@@ -281,7 +272,7 @@ cat > /etc/fstab << "EOF"
 #                                                                order
 
 /dev/<zzz>     /              <fff1>    defaults            1     1
-/dev/<xxx>     /boot          <fff2>    defaults            1     2
+###/dev/<xxx>     /boot          <fff2>    defaults            1     2
 /dev/<yyy>     swap           swap     pri=1               0     0
 proc           /proc          proc     nosuid,noexec,nodev 0     0
 sysfs          /sys           sysfs    nosuid,noexec,nodev 0     0
@@ -297,12 +288,11 @@ EOF
 # Create the customized portion for the fstab
 # for mbr boot
 if test "$BOOTMETH" = "1"; then 
-   sed -i "s/<zzz>/$DISKTOUSE2"3"/g" /etc/fstab
-   sed -i "s/<xxx>/$DISKTOUSE2"1"/g" /etc/fstab
-   sed -i "s/<yyy>/$DISKTOUSE2"2"/g" /etc/fstab
+   sed -i "s/<zzz>/$DISKTOUSE2"2"/g" /etc/fstab
+   sed -i "s/<yyy>/$DISKTOUSE2"1"/g" /etc/fstab
    sed -i "s/<fff1>/ext4/g" /etc/fstab
-   sed -i "s/<fff2>/vfat/g" /etc/fstab
 else #for UEFI/GPT
+   sed -i "s/###//g" /etc/fstab
    sed -i "s/<zzz>/$DISKTOUSE2"3"/g" /etc/fstab
    sed -i "s/<xxx>/$DISKTOUSE2"1"/g" /etc/fstab
    sed -i "s/<yyy>/$DISKTOUSE2"2"/g" /etc/fstab
@@ -313,7 +303,9 @@ fi
 ##mount the target drive in preparation for copying
 mount /dev/$DISKTOUSE2'3' /mnt/gentoo
 mkdir /mnt/gentoo/boot
-mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
+if test "$BOOTMETH" = "2"; then
+   mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
+fi
 #copy files over
 cp -R /boot/ /mnt/gentoo/boot/
 cp -R /etc/ /mnt/gentoo/
@@ -343,7 +335,7 @@ if test "$BOOTMETH" = "1"; then
 
    insmod part_gpt
    insmod ext2
-   set root=(hd0,1)
+   set root=(hd0,2)
 
    menuentry "GNU/Linux, Linux 6.4.12-lfs-12.0" {
            linux   /vmlinuz root=/dev/sda2 ro net.ifnames=0
