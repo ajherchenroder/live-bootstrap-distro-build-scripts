@@ -301,7 +301,7 @@ else #for UEFI/GPT
    echo "efivarfs /sys/firmware/efi/efivars efivarfs defaults 0 0" >> /etc/fstab  
 fi
 ##mount the target drive in preparation for copying
-mount /dev/$DISKTOUSE2'3' /mnt/gentoo
+mount /dev/$DISKTOUSE2'2' /mnt/gentoo
 mkdir /mnt/gentoo/boot
 if test "$BOOTMETH" = "2"; then
    mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
