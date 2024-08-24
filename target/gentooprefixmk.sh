@@ -288,16 +288,17 @@ EOF
 # Create the customized portion for the fstab
 # for mbr boot
 if test "$BOOTMETH" = "1"; then 
-   sed -i "s/<zzz>/$DISKTOUSE2"2"/g" /etc/fstab
-   sed -i "s/<yyy>/$DISKTOUSE2"1"/g" /etc/fstab
+#   sed -i "s/<zzz>/$DISKTOUSE2"2"/g" /etc/fstab
+   sed -i "s/<zzz>/sda2/g" /etc/fstab
+   sed -i "s/<yyy>/sda1/g" /etc/fstab
    sed -i "s/<fff1>/ext4/g" /etc/fstab
 else #for UEFI/GPT
    sed -i "s/###//g" /etc/fstab
-   sed -i "s/<zzz>/$DISKTOUSE2"3"/g" /etc/fstab
-   sed -i "s/<xxx>/$DISKTOUSE2"1"/g" /etc/fstab
-   sed -i "s/<yyy>/$DISKTOUSE2"2"/g" /etc/fstab
+   sed -i "s/<zzz>/sda3/g" /etc/fstab
+   sed -i "s/<xxx>/sda1/g" /etc/fstab
+   sed -i "s/<yyy>/sda2"/g" /etc/fstab
    sed -i "s/<fff1>/ext4/g" /etc/fstab
-   sed -i "s/<fff2>/ext4/g" /etc/fstab
+#   sed -i "s/<fff2>/ext4/g" /etc/fstab
    echo "efivarfs /sys/firmware/efi/efivars efivarfs defaults 0 0" >> /etc/fstab  
 fi
 ##mount the target drive in preparation for copying
