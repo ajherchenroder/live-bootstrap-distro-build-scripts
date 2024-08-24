@@ -329,7 +329,7 @@ mkdir /mnt/gentoo/run
 # for mbr boot
 if test "$BOOTMETH" = "1"; then 
    grub-install --target i386-pc /dev/$DISKTOUSE2
-   cat > /boot/grub/grub.cfg << "EOF"
+   cat > /mnt/gentoo/boot/grub/grub.cfg << "EOF"
    # Begin /boot/grub/grub.cfg
    set default=0
    set timeout=5
@@ -345,7 +345,7 @@ EOF
 else 
    grub-install --target=x86_64-efi --removable
    grub-install --bootloader-id=LFS --recheck
-   cat > /boot/grub/grub.cfg << EOF
+   cat > /mnt/gentoo/boot/grub/grub.cfg << EOF
    # Begin /boot/grub/grub.cfg
    set default=0
    set timeout=5
