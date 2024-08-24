@@ -303,13 +303,11 @@ fi
 ##mount the target drive in preparation for copying
 mount /dev/$DISKTOUSE2'2' /mnt/gentoo
 mkdir /mnt/gentoo/boot
+mkdir /mnt/gentoo/boot/grub
 if test "$BOOTMETH" = "2"; then
    mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
 fi
 #copy files over
-cp -R /boot/ /mnt/gentoo/
-ls /boot
-ls /mnt/gentoo/boot
 cp -R /etc/ /mnt/gentoo/
 cp -R /home/ /mnt/gentoo/
 cp -R /opt/ /mnt/gentoo/
@@ -331,6 +329,7 @@ mkdir /mnt/gentoo/run
 # for mbr boot
 if test "$BOOTMETH" = "1"; then 
    grub-install --target i386-pc /dev/$DISKTOUSE2
+   cp -R /boot/ /mnt/gentoo/
    cat > /mnt/gentoo/boot/grub/grub.cfg << "EOF"
    # Begin /boot/grub/grub.cfg
    set default=0
@@ -347,6 +346,7 @@ EOF
 else 
    grub-install --target=x86_64-efi --removable
    grub-install --bootloader-id=LFS --recheck
+   cp -R /boot/ /mnt/gentoo/
    cat > /mnt/gentoo/boot/grub/grub.cfg << EOF
    # Begin /boot/grub/grub.cfg
    set default=0
@@ -369,6 +369,7 @@ else
      fwsetup
    }
 EOF
+cp -R /boot/ /mnt/gentoo/
 fi  
 echo "Gentoo Prefix installed. Reboot into the new system and run /gentoo/prefix/startprefix to enter the prfix"
 
