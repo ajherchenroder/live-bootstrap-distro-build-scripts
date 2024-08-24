@@ -307,7 +307,7 @@ if test "$BOOTMETH" = "2"; then
    mount /dev/$DISKTOUSE2'1' /mnt/gentoo/boot
 fi
 #copy files over
-cp -R /boot/ /mnt/gentoo/boot/
+cp -R /boot/ /mnt/gentoo/
 cp -R /etc/ /mnt/gentoo/
 cp -R /home/ /mnt/gentoo/
 cp -R /opt/ /mnt/gentoo/
