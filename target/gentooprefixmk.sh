@@ -317,6 +317,7 @@ cp -R /var/ /mnt/gentoo/
 cp -r /bin /mnt/gentoo
 cp -r /lib /mnt/gentoo
 cp -r /sbin /mnt/gentoo
+cp -r /gentoo /mnt/gentoo
 mkdir /mnt/gentoo/tmp
 mkdir /mnt/gentoo/proc
 mkdir /mnt/gentoo/sys
