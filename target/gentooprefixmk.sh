@@ -308,6 +308,8 @@ if test "$BOOTMETH" = "2"; then
 fi
 #copy files over
 cp -R /boot/ /mnt/gentoo/
+ls /boot
+ls /mnt/gentoo/boot
 cp -R /etc/ /mnt/gentoo/
 cp -R /home/ /mnt/gentoo/
 cp -R /opt/ /mnt/gentoo/
