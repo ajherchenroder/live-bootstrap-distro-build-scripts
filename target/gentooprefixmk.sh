@@ -295,7 +295,7 @@ else #for UEFI/GPT
    sed -i "s/###//g" /etc/fstab
    sed -i "s/<zzz>/sda3/g" /etc/fstab
    sed -i "s/<xxx>/sda1/g" /etc/fstab
-   sed -i "s/<yyy>/sda2"/g" /etc/fstab
+   sed -i "s/<yyy>/sda2/g" /etc/fstab
    sed -i "s/<fff1>/ext4/g" /etc/fstab
    sed -i "s/<fff2>/vfat/g" /etc/fstab
    echo "efivarfs /sys/firmware/efi/efivars efivarfs defaults 0 0" >> /etc/fstab  
