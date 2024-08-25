@@ -318,6 +318,7 @@ cp -r /bin /mnt/gentoo
 cp -r /lib /mnt/gentoo
 cp -r /sbin /mnt/gentoo
 cp -r /gentoo /mnt/gentoo
+cp -r /lib64 /mnt/gentoo
 mkdir /mnt/gentoo/tmp
 mkdir /mnt/gentoo/proc
 mkdir /mnt/gentoo/sys
@@ -370,7 +371,8 @@ else
    }
 EOF
 cp -R /boot/ /mnt/gentoo/
-fi  
+fi 
+cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
 echo "Gentoo Prefix installed. Reboot into the new system and run /gentoo/prefix/startprefix to enter the prfix"
 
 
