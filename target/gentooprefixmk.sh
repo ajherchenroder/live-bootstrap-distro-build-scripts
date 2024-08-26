@@ -177,6 +177,15 @@ cd /usr/src/linux
 make defconfig
 make
 make modules_install
+install -v -m755 -d /etc/modprobe.d
+cat > /etc/modprobe.d/usb.conf << "EOF"
+# Begin /etc/modprobe.d/usb.conf
+
+install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true
+install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true
+
+# End /etc/modprobe.d/usb.conf
+EOF
 # bzImage kernel is in /usr/src/linux/arch/x86/boot/ we will move it when we set up for grub
 # install LFS bootscripts
 cd /sources
@@ -341,7 +350,7 @@ if test "$BOOTMETH" = "1"; then
    set root=(hd0,2)
 
    menuentry "GNU/Linux, Linux 6.4.12-lfs-12.0" {
-           linux   /vmlinuz root=/dev/sda2 ro net.ifnames=0
+           linux   /boot/vmlinuz root=/dev/sda2 ro net.ifnames=0
    }
 EOF
 else 
@@ -373,6 +382,14 @@ EOF
 cp -R /boot/ /mnt/gentoo/
 fi 
 cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
+cp /lfs-remount.sh /mnt/gentoo/lfs-remount.sh
+
+if test "$BOOTMETH" = "1"; then 
+   chroot /mnt/gentoo grub-install --target i386-pc /dev/$DISKTOUSE2
+else 
+   chroot /mnt/gentoo grub-install --target=x86_64-efi --removable
+   chroot /mnt/gentoo grub-install --bootloader-id=LFS --recheck
+fi 
 echo "Gentoo Prefix installed. Reboot into the new system and run /gentoo/prefix/startprefix to enter the prfix"
 
 
