@@ -383,13 +383,9 @@ cp -R /boot/ /mnt/gentoo/
 fi 
 cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
 cp /lfs-remount.sh /mnt/gentoo/lfs-remount.sh
+cp /target/gentooprefixmka.sh /mnt/gentoo/gentooprefixmka.sh
+chroot /mnt/gentoo /gentooprefixmka.sh
 
-if test "$BOOTMETH" = "1"; then 
-   chroot /mnt/gentoo grub-install --target i386-pc /dev/$DISKTOUSE2
-else 
-   chroot /mnt/gentoo grub-install --target=x86_64-efi --removable
-   chroot /mnt/gentoo grub-install --bootloader-id=LFS --recheck
-fi 
-echo "Gentoo Prefix installed. Reboot into the new system and run /gentoo/prefix/startprefix to enter the prfix"
+
 
 
