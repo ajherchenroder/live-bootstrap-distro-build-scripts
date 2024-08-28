@@ -1,4 +1,7 @@
 #!/bin/bash
+# parse the input and assign it back to BOOTMETH
+BOOTMETH = $1
+
 cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
 cp /lfs-remount.sh /mnt/gentoo/lfs-remount.sh
 

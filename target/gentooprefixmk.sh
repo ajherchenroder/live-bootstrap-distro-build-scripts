@@ -384,7 +384,7 @@ fi
 cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
 cp /lfs-remount.sh /mnt/gentoo/lfs-remount.sh
 cp /target/gentooprefixmka.sh /mnt/gentoo/gentooprefixmka.sh
-chroot /mnt/gentoo /gentooprefixmka.sh
+chroot /mnt/gentoo /gentooprefixmka.sh $BOOTMETH
 
 
 
