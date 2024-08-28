@@ -1,10 +1,7 @@
 #!/bin/bash
 # parse the input and assign it back to BOOTMETH
-BOOTMETH = $1
-
-cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
-cp /lfs-remount.sh /mnt/gentoo/lfs-remount.sh
-
+BOOTMETH=$1
+read -p 'BOOTMETH = $BOOTMETH ' JUNK
 if test "$BOOTMETH" = "1"; then 
    grub-install --target i386-pc /dev/$DISKTOUSE2
 else 
