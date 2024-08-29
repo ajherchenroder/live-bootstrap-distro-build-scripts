@@ -1,7 +1,15 @@
 #!/bin/bash
+#mount the kernel file systems
+mount -vt devtmpfs devtmpfs /dev
+mount -vt devpts devpts /dev/pts
+mount -vt proc proc /proc
+mount -vt sysfs sysfs /sys
+mount -vt tmpfs tmpfs /run
+mount -t tmpfs -o nosuid,nodev tmpfs /dev/shm
+
 # parse the input and assign it back to BOOTMETH
 BOOTMETH=$1
-read -p 'BOOTMETH = $BOOTMETH ' JUNK
+read -p 'BOOTMETH = '$BOOTMETH' ' JUNK
 if test "$BOOTMETH" = "1"; then 
    grub-install --target i386-pc /dev/$DISKTOUSE2
 else 
