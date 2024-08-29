@@ -10,7 +10,7 @@ mount -t tmpfs -o nosuid,nodev tmpfs /dev/shm
 # parse the input and assign it back to BOOTMETH
 BOOTMETH=$1
 DISKTOUSE2=$2
-read -p 'BOOTMETH = '$BOOTMETH', DISKTOUSE2 = '$DISKTOUSE2' JUNK
+read -p 'BOOTMETH = '$BOOTMETH', DISKTOUSE2 = '$DISKTOUSE2'' JUNK
 if test "$BOOTMETH" = "1"; then 
    grub-install --target i386-pc /dev/$DISKTOUSE2
 else 
