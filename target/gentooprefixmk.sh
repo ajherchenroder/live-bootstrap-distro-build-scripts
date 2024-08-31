@@ -169,14 +169,18 @@ else
    cd /sources
    rm -Rf efivar-38
 fi
-## grab the gentoo kernel sources and build them under lfs
+## build the kernel
 mkdir /usr/src/linux
-/gentoo/prefix/usr/bin/emerge --oneshot sys-kernel/gentoo-sources
-cp -r /gentoo/prefix/usr/src/*gentoo/* /usr/src/linux
+cd sources 
+tar -xvf linux-6.4.12.tar.xz
+cp -r /sources/linux-6.4.12/. /usr/src/linux
+cp /target/kernconfig /usr/src/linux/.config
 cd /usr/src/linux
-make defconfig
 make
 make modules_install
+cd /sources
+tar -xvf linux-firmware-20240811.tar.gz
+cp /sources/linux-firmware-20240811/. /lib/firmware/
 install -v -m755 -d /etc/modprobe.d
 cat > /etc/modprobe.d/usb.conf << "EOF"
 # Begin /etc/modprobe.d/usb.conf
@@ -186,7 +190,7 @@ install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true
 
 # End /etc/modprobe.d/usb.conf
 EOF
-# bzImage kernel is in /usr/src/linux/arch/x86/boot/ we will move it when we set up for grub
+# bzImage kernel is in /usr/src/linux/arch/x86_64/boot/ we will move it when we set up for grub
 # install LFS bootscripts
 cd /sources
 tar -xvf lfs-bootscripts-20230728.tar.xz
@@ -290,6 +294,7 @@ tmpfs          /run           tmpfs    defaults            0     0
 devtmpfs       /dev           devtmpfs mode=0755,nosuid    0     0
 tmpfs          /dev/shm       tmpfs    nosuid,nodev        0     0
 
+
 # End /etc/fstab
 EOF
 
@@ -381,7 +386,8 @@ else
 EOF
 cp -R /boot/ /mnt/gentoo/
 fi 
-cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
+#cp /usr/src/linux/arch/x86/boot/bzImage /mnt/gentoo/boot/vmlinuz
+cp /usr/src/linux/arch/x86_64//boot/bzImage /mnt/gentoo/boot/vmlinuz
 cp /lfs-remount.sh /mnt/gentoo/lfs-remount.sh
 cp /target/gentooprefixmka.sh /mnt/gentoo/gentooprefixmka.sh
 chroot /mnt/gentoo /gentooprefixmka.sh $BOOTMETH $DISKTOUSE2
