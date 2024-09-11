@@ -14,12 +14,17 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mount -t devpts devpts /dev/pts
+mount -t tmpfs -o nosuid,nodev tmpfs /dev/shm 
+source /steps/env
 
 mkdir -p /var/cache/distfiles; cd /var/cache/distfiles
 curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2
 curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
 curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squashfs-tools-4.6.1.tar.gz
-cd /tmp
 
 # This patch avoids using the _ctypes module in portage
 cat > portage.patch << 'EOF'
@@ -68,9 +73,9 @@ mv squashfs-root /var/db/repos/gentoo
 # Install temporary copy of portage
 tar xf /var/cache/distfiles/portage-3.0.65.tar.bz2
 cd portage-3.0.65
-patch -p1 -i ../portage.patch
+patch -p1 -i ../portage.patch 
 cd ..
-ln -sf portage-3.0.65 portage
+ln -sf portage-3.0.65 portage 
 
 # Add portage user/group
 echo 'portage:x:250:250:portage:/var/tmp/portage:/bin/false' >> /etc/passwd
@@ -96,7 +101,7 @@ dev-lang/python -readline -ncurses
 EOF
 
 # Install dependencies to make emerge work nicely
-FETCHCOMMAND='curl -o "${DISTDIR}/${FILE}" -L "${URI}"'
+FETCHCOMMAND='curl -k -o "${DISTDIR}/${FILE}" -L "${URI}"'
 FETCHCOMMAND="$FETCHCOMMAND" MAKEOPTS=-j1 ./portage/bin/emerge -O1 app-arch/lzip
 FETCHCOMMAND="$FETCHCOMMAND" MAKEOPTS=-j1 ./portage/bin/emerge -O1 dev-build/make
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 net-misc/wget
@@ -124,11 +129,11 @@ ln -s bzip2-reference /bin/bzip2
 ./portage/bin/emerge -O1 dev-python/packaging
 ./portage/bin/emerge -O1 dev-python/more-itertools
 ./portage/bin/emerge -O1 dev-python/ordered-set
-./portage/bin/emerge -O1 dev-python/jaraco-text
-./portage/bin/emerge -O1 dev-python/jaraco-functools
-./portage/bin/emerge -O1 dev-python/jaraco-context
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-text
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-functools
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-context
 ./portage/bin/emerge -O1 dev-python/wheel
-./portage/bin/emerge -O1 dev-python/setuptools
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/setuptools
 ./portage/bin/emerge -O1 dev-build/meson
 ./portage/bin/emerge -O1 dev-build/meson-format-array
 ./portage/bin/emerge -O1 dev-build/ninja
@@ -279,41 +284,10 @@ ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /gentoo/etc/p
 echo 'nameserver 1.1.1.1' > /gentoo/etc/resolv.conf
 echo 'C.UTF8 UTF-8' > /gentoo/etc/locale.gen
 
-# Optional: Back up the system
-tar --sort=name -cf /gentoo.tar -C /gentoo .
-bzip2 -9v /gentoo.tar
-
 # Copy ::gentoo repo and distfiles
 rsync -aP /var/db/repos/ /gentoo/var/db/repos
 rsync -aP /var/cache/distfiles/ /gentoo/var/cache/distfiles
-cd /gentoo
-emerge -O1n \
-    app-alternatives/awk \
-    app-alternatives/bzip2 \
-    app-alternatives/gzip \
-    app-alternatives/lex \
-    app-alternatives/ninja \
-    app-alternatives/tar \
-    app-alternatives/yacc
 
-# Finish installing stage1 dependencies
-pkgs_build="$(python3 -c 'import portage
-print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.build" % x) for x in portage.settings.profiles], incremental=1))')"
-USE="-* build $(portageq envvar BOOTSTRAP_USE)" CHOST="$(gcc -dumpmachine)" \
-    emerge -1Dn $pkgs_build
-emerge -c  # Make sure the dependency tree is consistent
-
-# Change CHOST and build OpenMP support (stage2-ish)
-emerge -1 sys-devel/binutils
-emerge -o sys-devel/gcc
-EXTRA_ECONF=--disable-bootstrap emerge -O1 sys-devel/gcc
-emerge -1 $(portageq expand_virtual / virtual/libc)
-emerge -1 dev-lang/perl  # https://bugs.gentoo.org/937918
-
-# Rebuild everything (stage3)
-USE='-filecaps -http2' emerge -e @system
-emerge -DN @system
-emerge -c
 
 
 
