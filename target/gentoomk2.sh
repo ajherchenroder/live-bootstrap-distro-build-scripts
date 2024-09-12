@@ -49,6 +49,6 @@ USE='-filecaps -http2' emerge -e @system
 USE='-filecaps -http2' emerge  @system
 emerge -DN @system
 emerge -c
-#./gentoomk3.sh
+./gentoomk3.sh
 
 
