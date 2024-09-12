@@ -28,6 +28,7 @@ fi
 mkdir /gentoo
 cp gentoomk.sh /gentoo
 cp gentoomk2.sh /gentoo
+cp gentoomk3.sh /gentoo
 ./gentoomk.sh
 chroot /gentoo /bin/bash --login gentoomk2.sh
 
