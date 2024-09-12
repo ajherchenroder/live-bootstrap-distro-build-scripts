@@ -22,7 +22,9 @@ then
 fi
 mount -v -t ext4 /dev/$USEPART /gentoo
 if ! test -h /usr/bin/python
+then
 ln -sv /bin/python3 /usr/bin/python
+fi
 mkdir /gentoo
 cp gentoomk.sh /gentoo
 cp gentoomk2.sh /gentoo
