@@ -14,41 +14,35 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
+echo dev-util/catalyst >> /etc/portage/package.accept_keywords
+echo ">=sys-apps/util-linux-2.39.4-r1 python" >>/etc/portage/package.use
+echo ">=sys-boot/grub-2.12-r4 grub_platforms_efi-32" >>/etc/portage/package.use
+emerge dev-util/catalyst
 
-mount -t proc proc /proc
-mount -t sysfs sysfs /sys
-mount -t devtmpfs devtmpfs /dev
-mount -t devpts devpts /dev/pts
-mount -t tmpfs -o nosuid,nodev tmpfs /dev/shm 
+ROOT="$PWD/stage" USE=build emerge -1 sys-apps/baselayout
+ROOT="$PWD/stage" QUICKPKG_DEFAULT_OPTS=--include-config=y emerge --quickpkg-direct=y -K @system
+mkdir stage/etc/portage  # catalyst breaks otherwise...
+tar cf stage.tar -C stage .
+rm -rf stage
+xz -9v stage.tar
+mkdir -p /var/tmp/catalyst/builds/23.0-default
+mv stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
+wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
+mkdir -p /var/tmp/catalyst/snapshots
+mv gentoo-20240801.xz.sqfs /var/tmp/catalyst/snapshots/gentoo-20240801.xz.sqfs
 
-emerge -O1n \
-    app-alternatives/awk \
-    app-alternatives/bzip2 \
-    app-alternatives/gzip \
-    app-alternatives/lex \
-    app-alternatives/ninja \
-    app-alternatives/tar \
-    app-alternatives/yacc
+git clone https://anongit.gentoo.org/git/proj/releng.git
+git -C releng checkout 'master@{2024-08-01}'
 
-# Finish installing stage1 dependencies
-pkgs_build="$(python3 -c 'import portage
-print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.build" % x) for x in portage.settings.profiles], incremental=1))')"
-USE="-* build $(portageq envvar BOOTSTRAP_USE)" CHOST="$(gcc -dumpmachine)" \
-    emerge -1Dn $pkgs_build
-emerge -c  # Make sure the dependency tree is consistent
-
-# Change CHOST and build OpenMP support (stage2-ish)
-emerge -1 sys-devel/binutils
-emerge -o sys-devel/gcc
-EXTRA_ECONF=--disable-bootstrap emerge -O1 sys-devel/gcc
-emerge -1 $(portageq expand_virtual / virtual/libc)
-emerge -1 dev-lang/perl  # https://bugs.gentoo.org/937918
-
-# Rebuild everything (stage3)
-USE='-filecaps -http2' emerge -e @system
-USE='-filecaps -http2' emerge  @system
-emerge -DN @system
-emerge -c
-
-
-
+sed -e 's|@TIMESTAMP@|20240801|g' \
+    -e 's|@TREEISH@|20240801|g' \
+    -e 's|@REPO_DIR@|'"$PWD/releng"'|g' \
+    -i \
+    releng/releases/specs/amd64/stage1-openrc-23.spec \
+    releng/releases/specs/amd64/stage3-openrc-23.spec \
+    releng/releases/specs/amd64/installcd-stage1.spec \
+    releng/releases/specs/amd64/installcd-stage2-minimal.spec
+catalyst -f releng/releases/specs/amd64/stage1-openrc-23.spec
+catalyst -f releng/releases/specs/amd64/stage3-openrc-23.spec
+catalyst -f releng/releases/specs/amd64/installcd-stage1.spec
+catalyst -f releng/releases/specs/amd64/installcd-stage2-minimal.spec
