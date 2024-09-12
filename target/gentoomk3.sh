@@ -27,6 +27,7 @@ rm -rf stage
 xz -9v stage.tar
 mkdir -p /var/tmp/catalyst/builds/23.0-default
 mv stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20240801
 wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
 mkdir -p /var/tmp/catalyst/snapshots
 mv gentoo-20240801.xz.sqfs /var/tmp/catalyst/snapshots/gentoo-20240801.xz.sqfs
