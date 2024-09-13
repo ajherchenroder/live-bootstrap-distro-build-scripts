@@ -18,7 +18,7 @@ echo dev-util/catalyst >> /etc/portage/package.accept_keywords
 echo ">=sys-apps/util-linux-2.39.4-r1 python" >>/etc/portage/package.use
 echo ">=sys-boot/grub-2.12-r4 grub_platforms_efi-32" >>/etc/portage/package.use
 emerge dev-util/catalyst
-
+USE=lzma emerge sys-fs/squashfs-tools
 ROOT="$PWD/stage" USE=build emerge -1 sys-apps/baselayout
 ROOT="$PWD/stage" QUICKPKG_DEFAULT_OPTS=--include-config=y emerge --quickpkg-direct=y -K @system
 mkdir stage/etc/portage  # catalyst breaks otherwise...
@@ -30,22 +30,40 @@ mkdir /var/tmp/catalyst/builds/
 mkdir -p /var/tmp/catalyst/builds/23.0-default
 mv stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20240801
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-latest.tar.xz
+
+# the Linux kernel in use doesn't support xz compressed squashfs. 
+# using squashfs-tools to convert the snapshot to a standard squashfs.
+
 wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
 mkdir -p /var/tmp/catalyst/snapshots
-mv gentoo-20240801.xz.sqfs /var/tmp/catalyst/snapshots/gentoo-20240801.xz.sqfs
-
+unsquashfs /gentoo-20240801.xz.sqfs
+rm gentoo-20240801.xz.sqfs
+squashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20240801.sqfs
+rm -Rf /squashfs-root
 git clone https://anongit.gentoo.org/git/proj/releng.git
 git -C releng checkout 'master@{2024-08-01}'
-
+#systemD is broken in this snapshot
 sed -e 's|@TIMESTAMP@|20240801|g' \
     -e 's|@TREEISH@|20240801|g' \
     -e 's|@REPO_DIR@|'"$PWD/releng"'|g' \
     -i \
     releng/releases/specs/amd64/stage1-openrc-23.spec \
     releng/releases/specs/amd64/stage3-openrc-23.spec \
+#    releng/releases/specs/amd64/stage1-systemd-23.spec \
+#    releng/releases/specs/amd64/stage3-systemd-23.spec \
     releng/releases/specs/amd64/installcd-stage1.spec \
     releng/releases/specs/amd64/installcd-stage2-minimal.spec
-catalyst -f releng/releases/specs/amd64/stage1-openrc-23.spec
-catalyst -f releng/releases/specs/amd64/stage3-openrc-23.spec
-catalyst -f releng/releases/specs/amd64/installcd-stage1.spec
-catalyst -f releng/releases/specs/amd64/installcd-stage2-minimal.spec
+#raise the job count to equal the core count
+sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
+
+catalyst -f /releng/releases/specs/amd64/stage1-openrc-23.spec
+catalyst -f /releng/releases/specs/amd64/stage3-openrc-23.spec
+#catalyst -f /releng/releases/specs/amd64/stage1-systemd-23.spec
+#catalyst -f /releng/releases/specs/amd64/stage3-systemd-23.spec
+catalyst -f /releng/releases/specs/amd64/installcd-stage1.spec
+catalyst -f /releng/releases/specs/amd64/installcd-stage2-minimal.spec
+mkdir /output
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20240801.tar.xz /output
+#cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20240801.tar.xz /output
+cp /var/tmp/catalyst/builds/23.0-default/install-amd64-minimal-20240801.iso /output
