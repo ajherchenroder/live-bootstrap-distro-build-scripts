@@ -50,10 +50,10 @@ sed -e 's|@TIMESTAMP@|20240801|g' \
     -i \
     releng/releases/specs/amd64/stage1-openrc-23.spec \
     releng/releases/specs/amd64/stage3-openrc-23.spec \
-#    releng/releases/specs/amd64/stage1-systemd-23.spec \
-#    releng/releases/specs/amd64/stage3-systemd-23.spec \
     releng/releases/specs/amd64/installcd-stage1.spec \
     releng/releases/specs/amd64/installcd-stage2-minimal.spec
+#    releng/releases/specs/amd64/stage1-systemd-23.spec \
+#    releng/releases/specs/amd64/stage3-systemd-23.spec \
 #raise the job count to equal the core count
 sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
 
