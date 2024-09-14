@@ -34,12 +34,12 @@ cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/
 
 # the Linux kernel in use doesn't support xz compressed squashfs. 
 # using squashfs-tools to convert the snapshot to a standard squashfs.
-
+cd /
 wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
 mkdir -p /var/tmp/catalyst/snapshots
 unsquashfs /gentoo-20240801.xz.sqfs
 rm gentoo-20240801.xz.sqfs
-squashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20240801.sqfs
+mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20240801.sqfs
 rm -Rf /squashfs-root
 git clone https://anongit.gentoo.org/git/proj/releng.git
 git -C releng checkout 'master@{2024-08-01}'
