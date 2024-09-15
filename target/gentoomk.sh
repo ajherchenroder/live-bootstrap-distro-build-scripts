@@ -122,21 +122,21 @@ ln -s bzip2-reference /bin/bzip2
 ./portage/bin/emerge -O1 dev-lang/python-exec
 
 # Install the rest of the dependencies for meson
-./portage/bin/emerge -O1 dev-python/gpep517
-./portage/bin/emerge -O1 app-arch/unzip
-./portage/bin/emerge -O1 dev-python/installer
-./portage/bin/emerge -O1 dev-python/flit-core
-./portage/bin/emerge -O1 dev-python/packaging
-./portage/bin/emerge -O1 dev-python/more-itertools
-./portage/bin/emerge -O1 dev-python/ordered-set
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/gpep517
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 app-arch/unzip
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/installer
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/flit-core
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/packaging
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/more-itertools
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/ordered-set
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-text
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-functools
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-context
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/wheel
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/setuptools
-./portage/bin/emerge -O1 dev-build/meson
-./portage/bin/emerge -O1 dev-build/meson-format-array
-./portage/bin/emerge -O1 dev-build/ninja
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson-format-array
+FETCHCOMMAND="$FETCHCOMMAND"./portage/bin/emerge -O1 dev-build/ninja
 
 # Finally install portage itself
 ./portage/bin/emerge -O1 sys-apps/portage
