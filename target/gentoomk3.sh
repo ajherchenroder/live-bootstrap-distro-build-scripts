@@ -56,13 +56,48 @@ sed -e 's|@TIMESTAMP@|20240801|g' \
 #    releng/releases/specs/amd64/stage3-systemd-23.spec \
 #raise the job count to equal the core count
 sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
-
+working=n
+while [ $working = n ];
+do
 catalyst -f /releng/releases/specs/amd64/stage1-openrc-23.spec
+read -p "Did the stage complete successfully (y/n) -> " working2
+if [[ $working2 = y ]];
+then
+   break
+fi
+done
+working=n
+while [ $working = n ];
+do
 catalyst -f /releng/releases/specs/amd64/stage3-openrc-23.spec
+read -p "Did the stage complete successfully (y/n) -> " working2
+if [[ $working2 = y ]];
+then
+   break
+fi
+done
 #catalyst -f /releng/releases/specs/amd64/stage1-systemd-23.spec
 #catalyst -f /releng/releases/specs/amd64/stage3-systemd-23.spec
+working=n
+while [ $working = n ];
+do
 catalyst -f /releng/releases/specs/amd64/installcd-stage1.spec
+read -p "Did the stage complete successfully (y/n) -> " working2
+if [[ $working2 = y ]];
+then
+   break
+fi
+done
+working=n
+while [ $working = n ];
+do
 catalyst -f /releng/releases/specs/amd64/installcd-stage2-minimal.spec
+read -p "Did the stage complete successfully (y/n) -> " working2
+if [[ $working2 = y ]];
+then
+   break
+fi
+done
 mkdir /output
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20240801.tar.xz /output
 #cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20240801.tar.xz /output
