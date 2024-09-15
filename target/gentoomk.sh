@@ -136,7 +136,7 @@ FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/wheel
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/setuptools
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson-format-array
-FETCHCOMMAND="$FETCHCOMMAND"./portage/bin/emerge -O1 dev-build/ninja
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/ninja
 
 # Finally install portage itself
 ./portage/bin/emerge -O1 sys-apps/portage
