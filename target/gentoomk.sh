@@ -132,7 +132,7 @@ ln -s bzip2-reference /bin/bzip2
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-text
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-functools
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-context
-./portage/bin/emerge -O1 dev-python/wheel
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/wheel
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/setuptools
 ./portage/bin/emerge -O1 dev-build/meson
 ./portage/bin/emerge -O1 dev-build/meson-format-array
