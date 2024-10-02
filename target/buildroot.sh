@@ -6,16 +6,18 @@ mount -vt sysfs sysfs /sys
 mount -vt tmpfs tmpfs /run
 mount -t tmpfs -o nosuid,nodev tmpfs /dev/shm
 mount -vt devpts devpts -o mode=0625 /dev/pts
-chmod -r 777 /etc
-chmod -r 777 /sys
-chmod -r 777 /tmp
-chmod -r 777 /usr
+chmod 777 /etc
+chmod 777 /sys
+chmod 777 /tmp
+chmod 777 /usr
 lsblk
 read -p "Enter the partition to build on (sdxx) -> " USEPART
 if ! test -d /mnt
+then   
    mkdir /mnt
 fi
 if ! test -d /mnt/buildroot
+then
    mkdir /mnt/buildroot
 fi
 mount -v -t ext4 /dev/$USEPART /mnt/buildroot
