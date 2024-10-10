@@ -71,8 +71,8 @@ tar -czvf /mnt/netbsd/media/binary.tar.gz /mnt/netbsd/netbsd/usr/src/obj/release
 cp /mnt/netbsd/netbsd/usr/src/obj/releasedir/images/*.img.gz /mnt/netbsd/media
 cp /mnt/netbsd/netbsd/usr/src/obj/releasedir/amd64/installation/cdrom/boot.iso /mnt/netbsd/media
 gzip -d /mnt/netbsd/media/*.img.gz
-echo "install media build is now complete. the results can be found at /mnt/netbsd/media."
+echo "The install media build is now complete. The results can be found at /mnt/netbsd/media."
 echo "You will find three files in the directory. binary.tar.gz is an archive of all of the build packages."
-echo "it can be used to update a system. boot.iso is a cd sized image that can be used to boot the system conjunction with"
+echo "It can be used to update a system. boot.iso is a cd sized image that can be used to boot the system in conjunction with"
 echo "binary.tar.gz. The last file is NetBSD-(version)-amd64-install.img. This is the full install file that most users will"
 echo "boot to install NetBSD."  
