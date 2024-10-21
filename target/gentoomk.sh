@@ -29,31 +29,30 @@ curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squa
 # This patch avoids using the _ctypes module in portage
 cat > portage.patch << 'EOF'
 +++ b/lib/portage/util/compression_probe.py
-@@ -1,13 +1,14 @@
+@@ -1,13 +1,13 @@
  # Copyright 2015-2020 Gentoo Authors
  # Distributed under the terms of the GNU General Public License v2
- 
+
 -import ctypes
-+
  import errno
  import re
- 
- 
+
+
  from portage import _encodings, _unicode_encode
  from portage.exception import FileNotFound, PermissionDenied
 +from portage.util._ctypes import ctypes
- 
+
  _compressors = {
      "bzip2": {
-@@ -50,6 +51,7 @@
+@@ -49,7 +49,7 @@ _compressors = {
+         # if the current architecture can support it, which is true when
          # sizeof(long) is at least 8 bytes.
          "decompress": "zstd -d"
-         + (" --long=31" if ctypes.sizeof(ctypes.c_long) >= 8 else ""),
+-        + (" --long=31" if ctypes.sizeof(ctypes.c_long) >= 8 else ""),
 +        + (" --long=31" if ctypes and ctypes.sizeof(ctypes.c_long) >= 8 else ""),
          "package": "app-arch/zstd",
      },
  }
-
 EOF
 
 # Build squashfs-tools to extract the ::gentoo tree
