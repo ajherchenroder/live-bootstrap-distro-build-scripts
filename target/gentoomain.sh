@@ -29,6 +29,7 @@ mkdir /gentoo
 cp gentoomk.sh /gentoo
 cp gentoomk2.sh /gentoo
 cp gentoomk3.sh /gentoo
+cp /usr/lib/libbz2.so.1.0 /usr/lib/libbz2.so.1
 ./gentoomk.sh
 chroot /gentoo /bin/bash --login gentoomk2.sh
 
