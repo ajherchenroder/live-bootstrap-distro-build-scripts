@@ -115,8 +115,9 @@ FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 net-misc/wget
 ./portage/bin/emerge -O1 app-portage/elt-patches
 ./portage/bin/emerge -O1 dev-libs/mpdecimal
 ./portage/bin/emerge -O1 dev-libs/expat
-mv /bin/bzip2 /bin/bzip2-reference
-ln -s bzip2-reference /bin/bzip2
+cp mv /bin/bzip2 /bin/bzip2-reference
+#mv /bin/bzip2 /bin/bzip2-reference
+#ln -s bzip2-reference /bin/bzip2
 ./portage/bin/emerge -O1 app-arch/bzip2
 ./portage/bin/emerge -O1 dev-lang/python
 ./portage/bin/emerge -O1 dev-lang/python-exec
