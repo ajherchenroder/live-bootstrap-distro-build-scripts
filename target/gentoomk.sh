@@ -21,11 +21,26 @@ mount -t devpts devpts /dev/pts
 mount -t tmpfs -o nosuid,nodev tmpfs /dev/shm 
 source /steps/env
 
+while getopts L flag; 
+do
+     case "${flag}" in
+        L) REMOTE="local";; #download from the local repositories
+     esac
+done
 mkdir -p /var/cache/distfiles; cd /var/cache/distfiles
-curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.66.1.tar.bz2
-curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250109.xz.sqfs
-curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squashfs-tools-4.6.1.tar.gz
-
+if test "$REMOTE" = "local"; then 
+   echo "local"
+   curl -LO http://192.168.2.102/gentoo/portage-3.0.66.1.tar.bz2
+   curl -LO http://192.168.2.102/gentoo/gentoo-20250109.xz.sqfs
+   curl -LO http://192.168.2.102/gentoo/squashfs-tools-4.6.1.tar.gz
+else
+   echo "remote"
+#curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2
+#curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
+  curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.66.1.tar.bz2
+  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250109.xz.sqfs
+  curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squashfs-tools-4.6.1.tar.gz
+fi
 # This patch avoids using the _ctypes module in portage
 cat > portage.patch << 'EOF'
 +++ b/lib/portage/util/compression_probe.py
@@ -65,17 +80,17 @@ cd ..
 rm -rf squashfs-tools-4.6.1
 
 # Unpack the ::gentoo tree
-unsquashfs /var/cache/distfiles/gentoo-20250109.xz.sqfs
+unsquashfs /var/cache/distfiles/gentoo-20240801.xz.sqfs
 mkdir -p /var/db/repos
 rm -rf /var/db/repos/gentoo
 mv squashfs-root /var/db/repos/gentoo
 
 # Install temporary copy of portage
-tar xf /var/cache/distfiles/portage-3.0.66.1.tar.bz2
+tar xf /var/cache/distfiles/portage-3.0.65.tar.bz2
 cd portage-3.0.65
 patch -p1 -i ../portage.patch 
 cd ..
-ln -sf portage-3.0.66.1 portage 
+ln -sf portage-3.0.65 portage 
 
 # Add portage user/group
 echo 'portage:x:250:250:portage:/var/tmp/portage:/bin/false' >> /etc/passwd

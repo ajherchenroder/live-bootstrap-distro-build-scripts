@@ -14,6 +14,13 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
+# parse the flags
+while getopts L flag; 
+do
+     case "${flag}" in
+        L) REMOTE="-L";; #download from the local repositories
+     esac
+done
 /usr/sbin/fdisk -l | grep /dev
 read -p "Enter the partion to build Gentoo on (sdxx) -> " USEPART
 if ! test -d /gentoo 
@@ -29,9 +36,8 @@ mkdir /gentoo
 cp gentoomk.sh /gentoo
 cp gentoomk2.sh /gentoo
 cp gentoomk3.sh /gentoo
-cp /usr/lib/libbz2.so.1.0 /usr/lib/libbz2.so.1
 cd /gentoo
-./gentoomk.sh
+./gentoomk.sh "$REMOTE"
 chroot /gentoo /bin/bash --login gentoomk2.sh
 
 
