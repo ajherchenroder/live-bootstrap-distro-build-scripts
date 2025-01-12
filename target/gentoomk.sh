@@ -80,7 +80,7 @@ cd ..
 rm -rf squashfs-tools-4.6.1
 
 # Unpack the ::gentoo tree
-unsquashfs /var/cache/distfiles/gentoo-20240801.xz.sqfs
+unsquashfs /var/cache/distfiles/gentoo-20250109.xz.sqfs
 mkdir -p /var/db/repos
 rm -rf /var/db/repos/gentoo
 mv squashfs-root /var/db/repos/gentoo
@@ -88,7 +88,7 @@ mv squashfs-root /var/db/repos/gentoo
 # Install temporary copy of portage
 tar xf /var/cache/distfiles/portage-3.0.66.1.tar.bz2
 cd portage-3.0.66.1
-patch -p1 -i ../portage.patch 
+#patch -p1 -i ../portage.patch 
 cd ..
 ln -sf portage-3.0.66.1 portage 
 
