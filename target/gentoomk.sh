@@ -148,6 +148,7 @@ FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/ordered-set
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-text
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-functools
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-context
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-collections
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/wheel
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/setuptools
 FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson
