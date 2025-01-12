@@ -134,7 +134,7 @@ FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 net-misc/wget
 mv /bin/bzip2 /bin/bzip2-reference
 ln -s bzip2-reference /bin/bzip2
 ./portage/bin/emerge -O1 app-arch/bzip2
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 =dev-lang/python:3.12
+FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-lang/python:3.12
 ./portage/bin/emerge -O1 dev-lang/python-exec
 
 # Install the rest of the dependencies for meson
