@@ -35,17 +35,17 @@ cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/
 # the Linux kernel in use doesn't support xz compressed squashfs. 
 # using squashfs-tools to convert the snapshot to a standard squashfs.
 cd /
-wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
+wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
 mkdir -p /var/tmp/catalyst/snapshots
-unsquashfs /gentoo-20240801.xz.sqfs
-rm gentoo-20240801.xz.sqfs
-mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20240801.sqfs
+unsquashfs /gentoo-20250101.xz.sqfs
+rm gentoo-20250101.xz.sqfs
+mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20250101.sqfs
 rm -Rf /squashfs-root
 git clone https://anongit.gentoo.org/git/proj/releng.git
-git -C releng checkout 'master@{2024-08-01}'
+git -C releng checkout 'master@{2025-01-01}'
 #systemD is broken in this snapshot
-sed -e 's|@TIMESTAMP@|20240801|g' \
-    -e 's|@TREEISH@|20240801|g' \
+sed -e 's|@TIMESTAMP@|20250101|g' \
+    -e 's|@TREEISH@|20250101|g' \
     -e 's|@REPO_DIR@|'"$PWD/releng"'|g' \
     -i \
     releng/releases/specs/amd64/stage1-openrc-23.spec \
