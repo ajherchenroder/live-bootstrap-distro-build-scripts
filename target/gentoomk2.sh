@@ -30,25 +30,24 @@ emerge -O1n \
     app-alternatives/tar \
     app-alternatives/yacc
 
-# Finish installing stage1 dependencies
-pkgs_build="$(python3 -c 'import portage
-print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.build" % x) for x in portage.settings.profiles], incremental=1))')"
-USE="-* build $(portageq envvar BOOTSTRAP_USE)" CHOST="$(gcc -dumpmachine)" \
-    emerge -1Dn $pkgs_build
-emerge -c  # Make sure the dependency tree is consistent
+# Sandbox fails to rebuild itself at first until it's built without sandbox...
+# TODO: Why, though?
+FEATURES='-sandbox -usersandbox' emerge -1 sys-apps/sandbox
 
 # Change CHOST and build OpenMP support (stage2-ish)
 emerge -1 sys-devel/binutils
 emerge -o sys-devel/gcc
-EXTRA_ECONF=--disable-bootstrap emerge -O1 sys-devel/gcc
-emerge -1 $(portageq expand_virtual / virtual/libc)
+EXTRA_ECONF=--disable-bootstrap emerge -1 sys-devel/gcc
 emerge -1 dev-lang/perl  # https://bugs.gentoo.org/937918
 
+# USE flag rationale:
+# https://gitweb.gentoo.org/proj/releng.git/tree/releases/portage/stages/package.use/releng/no-filecaps
+# https://gitweb.gentoo.org/proj/releng.git/tree/releases/portage/stages/package.use/releng/circular
+
 # Rebuild everything (stage3)
-USE='-filecaps -http2' emerge -e @system
-USE='-filecaps -http2' emerge  @system
-emerge -DN @system
+USE='-filecaps -http2 -http3 -quic -curl_quic_openssl' emerge -e @system
 emerge -c
-./gentoomk3.sh
+
+# ./gentoomk3.sh
 
 
