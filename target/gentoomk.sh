@@ -54,7 +54,8 @@ cd ..
 rm -rf squashfs-tools-4.6.1
 
 # Unpack the ::gentoo tree
-unsquashfs /var/cache/distfiles/gentoo-20250109.xz.sqfs
+#unsquashfs /var/cache/distfiles/gentoo-20250109.xz.sqfs
+unsquashfs /var/cache/distfiles/gentoo-20250101.xz.sqfs
 mkdir -p /var/db/repos
 rm -rf /var/db/repos/gentoo
 mv squashfs-root /var/db/repos/gentoo
