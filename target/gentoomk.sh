@@ -31,44 +31,18 @@ mkdir -p /var/cache/distfiles; cd /var/cache/distfiles
 if test "$REMOTE" = "local"; then 
    echo "local"
    curl -LO http://192.168.2.102/gentoo/portage-3.0.66.1.tar.bz2
-   curl -LO http://192.168.2.102/gentoo/gentoo-20250109.xz.sqfs
+   #curl -LO http://192.168.2.102/gentoo/gentoo-20250109.xz.sqfs
+   curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
    curl -LO http://192.168.2.102/gentoo/squashfs-tools-4.6.1.tar.gz
 else
    echo "remote"
 #curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2
 #curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
   curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.66.1.tar.bz2
-  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250109.xz.sqfs
+#curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250109.xz.sqfs
+  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
   curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squashfs-tools-4.6.1.tar.gz
 fi
-# This patch avoids using the _ctypes module in portage
-cat > portage.patch << 'EOF'
-+++ b/lib/portage/util/compression_probe.py
-@@ -1,13 +1,13 @@
- # Copyright 2015-2020 Gentoo Authors
- # Distributed under the terms of the GNU General Public License v2
-
--import ctypes
- import errno
- import re
-
-
- from portage import _encodings, _unicode_encode
- from portage.exception import FileNotFound, PermissionDenied
-+from portage.util._ctypes import ctypes
-
- _compressors = {
-     "bzip2": {
-@@ -49,7 +49,7 @@ _compressors = {
-         # if the current architecture can support it, which is true when
-         # sizeof(long) is at least 8 bytes.
-         "decompress": "zstd -d"
--        + (" --long=31" if ctypes.sizeof(ctypes.c_long) >= 8 else ""),
-+        + (" --long=31" if ctypes and ctypes.sizeof(ctypes.c_long) >= 8 else ""),
-         "package": "app-arch/zstd",
-     },
- }
-EOF
 
 # Build squashfs-tools to extract the ::gentoo tree
 tar xf /var/cache/distfiles/squashfs-tools-4.6.1.tar.gz
@@ -99,6 +73,8 @@ echo 'portage::250:portage' >> /etc/group
 # Configure portage
 mkdir -p /etc/portage/make.profile
 cat > /etc/portage/make.profile/make.defaults << 'EOF'
+FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
+RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
 ARCH="x86"
@@ -106,14 +82,115 @@ ABI="$ARCH"
 DEFAULT_ABI="$ARCH"
 ACCEPT_KEYWORDS="$ARCH"
 CHOST="i386-unknown-linux-musl"
-LIBDIR_x86="lib/i386-unknown-linux-musl"
-PKG_CONFIG_PATH="/usr/lib/i386-unknown-linux-musl/pkgconfig"
+LIBDIR_x86="lib/$CHOST"
+PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
-USE="kernel_linux elibc_musl python_targets_python3_12"
+IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64"  # dev-libs/gmp
+IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib
+USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
+USE="kernel_linux elibc_musl build"
+SKIP_KERNEL_CHECK=y  # linux-info.eclass
 EOF
 cat > /etc/portage/package.use << 'EOF'
-dev-lang/python -readline -ncurses
+dev-lang/python -ensurepip -ncurses -readline -sqlite -ssl
 EOF
+grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
+    /var/db/repos/gentoo/profiles/base/make.defaults \
+    >> /etc/portage/make.profile/make.defaults
+
+# Specify what packages may or may not be installed in the live-bootstrap system
+mkdir -p /etc/portage/profile
+echo '*/*' > /etc/portage/package.mask
+cat > /etc/portage/package.unmask << 'EOF'
+app-alternatives/bzip2
+app-alternatives/ninja
+app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2
+app-arch/lzip
+app-arch/unzip
+app-misc/pax-utils
+app-portage/elt-patches
+dev-build/autoconf
+dev-build/autoconf-wrapper  # replaces files
+dev-build/automake  # replaces files
+dev-build/automake-wrapper  # replaces files
+dev-build/make  # replaces files
+dev-build/meson
+dev-build/meson-format-array
+dev-build/ninja
+dev-lang/python
+dev-lang/python-exec  # replaces files
+dev-lang/python-exec-conf
+dev-libs/expat
+dev-libs/mpdecimal
+dev-python/flit-core
+dev-python/gentoo-common
+dev-python/gpep517
+dev-python/installer
+dev-python/jaraco-collections
+dev-python/jaraco-context
+dev-python/jaraco-functools
+dev-python/jaraco-text
+dev-python/more-itertools
+dev-python/packaging
+dev-python/setuptools
+dev-python/wheel
+dev-util/pkgconf  # replaces files, dev-lang/python ebuild requires "--keep-system-libs" option when cross-compiling
+net-misc/rsync
+sys-apps/findutils  # replaces files, portage requires 4.9, live-bootstrap provides 4.2.33
+sys-apps/gentoo-functions
+sys-apps/portage
+sys-devel/binutils-config
+sys-devel/gcc-config
+sys-devel/gnuconfig
+virtual/pkgconfig
+EOF
+cat > /etc/portage/profile/package.provided << 'EOF'
+acct-user/portage-0
+app-alternatives/awk-0
+app-alternatives/gzip-0
+app-alternatives/lex-0
+app-alternatives/yacc-0
+app-arch/tar-1.27
+app-arch/xz-utils-5.4.0
+app-arch/zstd-0
+app-crypt/libb2-0
+app-crypt/libbz2-0
+dev-build/autoconf-archive-0
+dev-build/libtool-2.4.7-r3
+dev-lang/perl-5.38.2-r3
+dev-libs/libffi-0
+dev-libs/popt-1.5
+dev-python/platformdirs-4.2.2
+dev-python/setuptools-scm-0
+dev-python/trove-classifiers-2024.10.16
+dev-util/re2c-0
+sys-apps/baselayout-2.9
+sys-apps/help2man-0
+sys-apps/locale-gen-0
+sys-apps/sandbox-2.2
+sys-apps/sed-4.0.5
+sys-apps/texinfo-7.1
+sys-apps/util-linux-0
+sys-devel/binutils-2.27
+sys-devel/bison-3.5.4
+sys-devel/flex-2.5.4
+sys-devel/gcc-6.2
+sys-devel/gettext-0
+sys-devel/m4-1.4.16
+sys-devel/patch-0
+sys-libs/zlib-1.2.12
+virtual/libcrypt-0
+virtual/libintl-0
+EOF
+
+# Turn /bin/bzip2 into a symlink to avoid failures in app-arch/bzip2
+if [ ! -h /bin/bzip2 ]; then
+    mv /bin/bzip2 /bin/bzip2-reference
+    ln -s bzip2-reference /bin/bzip2
+fi
+
+
+
 
 # Install dependencies to make emerge work nicely
 FETCHCOMMAND='curl -k -o "${DISTDIR}/${FILE}" -L "${URI}"'
