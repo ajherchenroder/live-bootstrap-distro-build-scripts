@@ -190,63 +190,16 @@ if [ ! -h /bin/bzip2 ]; then
     ln -s bzip2-reference /bin/bzip2
 fi
 
+# For some reason, make hangs when used in parallel, rebuild it first.
+MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
 
+# Upgrade python and install portage
+./portage/bin/emerge -D1n sys-apps/portage
 
-
-# Install dependencies to make emerge work nicely
-FETCHCOMMAND='curl -k -o "${DISTDIR}/${FILE}" -L "${URI}"'
-FETCHCOMMAND="$FETCHCOMMAND" MAKEOPTS=-j1 ./portage/bin/emerge -O1 app-arch/lzip
-FETCHCOMMAND="$FETCHCOMMAND" MAKEOPTS=-j1 ./portage/bin/emerge -O1 dev-build/make
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 net-misc/wget
-
-# Upgrade python so we can use it to cross-compile later on
-./portage/bin/emerge -O1 dev-build/autoconf-wrapper
-./portage/bin/emerge -O1 dev-build/autoconf
-./portage/bin/emerge -O1 dev-build/automake-wrapper
-./portage/bin/emerge -O1 dev-build/automake
-./portage/bin/emerge -O1 sys-apps/gentoo-functions
-./portage/bin/emerge -O1 app-portage/elt-patches
-./portage/bin/emerge -O1 dev-libs/mpdecimal
-./portage/bin/emerge -O1 dev-libs/expat
-#cp /bin/bzip2 /bin/bzip2-reference
-mv /bin/bzip2 /bin/bzip2-reference
-ln -s bzip2-reference /bin/bzip2
-./portage/bin/emerge -O1 app-arch/bzip2
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-lang/python:3.12
-./portage/bin/emerge -O1 dev-lang/python-exec
-
-# Install the rest of the dependencies for meson
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/gpep517
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 app-arch/unzip
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/installer
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/flit-core
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/packaging
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/more-itertools
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/ordered-set
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-text
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-functools
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-context
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/jaraco-collections
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/wheel
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-python/setuptools
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/meson-format-array
-FETCHCOMMAND="$FETCHCOMMAND" ./portage/bin/emerge -O1 dev-build/ninja
-
-# Finally install portage itself
-./portage/bin/emerge -O1 sys-apps/portage
-
-# Install pax-utils to allow stripping binaries (requires meson...)
-emerge -O1 app-misc/pax-utils
-
-# Fix "find" warnings in emerge
-emerge -O1 sys-apps/findutils
-
-# Install additional BDEPENDs
-emerge -O1 sys-devel/binutils-config  # sys-devel/binutils
-emerge -O1 sys-devel/gcc-config  # sys-devel/gcc
-emerge -O1 net-misc/rsync  # sys-kernel/linux-headers
-emerge -O1 dev-util/pkgconf  # dev-lang/python requires --keep-system-libs option when cross compiling
+# Install BDEPENDs for cross-toolchain
+emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
+emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
+emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
@@ -264,6 +217,7 @@ LIBDIR_x86="lib"
 LIBDIR_amd64="lib64"
 DEFAULT_ABI="amd64"
 MULTILIB_ABIS="amd64 x86"
+ACCEPT_KEYWORDS="amd64"
 EOF
 cat > /cross/etc/portage/package.use << 'EOF'
 sys-devel/gcc -sanitize -fortran
@@ -272,11 +226,14 @@ mkdir -p /cross/etc/portage/env/sys-devel
 cat > /cross/etc/portage/env/sys-devel/gcc << 'EOF'
 EXTRA_ECONF='--with-sysroot=$EPREFIX/usr/$CTARGET --enable-threads'
 EOF
+cat > /cross/etc/portage/package.mask << 'EOF'
+>=sys-devel/gcc-14
+EOF
+# TODO: Build using gcc 14
 
-# TODO: Build sys-libs/glibc in /gentoo instead, to avoid extra rebuilding later
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/binutils
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only' emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only -multilib' emerge -O1 sys-libs/glibc 
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/binutils
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -O1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
@@ -298,8 +255,7 @@ done
 cat > /cross/usr/bin/x86_64-bootstrap-linux-gnu-pkg-config << 'EOF'
 #!/bin/sh
 export PKG_CONFIG_SYSROOT_DIR=/gentoo
-export PKG_CONFIG_LIBDIR=/gentoo/usr/lib64/pkgconfig
-export PKG_CONFIG_PATH=/gentoo/usr/share/pkgconfig
+export PKG_CONFIG_LIBDIR=/gentoo/usr/lib64/pkgconfig:/gentoo/usr/share/pkgconfig
 export PKG_CONFIG_SYSTEM_INCLUDE_PATH=/gentoo/usr/include
 export PKG_CONFIG_SYSTEM_LIBRARY_PATH=/gentoo/lib64:/gentoo/usr/lib64
 exec pkg-config "$@"
@@ -310,6 +266,8 @@ chmod +x /cross/usr/bin/x86_64-bootstrap-linux-gnu-pkg-config
 mkdir -p /gentoo.cfg/etc/portage
 ln -sf ../../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /gentoo.cfg/etc/portage/make.profile
 cat > /gentoo.cfg/etc/portage/make.conf << 'EOF'
+FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
+RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
 CBUILD="i386-unknown-linux-musl"
@@ -317,61 +275,46 @@ CHOST="x86_64-bootstrap-linux-gnu"
 CFLAGS_x86="$CFLAGS_x86 -msse"  # https://bugs.gentoo.org/937637
 CONFIG_SITE="$PORTAGE_CONFIGROOT/etc/portage/config.site"
 USE="-* build $BOOTSTRAP_USE -zstd"
+SKIP_KERNEL_CHECK=y  # linux-info.eclass
+EOF
+cat > /gentoo.cfg/etc/portage/package.use << 'EOF'
+# https://gitweb.gentoo.org/proj/releng.git/tree/releases/portage/stages/profile/package.use.force/releng/alternatives
+app-alternatives/lex flex
+app-alternatives/yacc bison
+app-alternatives/tar gnu
+app-alternatives/gzip reference
+app-alternatives/bzip2 reference
 EOF
 cat > /gentoo.cfg/etc/portage/config.site << 'EOF'
 if [ "${CBUILD:-${CHOST}}" != "${CHOST}" ]; then
-# Settings grabbed from crossdev
+# https://gitweb.gentoo.org/proj/crossdev.git/tree/wrappers/site/linux
 ac_cv_file__dev_ptmx=yes
 ac_cv_file__dev_ptc=no
 fi
 EOF
+cat > /gentoo.cfg/etc/portage/package.mask << 'EOF'
+>=sys-devel/gcc-14
+EOF
+# TODO: Build using gcc 14
+# TODO: USE=zstd causes binutils to try to link with target zstd instead of
+#       host. zstd cannot be built for host due to lack of libatomic in gcc.
 
-# Cross-compile just enough to build everything
-py=$(PORTAGE_CONFIGROOT=/gentoo.cfg portageq envvar PYTHON_SINGLE_TARGET | sed 's/^python//;s/_/./g')
+# Cross-compile a basic system
+pkgs_build="$(PORTAGE_CONFIGROOT=/gentoo.cfg python3 -c 'import portage
+print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.build"%x)for x in portage.settings.profiles],incremental=1))')"
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-apps/baselayout \
     sys-kernel/linux-headers \
-    sys-libs/glibc \
-    sys-libs/zlib \
-    sys-devel/binutils \
-    dev-libs/gmp \
-    dev-libs/mpfr \
-    dev-libs/mpc \
-    sys-devel/gcc \
-    \
-    app-arch/bzip2 \
-    app-arch/xz-utils \
-    dev-libs/expat \
-    dev-libs/libffi \
-    dev-libs/mpdecimal \
-    sys-apps/util-linux \
-    sys-libs/libxcrypt \
-    dev-lang/python:$py \
-    \
-    dev-lang/python-exec \
-    sys-apps/portage \
-    \
-    sys-libs/ncurses \
-    sys-libs/readline \
-    app-shells/bash \
-    \
-    sys-apps/coreutils \
-    sys-apps/findutils \
-    sys-apps/sed \
-    sys-apps/grep \
-    sys-apps/gawk \
-    sys-devel/patch \
-    app-arch/tar \
-    app-arch/gzip \
-    dev-build/make \
-    \
-    dev-libs/openssl \
-    net-misc/wget \
-    app-misc/ca-certificates \
-    \
-    app-crypt/libmd \
-    dev-libs/libbsd \
-    sys-apps/shadow
+    sys-libs/glibc
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
+
+
+
+
+
+
+
+
 
 # Set up final system
 mkdir -p /gentoo/etc/portage
