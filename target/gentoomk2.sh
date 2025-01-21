@@ -35,6 +35,9 @@ emerge -O1n \
 FEATURES='-sandbox -usersandbox' emerge -1 sys-apps/sandbox
 
 # Change CHOST and build OpenMP support (stage2-ish)
+#go back to default CHOST
+sed '/CHOST="x86_64-bootstrap-linux-gnu"/d' /gentoo.cfg/etc/portage/make.conf
+
 emerge -1 sys-devel/binutils
 emerge -o sys-devel/gcc
 EXTRA_ECONF=--disable-bootstrap emerge -1 sys-devel/gcc
@@ -44,10 +47,12 @@ emerge -1 dev-lang/perl  # https://bugs.gentoo.org/937918
 # https://gitweb.gentoo.org/proj/releng.git/tree/releases/portage/stages/package.use/releng/no-filecaps
 # https://gitweb.gentoo.org/proj/releng.git/tree/releases/portage/stages/package.use/releng/circular
 
+
+
 # Rebuild everything (stage3)
 USE='-filecaps -http2 -http3 -quic -curl_quic_openssl' emerge -e @system
 emerge -c
 
-# ./gentoomk3.sh
+./gentoomk3.sh
 
 
