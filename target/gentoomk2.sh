@@ -53,6 +53,6 @@ emerge -1 dev-lang/perl  # https://bugs.gentoo.org/937918
 USE='-filecaps -http2 -http3 -quic -curl_quic_openssl' emerge -e @system
 emerge -c
 
-#./gentoomk3.sh
+./gentoomk3.sh
 
 

@@ -14,6 +14,7 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
+
 echo dev-util/catalyst >> /etc/portage/package.accept_keywords
 echo ">=sys-apps/util-linux-2.39.4-r1 python" >>/etc/portage/package.use
 echo ">=sys-boot/grub-2.12-r4 grub_platforms_efi-32" >>/etc/portage/package.use
@@ -21,6 +22,9 @@ emerge dev-util/catalyst
 USE=lzma emerge sys-fs/squashfs-tools
 ROOT="$PWD/stage" USE=build emerge -1 sys-apps/baselayout
 ROOT="$PWD/stage" QUICKPKG_DEFAULT_OPTS=--include-config=y emerge --quickpkg-direct=y -K @system
+#break circular dependencies in stage 1
+ROOT="$PWD/stage" USE=-nls emerge sys-devel/m4
+ROOT="$PWD/stage" USE=-nls emerge sys-apps/help2man
 mkdir stage/etc/portage  # catalyst breaks otherwise...
 tar cf stage.tar -C stage .
 rm -rf stage
@@ -29,7 +33,7 @@ mkdir /var/tmp/catalyst/
 mkdir /var/tmp/catalyst/builds/
 mkdir -p /var/tmp/catalyst/builds/23.0-default
 mv stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
-cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20240801
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20250101
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-latest.tar.xz
 
 # the Linux kernel in use doesn't support xz compressed squashfs. 
@@ -42,7 +46,7 @@ rm gentoo-20250101.xz.sqfs
 mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20250101.sqfs
 rm -Rf /squashfs-root
 git clone https://anongit.gentoo.org/git/proj/releng.git
-git -C releng checkout 'master@{2025-01-01}'
+#git -C releng checkout 'master@{2025-01-01}'
 #systemD is broken in this snapshot
 sed -e 's|@TIMESTAMP@|20250101|g' \
     -e 's|@TREEISH@|20250101|g' \
