@@ -25,7 +25,8 @@ ROOT="$PWD/stage" QUICKPKG_DEFAULT_OPTS=--include-config=y emerge --quickpkg-dir
 #break circular dependencies in stage 1
 ROOT="$PWD/stage" USE=-nls emerge sys-devel/m4
 ROOT="$PWD/stage" USE=-nls emerge sys-apps/help2man
-#ROOT="$PWD/stage" USE=-nls emerge net-proxy/tsocks
+ROOT="$PWD/stage" MAKEOPTS=-j1 emerge =llvm-core/llvm-19.1.4
+ROOT="$PWD/stage" MAKEOPTS=-j1 emerge =llvm-core/llvm-18.1.8-r6
 mkdir stage/etc/portage  # catalyst breaks otherwise...
 tar cf stage.tar -C stage .
 rm -rf stage
@@ -62,9 +63,9 @@ sed -e 's|@TIMESTAMP@|20250101|g' \
 #raise the job count to equal the core count
 sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
 # remove net-proxy/tsocks and dante from installcd specs do to GCC 14 compile issues
-sed '/socks5/d' releng/releases/specs/amd64/installcd-stage1.spec
-sed '/tsocks/d' releng/releases/specs/amd64/installcd-stage1.spec
-sed '/dante/d' releng/releases/specs/amd64/installcd-stage1.spec
+sed -i 'socks5/d' /releng/releases/specs/amd64/installcd-stage1.spec
+sed -i 'tsocks/d' /releng/releases/specs/amd64/installcd-stage1.spec
+sed -i 'dante/d' /releng/releases/specs/amd64/installcd-stage1.spec
 
 catalyst -f /releng/releases/specs/amd64/stage1-openrc-23.spec
 catalyst -f /releng/releases/specs/amd64/stage3-openrc-23.spec
