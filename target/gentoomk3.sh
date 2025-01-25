@@ -41,13 +41,35 @@ cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/
 # the Linux kernel in use doesn't support xz compressed squashfs. 
 # using squashfs-tools to convert the snapshot to a standard squashfs.
 cd /
-wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
+
+while getopts L flag; 
+do
+     case "${flag}" in
+        L) REMOTE="local";; #download from the local repositories
+     esac
+done
+if test "$REMOTE" = "local"; then 
+   echo "local"
+   wget http://192.168.2.102/gentoo/gentoo-20250101.xz.sqfs
+else
+   echo "remote"
+   wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
+fi
 mkdir -p /var/tmp/catalyst/snapshots
 unsquashfs /gentoo-20250101.xz.sqfs
 rm gentoo-20250101.xz.sqfs
 mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20250101.sqfs
 rm -Rf /squashfs-root
-git clone https://anongit.gentoo.org/git/proj/releng.git
+
+if test "$REMOTE" = "local"; then 
+   echo "local"
+   wget http://192.168.2.102/gentoo/releng.tar.gz
+   tar -xvf releng.tar.gz
+else
+   echo "remote"
+   git clone https://anongit.gentoo.org/git/proj/releng.git
+fi
+
 #git -C releng checkout 'master@{2025-01-01}'
 #systemD is broken in this snapshot
 sed -e 's|@TIMESTAMP@|20250101|g' \
