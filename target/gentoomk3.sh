@@ -63,9 +63,9 @@ sed -e 's|@TIMESTAMP@|20250101|g' \
 #raise the job count to equal the core count
 sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
 # remove net-proxy/tsocks and dante from installcd specs do to GCC 14 compile issues
-sed -i 'socks5/d' /releng/releases/specs/amd64/installcd-stage1.spec
-sed -i 'tsocks/d' /releng/releases/specs/amd64/installcd-stage1.spec
-sed -i 'dante/d' /releng/releases/specs/amd64/installcd-stage1.spec
+sed -i '/socks5/d' /releng/releases/specs/amd64/installcd-stage1.spec
+sed -i '/tsocks/d' /releng/releases/specs/amd64/installcd-stage1.spec
+sed -i '/dante/d' /releng/releases/specs/amd64/installcd-stage1.spec
 
 catalyst -f /releng/releases/specs/amd64/stage1-openrc-23.spec
 catalyst -f /releng/releases/specs/amd64/stage3-openrc-23.spec
