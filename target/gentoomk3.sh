@@ -83,7 +83,7 @@ sed -e 's|@TIMESTAMP@|20250101|g' \
 #    releng/releases/specs/amd64/stage1-systemd-23.spec \
 #    releng/releases/specs/amd64/stage3-systemd-23.spec \
 #raise the job count to equal the core count
-sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
+# sed -i 's/# jobs = 4/jobs = '$(nproc)'/g' /etc/catalyst/catalyst.conf
 # remove net-proxy/tsocks and dante from installcd specs do to GCC 14 compile issues
 sed -i '/socks5/d' /releng/releases/specs/amd64/installcd-stage1.spec
 sed -i '/tsocks/d' /releng/releases/specs/amd64/installcd-stage1.spec
@@ -97,6 +97,6 @@ catalyst -f /releng/releases/specs/amd64/installcd-stage1.spec
 catalyst -f /releng/releases/specs/amd64/installcd-stage2-minimal.spec
 
 mkdir /output
-cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20240801.tar.xz /output
-#cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20240801.tar.xz /output
-cp /var/tmp/catalyst/builds/23.0-default/install-amd64-minimal-20240801.iso /output
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20250101.tar.xz /output
+#cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20250101.tar.xz /output
+cp /var/tmp/catalyst/builds/23.0-default/install-amd64-minimal-20250101.iso /output
