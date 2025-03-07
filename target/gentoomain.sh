@@ -21,13 +21,14 @@ do
         L) REMOTE="-L";; #download from the local repositories
      esac
 done
-/usr/sbin/fdisk -l | grep /dev
-read -p "Enter the partion to build Gentoo on (sdxx) -> " USEPART
+#/usr/sbin/fdisk -l | grep /dev
+#read -p "Enter the partion to build Gentoo on (sdxx) -> " USEPART
+USEPART=$(</steps/lfs/lfsdisktouse)
 if ! test -d /gentoo 
 then 
     mkdir /gentoo
 fi
-mount -v -t ext4 /dev/$USEPART /gentoo
+mount -v -t ext4 $USEPART'3' /gentoo
 if ! test -h /usr/bin/python
 then
 ln -sv /bin/python3 /usr/bin/python
