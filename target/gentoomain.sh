@@ -21,9 +21,13 @@ do
         L) REMOTE="-L";; #download from the local repositories
      esac
 done
-#/usr/sbin/fdisk -l | grep /dev
-#read -p "Enter the partion to build Gentoo on (sdxx) -> " USEPART
-USEPART=$(</steps/lfs/lfsdisktouse)
+if ! test -f /steps/lfs/lfsdisktouse
+then 
+  /usr/sbin/fdisk -l | grep /dev
+  read -p "Enter the partion to build Gentoo on (sdxx) -> " USEPART
+else
+  USEPART=$(</steps/lfs/lfsdisktouse)
+fi
 if ! test -d /gentoo 
 then 
     mkdir /gentoo
