@@ -32,7 +32,7 @@ if ! test -d /gentoo
 then 
     mkdir /gentoo
 fi
-mount -v -t ext4 $USEPART'3' /gentoo
+mount -v -t ext4 $USEPART'4' /gentoo
 if ! test -h /usr/bin/python
 then
 ln -sv /bin/python3 /usr/bin/python
