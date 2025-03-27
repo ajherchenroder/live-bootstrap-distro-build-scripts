@@ -35,7 +35,7 @@ mkdir /var/tmp/catalyst/
 mkdir /var/tmp/catalyst/builds/
 mkdir -p /var/tmp/catalyst/builds/23.0-default
 mv stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
-cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20250101
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20250326
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-latest.tar.xz
 
 # the Linux kernel in use doesn't support xz compressed squashfs. 
@@ -50,15 +50,15 @@ do
 done
 if test "$REMOTE" = "local"; then 
    echo "local"
-   wget http://192.168.2.102/gentoo/gentoo-20250101.xz.sqfs
+   wget http://192.168.2.102/gentoo/gentoo-20250326.xz.sqfs
 else
    echo "remote"
-   wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
+   wget http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250326.xz.sqfs
 fi
 mkdir -p /var/tmp/catalyst/snapshots
-unsquashfs /gentoo-20250101.xz.sqfs
-rm gentoo-20250101.xz.sqfs
-mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20250101.sqfs
+unsquashfs /gentoo-20250326.xz.sqfs
+rm gentoo-20250326.xz.sqfs
+mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20250326.sqfs
 rm -Rf /squashfs-root
 
 if test "$REMOTE" = "local"; then 
@@ -72,8 +72,8 @@ fi
 
 #git -C releng checkout 'master@{2025-01-01}'
 #systemD is broken in this snapshot
-sed -e 's|@TIMESTAMP@|20250101|g' \
-    -e 's|@TREEISH@|20250101|g' \
+sed -e 's|@TIMESTAMP@|20250326|g' \
+    -e 's|@TREEISH@|20250326|g' \
     -e 's|@REPO_DIR@|'"$PWD/releng"'|g' \
     -i \
     releng/releases/specs/amd64/stage1-openrc-23.spec \
@@ -97,6 +97,6 @@ catalyst -f /releng/releases/specs/amd64/installcd-stage1.spec
 catalyst -f /releng/releases/specs/amd64/installcd-stage2-minimal.spec
 
 mkdir /output
-cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20250101.tar.xz /output
-#cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20250101.tar.xz /output
-cp /var/tmp/catalyst/builds/23.0-default/install-amd64-minimal-20250101.iso /output
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20250326.tar.xz /output
+#cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20250326.tar.xz /output
+cp /var/tmp/catalyst/builds/23.0-default/install-amd64-minimal-20250326.iso /output
