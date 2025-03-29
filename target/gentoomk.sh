@@ -306,7 +306,7 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-apps/baselayout \
     sys-kernel/linux-headers \
     sys-libs/glibc \
-    app-shells/bash #new
+    =app-shells/bash-5.1_p16-r14 #new
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 
