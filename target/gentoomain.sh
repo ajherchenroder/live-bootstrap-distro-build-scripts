@@ -14,6 +14,8 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
+make sure all of the partitions are properly monted before starting
+./steps/lfs/lfs-remount.sh
 # parse the flags
 while getopts L flag; 
 do
@@ -24,9 +26,9 @@ done
 if ! test -f /steps/lfs/lfsdisktouse
 then 
   /usr/sbin/fdisk -l | grep /dev
-  read -p "Enter the partion to build Gentoo on (sdxx) -> " USEPART
+  read -p "Enter the partition to build Gentoo on (sdxx) -> " USEPART
 else
-  USEPART=$(</steps/lfs/lfsdisktouse)
+  USEPART=$(</steps/lfs/lfsdisktouse) 
 fi
 if ! test -d /gentoo 
 then 
