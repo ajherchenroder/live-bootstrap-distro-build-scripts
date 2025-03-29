@@ -31,8 +31,8 @@ mkdir -p /var/cache/distfiles; cd /var/cache/distfiles
 if test "$REMOTE" = "local"; then 
    echo "local"
    curl -LO http://192.168.2.102/gentoo/portage-3.0.66.1.tar.bz2
-   #curl -LO http://192.168.2.102/gentoo/gentoo-20250326.xz.sqfs
-   curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250326.xz.sqfs
+   #curl -LO http://192.168.2.102/gentoo/gentoo-20250101.xz.sqfs
+   curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
    curl -LO http://192.168.2.102/gentoo/squashfs-tools-4.6.1.tar.gz
 else
    echo "remote"
@@ -40,7 +40,7 @@ else
 #curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
   curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.66.1.tar.bz2
 #curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250109.xz.sqfs
-  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250326.xz.sqfs
+  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
   curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squashfs-tools-4.6.1.tar.gz
 fi
 
@@ -55,7 +55,7 @@ rm -rf squashfs-tools-4.6.1
 
 # Unpack the ::gentoo tree
 #unsquashfs /var/cache/distfiles/gentoo-20250109.xz.sqfs
-unsquashfs /var/cache/distfiles/gentoo-20250326.xz.sqfs
+unsquashfs /var/cache/distfiles/gentoo-20250101.xz.sqfs
 mkdir -p /var/db/repos
 rm -rf /var/db/repos/gentoo
 mv squashfs-root /var/db/repos/gentoo
@@ -305,8 +305,7 @@ print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.buil
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-apps/baselayout \
     sys-kernel/linux-headers \
-    sys-libs/glibc \
-    =app-shells/bash-5.1_p16-r14 #new
+    sys-libs/glibc 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 
