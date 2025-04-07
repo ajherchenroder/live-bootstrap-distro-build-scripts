@@ -14,6 +14,9 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
+emerge --sync
+emerge --oneshot sys-apps/portage
+emerge --depclean
 
 echo dev-util/catalyst >> /etc/portage/package.accept_keywords
 echo ">=sys-apps/util-linux-2.39.4-r1 python" >>/etc/portage/package.use
@@ -68,6 +71,7 @@ if test "$REMOTE" = "local"; then
 else
    echo "remote"
    git clone https://anongit.gentoo.org/git/proj/releng.git
+   git -C releng checkout 'master@{2025-01-01}'
 fi
 
 #git -C releng checkout 'master@{2025-01-01}'
