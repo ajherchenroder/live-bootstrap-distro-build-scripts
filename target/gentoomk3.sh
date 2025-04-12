@@ -37,7 +37,7 @@ xz -9v stage.tar
 mkdir /var/tmp/catalyst/
 mkdir /var/tmp/catalyst/builds/
 mkdir -p /var/tmp/catalyst/builds/23.0-default
-mv stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
+cp stage.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/livecd-stage1-amd64-20250101
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-latest.tar.xz
 
