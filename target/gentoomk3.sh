@@ -25,7 +25,7 @@ fi
 
 emerge --sync
 emerge --oneshot sys-apps/portage
-emerge --ask --verbose --update --deep --changed-use @world
+emerge --verbose --update --deep --changed-use @world
 emerge --depclean
 
 echo dev-util/catalyst >> /etc/portage/package.accept_keywords
