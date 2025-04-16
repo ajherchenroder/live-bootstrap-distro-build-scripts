@@ -77,15 +77,15 @@ cp /var/tmp/catalyst/snapshots/gentoo-*.sqfs /var/tmp/catalyst/snapshots/gentoo-
 #mksquashfs /squashfs-root /var/tmp/catalyst/snapshots/gentoo-20250101.sqfs
 #rm -Rf /squashfs-root
 
-if test "$REMOTE" = "local"; then 
+#if test "$REMOTE" = "local"; then 
    echo "local"
    wget http://192.168.2.102/gentoo/releng.tar.gz
    tar -xvf releng.tar.gz
-else
-   echo "remote"
-   git clone https://anongit.gentoo.org/git/proj/releng.git
-   git -C releng checkout 'master@{2025-01-01}'
-fi
+#else
+#   echo "remote"
+#   git clone https://anongit.gentoo.org/git/proj/releng.git
+#   git -C releng checkout 'master@{2025-01-01}'
+#fi
 
 #git -C releng checkout 'master@{2025-01-01}'
 #systemD is broken in this snapshot
