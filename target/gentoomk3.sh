@@ -14,8 +14,9 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
-MEM=$(free -h | awk '/Mem\:/ { print $2 }') 
+MEM=$(free -h | awk '/Mem/ { print $2 }') 
 MEM="${MEM//G/}"
+MEM="${MEM//i/}"
 MAXCOREM=$(echo "scale=0; $MEM / 4" | bc)
 if [ $(nproc) -ge $MAXCOREM ]; then
    MAXCORE=$MAXCOREM
@@ -96,9 +97,9 @@ sed -e 's|@TIMESTAMP@|20250101|g' \
     releng/releases/specs/amd64/stage1-openrc-23.spec \
     releng/releases/specs/amd64/stage3-openrc-23.spec \
     releng/releases/specs/amd64/installcd-stage1.spec \
-    releng/releases/specs/amd64/installcd-stage2-minimal.spec
+    releng/releases/specs/amd64/installcd-stage2-minimal.spec\
     releng/releases/specs/amd64/stage1-systemd-23.spec \
-    releng/releases/specs/amd64/stage3-systemd-23.spec \
+    releng/releases/specs/amd64/stage3-systemd-23.spec 
 #raise the job count to equal the max core count for the size of the memory
 sed -i 's/# jobs = 4/jobs = '$MAXCORE'/g' /etc/catalyst/catalyst.conf
 # remove net-proxy/tsocks and dante from installcd specs do to GCC 14 compile issues
