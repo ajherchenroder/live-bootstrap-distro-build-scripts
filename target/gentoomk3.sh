@@ -118,5 +118,5 @@ mkdir /output
 cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-20250101.tar.xz /output/stage3-amd64-openrc-latest.tar.xz 
 #cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-openrc-latest.tar.xz /output
 #cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-latest.tar.xz /output
-cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20250101.tar.xz /output/stage3-amd64-openrc-latest.tar.xz 
+cp /var/tmp/catalyst/builds/23.0-default/stage3-amd64-systemd-20250101.tar.xz /output/stage3-amd64-systemd-latest.tar.xz 
 cp /var/tmp/catalyst/builds/23.0-default/install-amd64-minimal-20250101.iso /output
