@@ -106,6 +106,9 @@ sed -i 's/# jobs = 4/jobs = '$MAXCORE'/g' /etc/catalyst/catalyst.conf
 sed -i '/socks5/d' /releng/releases/specs/amd64/installcd-stage1.spec
 sed -i '/tsocks/d' /releng/releases/specs/amd64/installcd-stage1.spec
 sed -i '/dante/d' /releng/releases/specs/amd64/installcd-stage1.spec
+# remove items from installcd specs do to python incompatibility.
+sed -i '/xen-tools/d' /releng/releases/specs/amd64/installcd-stage1.spec
+sed -i '/libsmbios/d' /releng/releases/specs/amd64/installcd-stage1.spec
 
 catalyst -f /releng/releases/specs/amd64/stage1-openrc-23.spec
 catalyst -f /releng/releases/specs/amd64/stage3-openrc-23.spec
