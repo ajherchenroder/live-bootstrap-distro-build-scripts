@@ -26,11 +26,9 @@ done
 if test -f /steps/lfs/lfsdisktouse
 then 
   USEPART=$(</steps/lfs/lfsdisktouse)
-fi
 elif test -f /lfsdisktouse
 then 
   USEPART=$(</lfsdisktouse)
-fi
 else 
   /usr/sbin/fdisk -l | grep /dev
   read -p "Enter the partition to build Gentoo on (sdx) -> " USEPART2
