@@ -23,12 +23,18 @@ do
         L) REMOTE="-L";; #download from the local repositories
      esac
 done
-if ! test -f /steps/lfs/lfsdisktouse
+if test -f /steps/lfs/lfsdisktouse
 then 
+  USEPART=$(</steps/lfs/lfsdisktouse)
+fi
+elif test -f /lfsdisktouse
+then 
+  USEPART=$(</lfsdisktouse)
+fi
+else 
   /usr/sbin/fdisk -l | grep /dev
-  read -p "Enter the partition to build Gentoo on (sdxx) -> " USEPART
-else
-  USEPART=$(</steps/lfs/lfsdisktouse) 
+  read -p "Enter the partition to build Gentoo on (sdx) -> " USEPART2
+  USEPART=/dev/$USEPART2
 fi
 if ! test -d /gentoo 
 then 
