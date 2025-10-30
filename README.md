@@ -6,11 +6,11 @@ https://github.com/ajherchenroder/live-bootstrap-with-lfs
 The intent of these scripts is to build install media for the distro in question in a live-bootstrap environment built from source. Then the distro can be installed as normal using their internal tool set.   
 
 Builds work in progress:
-Debian
+Gentoo Install Media
 
 working:
 Netbsd
-Gentoo Install Media
+
 
 To Do:
 Debian
@@ -20,6 +20,7 @@ Proxmox
 On Hold:
 Freebsd
 Gentoo Prefix (upstream Prefix broken)
+Gentoo Install Media (broken with current version of livebootstrap)
 
 Netbsd notes:
 You will need a fourth partition in order to use this script. You will also need an additional USB stick or cd/dvd burner to install the final media to. I have used a 128GB USB stick to perform the build on and an additional 64 GB stick for the final Netbsd install media.
