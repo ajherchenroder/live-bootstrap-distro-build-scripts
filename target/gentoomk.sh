@@ -153,6 +153,7 @@ sys-devel/binutils-config
 sys-devel/gcc-config
 sys-devel/gnuconfig
 virtual/pkgconfig
+sys-kernel/linux-headers
 EOF
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
