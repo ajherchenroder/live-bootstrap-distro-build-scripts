@@ -30,17 +30,17 @@ done
 mkdir -p /var/cache/distfiles; cd /var/cache/distfiles
 if test "$REMOTE" = "local"; then 
    echo "local"
-   curl -LO http://192.168.2.102/gentoo/portage-3.0.66.1.tar.bz2
+   curl -LO http://192.168.2.102/gentoo/portage-3.0.69.3.tar.gz
    #curl -LO http://192.168.2.102/gentoo/gentoo-20250101.xz.sqfs
-   curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
+   curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20251028.xz.sqfs
    curl -LO http://192.168.2.102/gentoo/squashfs-tools-4.6.1.tar.gz
 else
    echo "remote"
 #curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.65.tar.bz2
 #curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20240801.xz.sqfs
-  curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.66.1.tar.bz2
+  curl -LO http://gitweb.gentoo.org/proj/portage.git/snapshot/portage-3.0.69.3.tar.gz
 #curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250109.xz.sqfs
-  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20250101.xz.sqfs
+  curl -LO http://distfiles.gentoo.org/snapshots/squashfs/gentoo-20251028.xz.sqfs
   curl -LO https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1/squashfs-tools-4.6.1.tar.gz
 fi
 
@@ -55,17 +55,17 @@ rm -rf squashfs-tools-4.6.1
 
 # Unpack the ::gentoo tree
 #unsquashfs /var/cache/distfiles/gentoo-20250109.xz.sqfs
-unsquashfs /var/cache/distfiles/gentoo-20250101.xz.sqfs
+unsquashfs /var/cache/distfiles/gentoo-20251028.xz.sqfs
 mkdir -p /var/db/repos
 rm -rf /var/db/repos/gentoo
 mv squashfs-root /var/db/repos/gentoo
 
 # Install temporary copy of portage
-tar xf /var/cache/distfiles/portage-3.0.66.1.tar.bz2
-cd portage-3.0.66.1
+tar xf /var/cache/distfiles/portage-3.0.69.3.tar.gz
+cd portage-3.0.69.3
 #patch -p1 -i ../portage.patch 
 cd ..
-ln -sf portage-3.0.66.1 portage 
+ln -sf portage-3.0.69.3 portage 
 
 # Add portage user/group
 echo 'portage:x:250:250:portage:/var/tmp/portage:/bin/false' >> /etc/passwd
@@ -78,18 +78,18 @@ FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L 
 RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
-ARCH="x86"
+ARCH="amd64"
 ABI="$ARCH"
 DEFAULT_ABI="$ARCH"
 ACCEPT_KEYWORDS="$ARCH"
-CHOST="i386-unknown-linux-musl"
+CHOST="amd64-lfs-linux-gnu"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
 IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64"  # dev-libs/gmp
 IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib
 USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
-USE="kernel_linux elibc_musl build"
+USE="kernel_linux build"
 SKIP_KERNEL_CHECK=y  # linux-info.eclass
 EOF
 cat > /etc/portage/package.use << 'EOF'
@@ -105,11 +105,15 @@ echo '*/*' > /etc/portage/package.mask
 cat > /etc/portage/package.unmask << 'EOF'
 app-alternatives/bzip2
 app-alternatives/ninja
-app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2
+app-alternatives/lzip
+app-alternatives/awk
+app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2 app-arch/bzip2
 app-arch/lzip
 app-arch/unzip
 app-misc/pax-utils
 app-portage/elt-patches
+dev-build/autoconf-archive #
+dev-build/libtool #
 dev-build/autoconf
 dev-build/autoconf-wrapper  # replaces files
 dev-build/automake  # replaces files
@@ -123,6 +127,9 @@ dev-lang/python-exec  # replaces files
 dev-lang/python-exec-conf
 dev-libs/expat
 dev-libs/mpdecimal
+dev-libs/popt
+dev-libs/gmp
+app-misc/mime-types
 dev-python/flit-core
 dev-python/gentoo-common
 dev-python/gpep517
@@ -140,6 +147,7 @@ net-misc/rsync
 sys-apps/findutils  # replaces files, portage requires 4.9, live-bootstrap provides 4.2.33
 sys-apps/gentoo-functions
 sys-apps/portage
+sys-apps/gawk
 sys-devel/binutils-config
 sys-devel/gcc-config
 sys-devel/gnuconfig
@@ -147,7 +155,7 @@ virtual/pkgconfig
 EOF
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
-app-alternatives/awk-0
+#app-alternatives/awk-0
 app-alternatives/gzip-0
 app-alternatives/lex-0
 app-alternatives/yacc-0
@@ -156,8 +164,8 @@ app-arch/xz-utils-5.4.0
 app-arch/zstd-0
 app-crypt/libb2-0
 app-crypt/libbz2-0
-dev-build/autoconf-archive-0
-dev-build/libtool-2.4.7-r3
+#dev-build/autoconf-archive-0
+#dev-build/libtool-2.4.7-r3
 dev-lang/perl-5.38.2-r3
 dev-libs/libffi-0
 dev-libs/popt-1.5
@@ -189,6 +197,15 @@ if [ ! -h /bin/bzip2 ]; then
     mv /bin/bzip2 /bin/bzip2-reference
     ln -s bzip2-reference /bin/bzip2
 fi
+# Turn /bin/lzip into a symlink to avoid failures in app-arch/lzip
+if [ ! -h /bin/lzip ]; then
+    mv /bin/lzip /bin/lzip-reference
+    ln -s lzip-reference /bin/lzip
+fi
+# add a gtar symlink if required 
+if [ ! -h /bin/gtar ]; then
+    ln -s /bin/tar /bin/gtar
+fi
 
 # For some reason, make hangs when used in parallel, rebuild it first.
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
@@ -200,6 +217,7 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
 emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
 emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
 emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+emerge -D1n sys-kernel/linux-headers
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
@@ -248,7 +266,7 @@ for tool in gcc g++; do
 rm -f /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
 cat > /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool << EOF
 #!/bin/sh
-exec /cross/usr/i386-unknown-linux-musl/x86_64-bootstrap-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
+exec /cross/usr/x86_64-unknown-linux-gnu/x86_64-bootstrap-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
 EOF
 chmod +x /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
 done
@@ -270,7 +288,7 @@ FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L 
 RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
-CBUILD="i386-unknown-linux-musl"
+CBUILD="x86_64-unknown-linux-gnu"
 CHOST="x86_64-bootstrap-linux-gnu"
 CFLAGS_x86="$CFLAGS_x86 -msse"  # https://bugs.gentoo.org/937637
 CONFIG_SITE="$PORTAGE_CONFIGROOT/etc/portage/config.site"

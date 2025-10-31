@@ -14,7 +14,7 @@
 #
 #The above copyright notice and this permission notice shall be included in all
 #copies or substantial portions of the Software.
-make sure all of the partitions are properly monted before starting
+#make sure all of the partitions are properly monted before starting
 ./steps/lfs/lfs-remount.sh
 # parse the flags
 while getopts L flag; 
