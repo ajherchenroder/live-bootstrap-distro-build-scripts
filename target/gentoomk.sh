@@ -129,6 +129,7 @@ dev-libs/expat
 dev-libs/mpdecimal
 dev-libs/popt
 dev-libs/gmp
+dev-libs/mpfr
 app-misc/mime-types
 dev-python/flit-core
 dev-python/gentoo-common
