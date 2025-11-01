@@ -280,7 +280,7 @@ for tool in gcc g++; do
 rm -f /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
 cat > /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool << EOF
 #!/bin/sh
-exec /cross/usr/x86_64-unknown-linux-gnu/x86_64-bootstrap-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
+exec /cross/usr/x86_64-unknown-linux-gnu/x86_64-unknown-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
 EOF
 chmod +x /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
 done
