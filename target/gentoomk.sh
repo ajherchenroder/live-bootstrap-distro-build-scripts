@@ -262,6 +262,14 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
 
+#stop here for testing
+exit 0
+
+
+
+
+
+
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
 *link:
