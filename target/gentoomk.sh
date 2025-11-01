@@ -325,10 +325,9 @@ EOF
 # Cross-compile a basic system
 pkgs_build="$(PORTAGE_CONFIGROOT=/gentoo.cfg python3 -c 'import portage
 print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.build"%x)for x in portage.settings.profiles],incremental=1))')"
-PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
-    sys-apps/baselayout \
-    sys-kernel/linux-headers \
-    sys-libs/glibc 
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-apps/baselayout 
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-kernel/linux-headers
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-libs/glibc 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 
