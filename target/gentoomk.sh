@@ -261,9 +261,10 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -O1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-apps/gawk
 
 #stop here for testing
-exit 0
+
 
 
 
@@ -338,7 +339,7 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-kern
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-libs/glibc 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
-
+exit 0
 
 
 
@@ -352,7 +353,7 @@ ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /gentoo/etc/p
 echo 'nameserver 1.1.1.1' > /gentoo/etc/resolv.conf
 echo 'C.UTF8 UTF-8' > /gentoo/etc/locale.gen
 
-exit 0
+
 
 # Copy ::gentoo repo and distfiles
 rsync -aP /var/db/repos/ /gentoo/var/db/repos
