@@ -154,6 +154,7 @@ sys-devel/gcc-config
 sys-devel/gnuconfig
 virtual/pkgconfig
 sys-kernel/linux-headers
+sys-kernel/gentoo-kernel
 EOF
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
@@ -219,7 +220,9 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
 emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
 emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
 emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+emerge -D1n sys-apps/gawk
 emerge -D1n sys-kernel/linux-headers
+emerge -D1n sys-kernel/gentoo-kernel
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
@@ -341,6 +344,8 @@ mkdir -p /gentoo/etc/portage
 ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /gentoo/etc/portage/make.profile
 echo 'nameserver 1.1.1.1' > /gentoo/etc/resolv.conf
 echo 'C.UTF8 UTF-8' > /gentoo/etc/locale.gen
+
+exit 0
 
 # Copy ::gentoo repo and distfiles
 rsync -aP /var/db/repos/ /gentoo/var/db/repos
