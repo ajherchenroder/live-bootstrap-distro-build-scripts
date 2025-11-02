@@ -99,6 +99,10 @@ grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
     /var/db/repos/gentoo/profiles/base/make.defaults \
     >> /etc/portage/make.profile/make.defaults
 
+cat > /etc/portage/package.unmask << 'EOF'
+*.*
+EOF
+
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
 #app-alternatives/awk-0
