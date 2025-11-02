@@ -114,7 +114,7 @@ app-alternatives/gzip-0
 app-alternatives/lex-0
 app-alternatives/yacc-0
 app-arch/tar-1.27
-app-arch/xz-utils-5.4.0
+app-arch/xz-utils-5.8.1-r1
 app-arch/zstd-0
 app-crypt/libb2-0
 app-crypt/libbz2-0
@@ -166,7 +166,7 @@ ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
 
 
 # For some reason, make hangs when used in parallel, rebuild it first.
-MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make app-arch/xz-utils
+MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make 
 
 # Upgrade python and install portage
 ./portage/bin/emerge -D50n sys-apps/portage
