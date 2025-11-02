@@ -224,6 +224,15 @@ emerge -D1n sys-apps/gawk
 emerge -D1n sys-kernel/linux-headers
 emerge -D1n sys-kernel/gentoo-kernel
 
+exit 0
+
+
+
+
+
+
+
+
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
 PATH=/cross/usr/bin:/usr/bin
