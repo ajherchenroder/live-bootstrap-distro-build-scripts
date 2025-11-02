@@ -100,7 +100,7 @@ grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
     >> /etc/portage/make.profile/make.defaults
 
 cat > /etc/portage/package.unmask << 'EOF'
-*.*
+*/*
 EOF
 
 cat > /etc/portage/package.mask << 'EOF'
