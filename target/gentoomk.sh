@@ -103,6 +103,11 @@ cat > /etc/portage/package.unmask << 'EOF'
 *.*
 EOF
 
+cat > /etc/portage/package.mask << 'EOF'
+sys-apps/util-linux
+EOF
+
+
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
 #app-alternatives/awk-0
