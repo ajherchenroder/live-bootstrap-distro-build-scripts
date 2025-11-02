@@ -105,11 +105,15 @@ echo '*/*' > /etc/portage/package.mask
 cat > /etc/portage/package.unmask << 'EOF'
 app-alternatives/bzip2
 app-alternatives/ninja
-app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2
+app-alternatives/lzip
+app-alternatives/awk
+app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2 app-arch/bzip2
 app-arch/lzip
 app-arch/unzip
 app-misc/pax-utils
 app-portage/elt-patches
+dev-build/autoconf-archive #
+dev-build/libtool #
 dev-build/autoconf
 dev-build/autoconf-wrapper  # replaces files
 dev-build/automake  # replaces files
@@ -123,6 +127,10 @@ dev-lang/python-exec  # replaces files
 dev-lang/python-exec-conf
 dev-libs/expat
 dev-libs/mpdecimal
+dev-libs/popt
+dev-libs/gmp
+dev-libs/mpfr
+app-misc/mime-types
 dev-python/flit-core
 dev-python/gentoo-common
 dev-python/gpep517
@@ -140,14 +148,17 @@ net-misc/rsync
 sys-apps/findutils  # replaces files, portage requires 4.9, live-bootstrap provides 4.2.33
 sys-apps/gentoo-functions
 sys-apps/portage
+sys-apps/gawk
 sys-devel/binutils-config
 sys-devel/gcc-config
 sys-devel/gnuconfig
 virtual/pkgconfig
+sys-kernel/linux-headers
+sys-kernel/gentoo-kernel
 EOF
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
-app-alternatives/awk-0
+#app-alternatives/awk-0
 app-alternatives/gzip-0
 app-alternatives/lex-0
 app-alternatives/yacc-0
@@ -156,8 +167,8 @@ app-arch/xz-utils-5.4.0
 app-arch/zstd-0
 app-crypt/libb2-0
 app-crypt/libbz2-0
-dev-build/autoconf-archive-0
-dev-build/libtool-2.4.7-r3
+#dev-build/autoconf-archive-0
+#dev-build/libtool-2.4.7-r3
 dev-lang/perl-5.38.2-r3
 dev-libs/libffi-0
 dev-libs/popt-1.5
@@ -189,6 +200,15 @@ if [ ! -h /bin/bzip2 ]; then
     mv /bin/bzip2 /bin/bzip2-reference
     ln -s bzip2-reference /bin/bzip2
 fi
+# Turn /bin/lzip into a symlink to avoid failures in app-arch/lzip
+if [ ! -h /bin/lzip ]; then
+    mv /bin/lzip /bin/lzip-reference
+    ln -s lzip-reference /bin/lzip
+fi
+# add a gtar symlink if required 
+if [ ! -h /bin/gtar ]; then
+    ln -s /bin/tar /bin/gtar
+fi
 
 # For some reason, make hangs when used in parallel, rebuild it first.
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
@@ -200,6 +220,9 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
 emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
 emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
 emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+emerge -D1n sys-apps/gawk
+emerge -D1n sys-kernel/linux-headers
+emerge -D1n sys-kernel/gentoo-kernel
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
@@ -238,6 +261,15 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -O1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-apps/gawk
+
+#stop here for testing
+
+
+
+
+
+
 
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
@@ -302,10 +334,9 @@ EOF
 # Cross-compile a basic system
 pkgs_build="$(PORTAGE_CONFIGROOT=/gentoo.cfg python3 -c 'import portage
 print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.build"%x)for x in portage.settings.profiles],incremental=1))')"
-PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
-    sys-apps/baselayout \
-    sys-kernel/linux-headers \
-    sys-libs/glibc 
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-apps/baselayout 
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-kernel/linux-headers
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n sys-libs/glibc 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 exit 0
@@ -321,6 +352,8 @@ mkdir -p /gentoo/etc/portage
 ln -sf ../../var/db/repos/gentoo/profiles/default/linux/amd64/23.0 /gentoo/etc/portage/make.profile
 echo 'nameserver 1.1.1.1' > /gentoo/etc/resolv.conf
 echo 'C.UTF8 UTF-8' > /gentoo/etc/locale.gen
+
+
 
 # Copy ::gentoo repo and distfiles
 rsync -aP /var/db/repos/ /gentoo/var/db/repos
