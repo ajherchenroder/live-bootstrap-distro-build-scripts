@@ -99,63 +99,6 @@ grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
     /var/db/repos/gentoo/profiles/base/make.defaults \
     >> /etc/portage/make.profile/make.defaults
 
-# Specify what packages may or may not be installed in the live-bootstrap system
-mkdir -p /etc/portage/profile
-echo '*/*' > /etc/portage/package.mask
-cat > /etc/portage/package.unmask << 'EOF'
-app-alternatives/bzip2
-app-alternatives/ninja
-app-alternatives/lzip
-app-alternatives/awk
-app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2 app-arch/bzip2
-app-arch/lzip
-app-arch/unzip
-app-misc/pax-utils
-app-portage/elt-patches
-dev-build/autoconf-archive #
-dev-build/libtool #
-dev-build/autoconf
-dev-build/autoconf-wrapper  # replaces files
-dev-build/automake  # replaces files
-dev-build/automake-wrapper  # replaces files
-dev-build/make  # replaces files
-dev-build/meson
-dev-build/meson-format-array
-dev-build/ninja
-dev-lang/python
-dev-lang/python-exec  # replaces files
-dev-lang/python-exec-conf
-dev-libs/expat
-dev-libs/mpdecimal
-dev-libs/popt
-dev-libs/gmp
-dev-libs/mpfr
-app-misc/mime-types
-dev-python/flit-core
-dev-python/gentoo-common
-dev-python/gpep517
-dev-python/installer
-dev-python/jaraco-collections
-dev-python/jaraco-context
-dev-python/jaraco-functools
-dev-python/jaraco-text
-dev-python/more-itertools
-dev-python/packaging
-dev-python/setuptools
-dev-python/wheel
-dev-util/pkgconf  # replaces files, dev-lang/python ebuild requires "--keep-system-libs" option when cross-compiling
-net-misc/rsync
-sys-apps/findutils  # replaces files, portage requires 4.9, live-bootstrap provides 4.2.33
-sys-apps/gentoo-functions
-sys-apps/portage
-sys-apps/gawk
-sys-devel/binutils-config
-sys-devel/gcc-config
-sys-devel/gnuconfig
-virtual/pkgconfig
-sys-kernel/linux-headers
-sys-kernel/gentoo-kernel
-EOF
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
 #app-alternatives/awk-0
@@ -210,6 +153,10 @@ if [ ! -h /bin/gtar ]; then
     ln -s /bin/tar /bin/gtar
 fi
 
+#symlink existing GCC to amd64-lfs-linux-gnu-cc
+ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
+
+
 # For some reason, make hangs when used in parallel, rebuild it first.
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
 
@@ -221,8 +168,9 @@ emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
 emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
 emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
 emerge -D1n sys-apps/gawk
-emerge -D1n sys-kernel/linux-headers
-emerge -D1n sys-kernel/gentoo-kernel
+emerge -D1n sys-devel/crossdev
+USE='ssl' emerge -D1n net-misc/curl
+emerge -D1n app-eselect/eselect-repository
 
 exit 0
 
