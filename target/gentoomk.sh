@@ -166,7 +166,7 @@ ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
 
 
 # For some reason, make hangs when used in parallel, rebuild it first.
-MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
+MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make app-arch/xz-utils
 
 # Upgrade python and install portage
 ./portage/bin/emerge -D50n sys-apps/portage
