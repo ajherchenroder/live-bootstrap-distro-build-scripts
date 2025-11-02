@@ -107,7 +107,7 @@ cat > /etc/portage/package.mask << 'EOF'
 EOF
 
 
-cat > /etc/portage/profile/package.provided << 'EOF'
+cat > /etc/portage/package.provided << 'EOF'
 acct-user/portage-0
 #app-alternatives/awk-0
 app-alternatives/gzip-0
