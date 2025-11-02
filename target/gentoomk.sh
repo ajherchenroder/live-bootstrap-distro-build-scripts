@@ -104,7 +104,6 @@ cat > /etc/portage/package.unmask << 'EOF'
 EOF
 
 cat > /etc/portage/package.mask << 'EOF'
-sys-apps/util-linux
 EOF
 
 
@@ -134,7 +133,7 @@ sys-apps/locale-gen-0
 sys-apps/sandbox-2.2
 sys-apps/sed-4.0.5
 sys-apps/texinfo-7.1
-sys-apps/util-linux-0
+sys-apps/util-linux-9999
 sys-devel/binutils-2.27
 sys-devel/bison-3.5.4
 sys-devel/flex-2.5.4
