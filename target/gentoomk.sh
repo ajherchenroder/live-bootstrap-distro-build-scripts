@@ -89,7 +89,7 @@ IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
 IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64"  # dev-libs/gmp
 IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib
 USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
-USE="kernel_linux elibc_musl build"
+USE="kernel_linux elibc_musl build pam"
 SKIP_KERNEL_CHECK=y  # linux-info.eclass
 EOF
 cat > /etc/portage/package.use << 'EOF'
@@ -133,7 +133,7 @@ sys-apps/locale-gen-0
 sys-apps/sandbox-2.2
 sys-apps/sed-4.0.5
 sys-apps/texinfo-7.1
-sys-apps/util-linux-9999
+sys-apps/util-linux-0
 sys-devel/binutils-2.27
 sys-devel/bison-3.5.4
 sys-devel/flex-2.5.4
