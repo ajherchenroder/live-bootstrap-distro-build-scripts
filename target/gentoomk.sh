@@ -169,7 +169,7 @@ ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make 
 
 # Upgrade python and install portage
-./portage/bin/emerge -D50n sys-apps/portage
+./portage/bin/emerge -Dn sys-apps/portage
 
 # Install BDEPENDs for cross-toolchain
 emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
