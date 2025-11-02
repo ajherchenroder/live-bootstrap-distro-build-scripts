@@ -78,11 +78,11 @@ FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L 
 RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
-ARCH="x86"
+ARCH="amd64"
 ABI="$ARCH"
 DEFAULT_ABI="$ARCH"
 ACCEPT_KEYWORDS="$ARCH"
-CHOST="i386-unknown-linux-musl"
+CHOST="amd64-lfs-linux-gnu"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
@@ -280,7 +280,7 @@ for tool in gcc g++; do
 rm -f /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
 cat > /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool << EOF
 #!/bin/sh
-exec /cross/usr/i386-unknown-linux-musl/x86_64-bootstrap-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
+exec /cross/usr/x86_64-unknown-linux-gnu/x86_64-bootstrap-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
 EOF
 chmod +x /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
 done
@@ -302,7 +302,7 @@ FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L 
 RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
-CBUILD="i386-unknown-linux-musl"
+CBUILD="x86_64-unknown-linux-gnu"
 CHOST="x86_64-bootstrap-linux-gnu"
 CFLAGS_x86="$CFLAGS_x86 -msse"  # https://bugs.gentoo.org/937637
 CONFIG_SITE="$PORTAGE_CONFIGROOT/etc/portage/config.site"
