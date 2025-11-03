@@ -49,6 +49,6 @@ cp gentoomk2.sh /gentoo
 cp gentoomk3.sh /gentoo
 cd /gentoo
 ./gentoomk.sh "$REMOTE"
-chroot /gentoo /bin/bash --login gentoomk2.sh "$REMOTE"
+#chroot /gentoo /bin/bash --login gentoomk2.sh "$REMOTE"
 
 
