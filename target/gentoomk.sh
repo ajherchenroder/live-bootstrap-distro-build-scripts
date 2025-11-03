@@ -85,11 +85,11 @@ ACCEPT_KEYWORDS="$ARCH"
 CHOST="amd64-lfs-linux-gnu"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
-IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
+IUSE_IMPLICIT="kernel_linux elibc_glibc prefix prefix-guest"
 IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64"  # dev-libs/gmp
 IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib
 USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
-USE="kernel_linux elibc_musl build pam"
+USE="kernel_linux build pam"
 SKIP_KERNEL_CHECK=y  # linux-info.eclass
 EOF
 cat > /etc/portage/package.use << 'EOF'
