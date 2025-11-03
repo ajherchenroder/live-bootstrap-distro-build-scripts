@@ -116,7 +116,7 @@ app-alternatives/yacc-0
 app-arch/tar-1.27
 app-arch/xz-utils-5.8.1-r1
 app-arch/zstd-0
-app-crypt/libb2-0
+#app-crypt/libb2-0
 app-crypt/libbz2-0
 #dev-build/autoconf-archive-0
 #dev-build/libtool-2.4.7-r3
