@@ -180,6 +180,7 @@ emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
 emerge -D1n sys-apps/gawk
 emerge -D1n sys-devel/crossdev
 USE='ssl' emerge -D1n net-misc/curl
+emerge -D1n app-crypt/libb2
 emerge -D1n app-eselect/eselect-repository
 
 
