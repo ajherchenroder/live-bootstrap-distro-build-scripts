@@ -127,6 +127,7 @@ dev-python/platformdirs-4.2.2
 dev-python/setuptools-scm-0
 dev-python/trove-classifiers-2024.10.16
 dev-util/re2c-0
+sys-apps/coreutils-9.7
 sys-apps/baselayout-2.9
 sys-apps/help2man-0
 sys-apps/locale-gen-0
