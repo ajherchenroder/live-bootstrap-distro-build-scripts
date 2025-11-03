@@ -170,8 +170,8 @@ ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make 
 
 # Upgrade python and install portage
-FEATURES="-collision-detect" USE='elibc_glibc' ./portage/bin/emerge -Dn sys-apps/portage
-FEATURES="-collision-detect" USE='elibc_glibc' ./portage/bin/emerge -Dn sys-apps/portage
+FEATURES="-collision-detect" USE='elibc_musl' ./portage/bin/emerge -Dn sys-apps/portage
+FEATURES="-collision-detect" USE='elibc_glibc' ./portage/bin/emerge -D sys-apps/portage
 
 # Install BDEPENDs for cross-toolchain
 emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
