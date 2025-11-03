@@ -86,7 +86,7 @@ CHOST="amd64-lfs-linux-gnu"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux prefix prefix-guest elibc_glibc"
-IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd6464 elibc_glibc -elibc_musl"  # dev-libs/gmp
+IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64 elibc_musl"  # dev-libs/gmp
 # IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib
 USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
 USE="kernel_linux build pam"
@@ -170,8 +170,8 @@ ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make 
 
 # Upgrade python and install portage
-FEATURES="-collision-detect" IUSE='elibc_musl' ./portage/bin/emerge -Dn sys-apps/portage
-FEATURES="-collision-detect" IUSE='elibc_glibc' ./portage/bin/emerge -D sys-apps/portage
+FEATURES="-collision-detect"  ./portage/bin/emerge -Dn sys-apps/portage
+FEATURES="-collision-detect"  ./portage/bin/emerge -D sys-apps/portage
 
 # Install BDEPENDs for cross-toolchain
 emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
