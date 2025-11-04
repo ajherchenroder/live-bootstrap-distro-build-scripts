@@ -165,7 +165,7 @@ if [ ! -h /bin/gtar ]; then
 fi
 
 #symlink existing GCC to amd64-lfs-linux-gnu-cc
-ln -s /bin/gcc /bin/amd64-lfs-linux-gnu-cc
+ln -s /bin/gcc /bin/x86_64-unknown-linux-gnu
 
 
 # For some reason, make hangs when used in parallel, rebuild it first.
