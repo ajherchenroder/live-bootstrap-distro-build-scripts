@@ -82,7 +82,7 @@ ARCH="amd64"
 ABI="$ARCH"
 DEFAULT_ABI="$ARCH"
 ACCEPT_KEYWORDS="$ARCH"
-CHOST="amd64-lfs-linux-gnu"
+CHOST="x86_64-unknown-linux-gnu"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux prefix prefix-guest elibc_glibc"
@@ -206,7 +206,7 @@ cat > /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf << 'EOF'
 FEATURES="-news -usersandbox -pid-sandbox -parallel-fetch -collision-protect -sandbox noman noinfo nodoc"
 
 CHOST=x86_64-unknown-linux-gnu
-CBUILD=amd64-lfs-linux-gnu
+CBUILD=x86_64-unknown-linux-gnu
 
 ROOT=/usr/${CHOST}/
 
@@ -228,9 +228,9 @@ MULTILIB_ABIS="amd64 x86"
 EOF
 
 
-#USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
-#USE=-pam x86_64-unknown-linux-gnu-emerge -v1 sys-libs/pam
-#x86_64-unknown-linux-gnu-emerge -v1 @system
+#USE=build x86_64-unknown-linux-gnu-emerge -vn baselayout
+#USE=-pam x86_64-unknown-linux-gnu-emerge -vn sys-libs/pam
+#x86_64-unknown-linux-gnu-emerge -vn @system
 
 #USE=-nls x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
