@@ -196,10 +196,10 @@ echo "auto-sync = no" >> /etc/portage/repos.conf/eselect-repo.conf
 
 #spin up the cross toolchain
 
-crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu
-PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
-USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
-USE=-nls x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
+crossdev -S -s4 --ex-gcc --ex-gdb --target amd64-unknown-linux-gnu
+#PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
+#USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
+#USE=-nls x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
 #build the inital world on /gentoo
 #USE=build ROOT=/gentoo x86_64-unknown-linux-gnu-emerge -v1 baselayout
