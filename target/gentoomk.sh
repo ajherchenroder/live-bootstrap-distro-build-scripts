@@ -92,7 +92,8 @@ USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
 USE="kernel_linux build pam"
 SKIP_KERNEL_CHECK=y  # linux-info.eclass
 EOF
-cat > /etc/portage/package.use << 'EOF'
+mkdir /etc/portage/package.use
+cat > /etc/portage/package.use/files << 'EOF'
 dev-lang/python -ensurepip -ncurses -readline -sqlite -ssl
 EOF
 grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
@@ -103,7 +104,8 @@ cat > /etc/portage/package.unmask << 'EOF'
 */*
 EOF
 
-cat > /etc/portage/package.mask << 'EOF'
+mkdir /etc/portage/package.mask
+cat > /etc/portage/package.mask/files << 'EOF'
 EOF
 
 mkdir /etc/portage/profile
@@ -183,12 +185,28 @@ USE='ssl' emerge -D1n net-misc/curl
 emerge -D1n app-crypt/libb2
 emerge -D1n app-eselect/eselect-repository
 
+# setup and compile cross toolchain
+# make the crossdev repository
+eselect repository create crossdev
+echo "priority = 10" >> /etc/portage/repos.conf/eselect-repo.conf
+echo "masters = gentoo" >> /etc/portage/repos.conf/eselect-repo.conf
+echo "auto-sync = no" >> /etc/portage/repos.conf/eselect-repo.conf
+
+#spin up the cross toolchain
 
 
+crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu
 
 
+#build the inital world on /gentoo
+PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
+USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
+x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
 
+#USE=build ROOT=/gentoo x86_64-unknown-linux-gnu-emerge -v1 baselayout
+#USE=-nls ROOT=/gentoo x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
-
-
+#backup
+#ROOT=/gentoo SYSROOT=/gentoo x86_64-unknown-linux-gnu-emerge -O1n sys-apps/baselayout 
+#
