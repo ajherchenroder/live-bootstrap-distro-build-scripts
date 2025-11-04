@@ -95,6 +95,8 @@ EOF
 mkdir /etc/portage/package.use
 cat > /etc/portage/package.use/files << 'EOF'
 dev-lang/python -ensurepip -ncurses -readline -sqlite -ssl
+CFLAGS="-march=native"
+CXXFLAGS="${CFLAGS}
 EOF
 grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
     /var/db/repos/gentoo/profiles/base/make.defaults \
@@ -194,16 +196,12 @@ echo "auto-sync = no" >> /etc/portage/repos.conf/eselect-repo.conf
 
 #spin up the cross toolchain
 
-
 crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu
-
-
-#build the inital world on /gentoo
 PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
 USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
-x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
+USE=-nls x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
-
+#build the inital world on /gentoo
 #USE=build ROOT=/gentoo x86_64-unknown-linux-gnu-emerge -v1 baselayout
 #USE=-nls ROOT=/gentoo x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
