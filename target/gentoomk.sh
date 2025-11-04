@@ -203,7 +203,7 @@ echo "*/* $(/usr/x86_64-unknown-linux-gnu/usr/bin/cpuid2cpuflags)" > /usr/x86_64
 # set up a customized make.conf
 rm -Rf /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf
 cat > /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf << 'EOF'
-FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
+FEATURES="-news -usersandbox -pid-sandbox -parallel-fetch -collision-protect -sandbox noman noinfo nodoc"
 
 CHOST=x86_64-unknown-linux-gnu
 CBUILD=amd64-lfs-linux-gnu
@@ -217,15 +217,21 @@ USE="${ARCH}"
 CFLAGS="-march=native -O2 -pipe -fomit-frame-pointer"
 CXXFLAGS="${CFLAGS}"
 
-FEATURES="-collision-protect sandbox buildpkg noman noinfo nodoc"
 # Be sure we dont overwrite pkgs from another repo..
 PKGDIR=${ROOT}var/cache/binpkgs/
 PORTAGE_TMPDIR=${ROOT}tmp/
 
+LIBDIR_x86="lib"
+LIBDIR_amd64="lib64"
+DEFAULT_ABI="amd64"
+MULTILIB_ABIS="amd64 x86"
 EOF
 
 
 #USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
+#USE=-pam x86_64-unknown-linux-gnu-emerge -v1 sys-libs/pam
+#x86_64-unknown-linux-gnu-emerge -v1 @system
+
 #USE=-nls x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
 #build the inital world on /gentoo
