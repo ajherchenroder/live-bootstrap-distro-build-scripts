@@ -95,8 +95,6 @@ EOF
 mkdir /etc/portage/package.use
 cat > /etc/portage/package.use/files << 'EOF'
 dev-lang/python -ensurepip -ncurses -readline -sqlite -ssl
-CFLAGS="-march=native"
-CXXFLAGS="${CFLAGS}
 EOF
 grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
     /var/db/repos/gentoo/profiles/base/make.defaults \
