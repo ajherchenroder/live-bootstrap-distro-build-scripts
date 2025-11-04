@@ -194,8 +194,37 @@ echo "auto-sync = no" >> /etc/portage/repos.conf/eselect-repo.conf
 
 #spin up the cross toolchain
 
-crossdev -S -s4 --ex-gcc --ex-gdb --target amd64-unknown-linux-gnu
-#PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
+crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu
+PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
+x86_64-unknown-linux-gnu-emerge app-portage/cpuid2cpuflags
+mkdir /usr/x86_64-unknown-linux-gnu/etc/portage/package.use
+echo "*/* $(/usr/x86_64-unknown-linux-gnu/usr/bin/cpuid2cpuflags)" > /usr/x86_64-unknown-linux-gnu/etc/portage/package.use/00cpu-flags
+
+# set up a customized make.conf
+rm -Rf /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf
+cat > /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf << 'EOF'
+FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
+
+CHOST=x86_64-unknown-linux-gnu
+CBUILD=amd64-lfs-linux-gnu
+
+ROOT=/usr/${CHOST}/
+
+ACCEPT_KEYWORDS="${ARCH} ~${ARCH}"
+
+USE="${ARCH}"
+
+CFLAGS="-march=native -O2 -pipe -fomit-frame-pointer"
+CXXFLAGS="${CFLAGS}"
+
+FEATURES="-collision-protect sandbox buildpkg noman noinfo nodoc"
+# Be sure we dont overwrite pkgs from another repo..
+PKGDIR=${ROOT}var/cache/binpkgs/
+PORTAGE_TMPDIR=${ROOT}tmp/
+
+EOF
+
+
 #USE=build x86_64-unknown-linux-gnu-emerge -v1 baselayout
 #USE=-nls x86_64-unknown-linux-gnu-emerge -v1 sys-libs/glibc
 
