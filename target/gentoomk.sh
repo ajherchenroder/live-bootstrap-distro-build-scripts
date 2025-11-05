@@ -219,14 +219,16 @@ CFLAGS="-march=native -O2 -pipe -fomit-frame-pointer"
 CXXFLAGS="${CFLAGS}"
 
 # Be sure we dont overwrite pkgs from another repo..
-PKGDIR=${ROOT}var/cache/binpkgs/
-PORTAGE_TMPDIR=${ROOT}tmp/
+PKGDIR=mkdir /usr/x86_64-unknown-linux-gnu/var/cache/binpkgs/
+PORTAGE_TMPDIR=/usr/x86_64-unknown-linux-gnu/tmp
 
 LIBDIR_x86="lib"
 LIBDIR_amd64="lib64"
 DEFAULT_ABI="amd64"
 MULTILIB_ABIS="amd64 x86"
 EOF
+
+#set up temp directories
 
 
 #USE=build x86_64-unknown--linux-gnu-emerge -vn baselayout
