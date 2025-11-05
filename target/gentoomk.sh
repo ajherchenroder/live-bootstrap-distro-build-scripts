@@ -222,8 +222,8 @@ CXXFLAGS="${CFLAGS}"
 PKGDIR="/usr/x86_64-unknown-linux-gnu/var/cache/binpkgs/"
 PORTAGE_TMPDIR="/usr/x86_64-unknown-linux-gnu/tmp"
 
-LIBDIR_x86="lib"
-LIBDIR_amd64="lib64"
+LIBDIR_x86="/usr/x86_64-unknown-linux-gnu/usr/lib"
+LIBDIR_amd64="/usr/x86_64-unknown-linux-gnu/usr/lib64"
 DEFAULT_ABI="amd64"
 MULTILIB_ABIS="amd64 x86"
 EOF
