@@ -82,14 +82,14 @@ ARCH="amd64"
 ABI="$ARCH"
 DEFAULT_ABI="$ARCH"
 ACCEPT_KEYWORDS="$ARCH"
-CHOST="x86_64-unknown-linux-gnu"
+CHOST="x86_64-lfs-linux-gnu"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux prefix prefix-guest elibc_glibc"
 IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64 elibc_musl"  # dev-libs/gmp
 IUSE_IMPLICIT="$IUSE_IMPLICIT sparc riscv m68k alpha "  # sys-libs/zlib and ldev-libs/ibgcryp
 USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
-USE="kernel_linux build pam"
+USE="kernel_linux build pam -multilib"
 SKIP_KERNEL_CHECK=y  # linux-info.eclass
 EOF
 mkdir /etc/portage/package.use
@@ -165,8 +165,8 @@ if [ ! -h /bin/gtar ]; then
 fi
 
 #symlink existing GCC to amd64-lfs-linux-gnu-cc
-ln -s /bin/gcc /bin/x86_64-unknown-linux-gnu-cc
-ln -s /bin/gcc /bin/x86_64-unknown-linux-gnu-gcc
+ln -s /bin/gcc /bin/x86_64-lfs-linux-gnu-cc
+ln -s /bin/gcc /bin/x86_64-lfs-linux-gnu-gcc
 
 
 # For some reason, make hangs when used in parallel, rebuild it first.
@@ -207,7 +207,7 @@ cat > /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf << 'EOF'
 FEATURES="-news -usersandbox -pid-sandbox -parallel-fetch -collision-protect -sandbox noman noinfo nodoc"
 
 CTARGET=x86_64-unknown-linux-gnu
-CBUILD=x86_64-unknown-linux-gnu
+CBUILD=x86_64-lfs-linux-gnu
 
 ROOT=/usr/${CHOST}/
 
