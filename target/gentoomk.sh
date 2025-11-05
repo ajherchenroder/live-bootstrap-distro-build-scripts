@@ -202,31 +202,31 @@ mkdir /usr/x86_64-unknown-linux-gnu/etc/portage/package.use
 echo "*/* $(/usr/x86_64-unknown-linux-gnu/usr/bin/cpuid2cpuflags)" > /usr/x86_64-unknown-linux-gnu/etc/portage/package.use/00cpu-flags
 
 # set up a customized make.conf
-rm -Rf /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf
-cat > /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf << 'EOF'
-FEATURES="-news -usersandbox -pid-sandbox -parallel-fetch -collision-protect -sandbox noman noinfo nodoc"
+#rm -Rf /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf
+#cat > /usr/x86_64-unknown-linux-gnu/etc/portage/make.conf << 'EOF'
+#FEATURES="-news -usersandbox -pid-sandbox -parallel-fetch -collision-protect -sandbox noman noinfo nodoc"
 
-CTARGET=x86_64-unknown-linux-gnu
-CBUILD=x86_64-lfs-linux-gnu
+#CTARGET=x86_64-unknown-linux-gnu
+#CBUILD=x86_64-lfs-linux-gnu
 
-ROOT=/usr/${CHOST}/
+#ROOT=/usr/${CHOST}/
 
-ACCEPT_KEYWORDS="${ARCH} ~${ARCH}"
+#ACCEPT_KEYWORDS="${ARCH} ~${ARCH}"
 
-USE="${ARCH}"
+#USE="${ARCH}"
 
-CFLAGS="-march=native -O2 -pipe -fomit-frame-pointer"
-CXXFLAGS="${CFLAGS}"
+#CFLAGS="-march=native -O2 -pipe -fomit-frame-pointer"
+#CXXFLAGS="${CFLAGS}"
 
 # Be sure we dont overwrite pkgs from another repo..
-PKGDIR="/usr/x86_64-unknown-linux-gnu/var/cache/binpkgs/"
-PORTAGE_TMPDIR="/usr/x86_64-unknown-linux-gnu/tmp"
+#PKGDIR="/usr/x86_64-unknown-linux-gnu/var/cache/binpkgs/"
+#PORTAGE_TMPDIR="/usr/x86_64-unknown-linux-gnu/tmp"
 
-LIBDIR_x86="/usr/x86_64-unknown-linux-gnu/usr/lib"
-LIBDIR_amd64="/usr/x86_64-unknown-linux-gnu/usr/lib64"
-DEFAULT_ABI="amd64"
-MULTILIB_ABIS="amd64 x86"
-EOF
+#LIBDIR_x86="/usr/x86_64-unknown-linux-gnu/usr/lib"
+#LIBDIR_amd64="/usr/x86_64-unknown-linux-gnu/usr/lib64"
+#DEFAULT_ABI="amd64"
+#MULTILIB_ABIS="amd64 x86"
+#EOF
 
 #set up temp directories
 
