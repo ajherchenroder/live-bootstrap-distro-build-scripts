@@ -195,7 +195,8 @@ echo "auto-sync = no" >> /etc/portage/repos.conf/eselect-repo.conf
 
 #spin up the cross toolchain
 
-crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu
+
+crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu -ex-pkg sys-apps/baselayout -ex-pkg @system
 PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
 x86_64-unknown-linux-gnu-emerge app-portage/cpuid2cpuflags
 mkdir /usr/x86_64-unknown-linux-gnu/etc/portage/package.use
@@ -228,7 +229,14 @@ echo "*/* $(/usr/x86_64-unknown-linux-gnu/usr/bin/cpuid2cpuflags)" > /usr/x86_64
 #MULTILIB_ABIS="amd64 x86"
 #EOF
 
-#set up temp directories
+#Prereqs
+
+
+
+
+
+
+#stage 2 system
 
 
 #USE=build x86_64-unknown-linux-gnu-emerge -vn baselayout
