@@ -193,15 +193,17 @@ echo "priority = 10" >> /etc/portage/repos.conf/eselect-repo.conf
 echo "masters = gentoo" >> /etc/portage/repos.conf/eselect-repo.conf
 echo "auto-sync = no" >> /etc/portage/repos.conf/eselect-repo.conf
 
+
+
 #spin up the cross toolchain
 
 
-crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu --ex-pkg sys-apps/baselayout --ex-pkg sys-devel/gettext
-PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
-x86_64-unknown-linux-gnu-emerge app-portage/cpuid2cpuflags
-mkdir /usr/x86_64-unknown-linux-gnu/etc/portage/package.use
-echo "*/* $(/usr/x86_64-unknown-linux-gnu/usr/bin/cpuid2cpuflags)" > /usr/x86_64-unknown-linux-gnu/etc/portage/package.use/00cpu-flags
-ln -s /run /usr/x86_64-unknown-linux-gnu/run
+#crossdev -S -s4 --ex-gcc --ex-gdb --target x86_64-unknown-linux-gnu --ex-pkg sys-apps/baselayout --ex-pkg sys-devel/gettext
+#PORTAGE_CONFIGROOT=/usr/x86_64-unknown-linux-gnu eselect profile set default/linux/amd64/23.0
+#x86_64-unknown-linux-gnu-emerge app-portage/cpuid2cpuflags
+#mkdir /usr/x86_64-unknown-linux-gnu/etc/portage/package.use
+#echo "*/* $(/usr/x86_64-unknown-linux-gnu/usr/bin/cpuid2cpuflags)" > /usr/x86_64-unknown-linux-gnu/etc/portage/package.use/00cpu-flags
+#ln -s /run /usr/x86_64-unknown-linux-gnu/run
 
 
 
