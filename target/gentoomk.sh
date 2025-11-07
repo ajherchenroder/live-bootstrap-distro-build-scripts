@@ -186,8 +186,8 @@ EOF
 
 # Turn /bin/bzip2 into a symlink to avoid failures in app-arch/bzip2
 if [ ! -h /bin/bzip2 ]; then
-    mv /bin/bzip2 /bin/bzip2-reference
-    ln -s bzip2-reference /bin/bzip2
+    mv /bin/bzip2 /bin/bzip2-reference2
+    ln -s bzip2-reference2 /bin/bzip2
 fi
 
 # For some reason, make hangs when used in parallel, rebuild it first.
