@@ -195,7 +195,7 @@ fi
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip 
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
-CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/bzip2
+CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 
 exit 0
 
