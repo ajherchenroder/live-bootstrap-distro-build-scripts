@@ -195,6 +195,9 @@ fi
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip 
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
+CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/bzip2
+
+exit 0
 
 
 
@@ -206,7 +209,6 @@ CFLAGS="-std=gnu17" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
 CFLAGS="-std=gnu17" emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
 CFLAGS="-std=gnu17" emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
 
-exit 0
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
