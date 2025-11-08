@@ -196,15 +196,17 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 
-exit 0
+
 
 # Upgrade python and install portage
-./portage/bin/emerge -D1n sys-apps/portage
+CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n sys-apps/portage
 
 # Install BDEPENDs for cross-toolchain
-emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
-emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
-emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+CFLAGS="-std=gnu17" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
+CFLAGS="-std=gnu17" emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
+CFLAGS="-std=gnu17" emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+
+exit 0
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
