@@ -114,7 +114,7 @@ dev-build/autoconf
 dev-build/autoconf-wrapper  # replaces files
 dev-build/automake  # replaces files
 dev-build/automake-wrapper  # replaces files
-dev-build/make  # replaces files
+#dev-build/make  # replaces files
 dev-build/meson
 dev-build/meson-format-array
 dev-build/ninja
@@ -182,6 +182,7 @@ sys-devel/patch-0
 sys-libs/zlib-1.2.12
 virtual/libcrypt-0
 virtual/libintl-0
+dev-build/make
 EOF
 
 # Turn /bin/bzip2 into a symlink to avoid failures in app-arch/bzip2
@@ -191,10 +192,7 @@ if [ ! -h /bin/bzip2 ]; then
 fi
 
 # For some reason, make hangs when used in parallel, rebuild it first.
-MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
-
-exit 0
-
+MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip # dev-build/make
 
 
 # Upgrade python and install portage
