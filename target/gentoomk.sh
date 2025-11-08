@@ -192,9 +192,9 @@ if [ ! -h /bin/bzip2 ]; then
 fi
 
 # For some reason, make hangs when used in parallel, rebuild it first.
-CFLAGS="MARCH=native -o2" MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip 
-CFLAGS="MARCH=native -o2" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
-CFLAGS="MARCH=native -o2 -std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
+MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip 
+CFLAGS="-o2" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
+CFLAGS="-o2 -std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 
 exit 0
 
