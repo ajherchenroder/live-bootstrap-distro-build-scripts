@@ -103,7 +103,7 @@ grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
 mkdir -p /etc/portage/profile
 echo '*/*' > /etc/portage/package.mask
 cat > /etc/portage/package.unmask << 'EOF'
-app-alternatives/bzip2
+#app-alternatives/bzip2
 app-alternatives/ninja
 app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2
 app-arch/lzip
@@ -150,6 +150,7 @@ acct-user/portage-0
 app-alternatives/awk-0
 app-alternatives/gzip-0
 app-alternatives/lex-0
+app-alternatives/bzip2-0
 app-alternatives/yacc-0
 app-arch/tar-1.27
 app-arch/xz-utils-5.4.0
@@ -198,13 +199,10 @@ CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 mkdir /test
 cp /usr/lib/i386-unknown-linux-musl/libbz2.so* /test
-CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/bzip2
-exit 0
-
-
-
 # Upgrade python and install portage
 CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n sys-apps/portage
+
+exit 0
 
 # Install BDEPENDs for cross-toolchain
 CFLAGS="-std=gnu17" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
