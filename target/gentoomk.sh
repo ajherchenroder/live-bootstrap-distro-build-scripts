@@ -103,7 +103,7 @@ grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
 mkdir -p /etc/portage/profile
 echo '*/*' > /etc/portage/package.mask
 cat > /etc/portage/package.unmask << 'EOF'
-#app-alternatives/bzip2
+app-alternatives/bzip2
 app-alternatives/ninja
 app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2
 app-arch/lzip
@@ -196,7 +196,7 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
-
+CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE='split-usr'./portage/bin/emerge -D1n app-alternatives/bzip2
 exit 0
 
 
