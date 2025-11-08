@@ -118,7 +118,7 @@ dev-build/make  # replaces files
 dev-build/meson
 dev-build/meson-format-array
 dev-build/ninja
-dev-lang/python
+*dev-lang/python
 dev-lang/python-exec  # replaces files
 dev-lang/python-exec-conf
 dev-libs/expat
@@ -160,6 +160,7 @@ app-crypt/libbz2-0
 dev-build/autoconf-archive-0
 dev-build/libtool-2.4.7-r3
 dev-lang/perl-5.38.2-r3
+dev-lang/python-3.13.1
 dev-libs/libffi-0
 dev-libs/popt-1.5
 dev-python/platformdirs-4.2.2
@@ -200,9 +201,6 @@ CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 mkdir /test
 cp /usr/lib/i386-unknown-linux-musl/libbz2.so* /test
 # Upgrade python and install portage
-USE='python_targets_python3_13' CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n dev-lang/python
-
-exit 0
 
 CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n sys-apps/portage
 
