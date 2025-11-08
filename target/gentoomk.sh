@@ -103,7 +103,7 @@ grep '^PYTHON_TARGETS=\|^PYTHON_SINGLE_TARGET=' \
 mkdir -p /etc/portage/profile
 echo '*/*' > /etc/portage/package.mask
 cat > /etc/portage/package.unmask << 'EOF'
-app-alternatives/bzip2
+#app-alternatives/bzip2
 app-alternatives/ninja
 app-arch/bzip2  # replaces files, live-bootstrap doesn't build libbz2
 app-arch/lzip
