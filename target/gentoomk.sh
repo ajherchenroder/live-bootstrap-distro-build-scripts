@@ -200,7 +200,7 @@ CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 mkdir /test
 cp /usr/lib/i386-unknown-linux-musl/libbz2.so* /test
 # Upgrade python and install portage
-CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n dev-lang/python
+USE='python_targets_python3_13' CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n dev-lang/python
 
 exit 0
 
