@@ -192,8 +192,9 @@ if [ ! -h /bin/bzip2 ]; then
 fi
 
 # For some reason, make hangs when used in parallel, rebuild it first.
-MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip # dev-build/make
+CFLAGS="MARCH=native -o2 -std=gnu17"   MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip dev-build/make
 
+exit 0
 
 # Upgrade python and install portage
 ./portage/bin/emerge -D1n sys-apps/portage
