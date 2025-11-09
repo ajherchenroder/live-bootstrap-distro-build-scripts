@@ -201,6 +201,8 @@ CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 mkdir /test
 cp /usr/lib/i386-unknown-linux-musl/libbz2.so* /test
 # Upgrade python and install portage
+# link the existing python to the one we need for gentoo
+ln -s /usr/bin/python3.11 /usr/bin/python3.12 
 
 CFLAGS="-std=gnu17" ./portage/bin/emerge -D1n sys-apps/portage
 
