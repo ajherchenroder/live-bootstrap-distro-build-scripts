@@ -160,7 +160,7 @@ app-crypt/libbz2-0
 dev-build/autoconf-archive-0
 dev-build/libtool-2.4.7-r3
 dev-lang/perl-5.38.2-r3
-#dev-lang/python-3.11.13_p1
+#dev-lang/python-3.11.11_p1
 dev-libs/libffi-0
 dev-libs/popt-1.5
 dev-python/platformdirs-4.2.2
@@ -199,8 +199,8 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 ln -s   /usr/bin/i686-unknown-linux-musl-gcc /usr/bin/i386-unknown-linux-musl-gcc 
-CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11"    ./portage/bin/emerge -D1n --keep-going  dev-lang/python
-CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11"    ./portage/bin/emerge -D1n --keep-going  dev-lang/python
+#CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
+#CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
 #exit 0
 
 # Upgrade python and install portag
