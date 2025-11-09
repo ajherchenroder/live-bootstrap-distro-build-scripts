@@ -118,7 +118,7 @@ dev-build/make  # replaces files
 dev-build/meson
 dev-build/meson-format-array
 dev-build/ninja
-dev-lang/python
+<dev-lang/python-3.12
 dev-lang/python-exec  # replaces files
 dev-lang/python-exec-conf
 dev-libs/expat
