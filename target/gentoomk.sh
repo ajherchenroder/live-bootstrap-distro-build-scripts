@@ -160,7 +160,7 @@ app-crypt/libbz2-0
 dev-build/autoconf-archive-0
 dev-build/libtool-2.4.7-r3
 dev-lang/perl-5.38.2-r3
-dev-lang/python-3.11.13_p1
+#dev-lang/python-3.11.13_p1
 dev-libs/libffi-0
 dev-libs/popt-1.5
 dev-python/platformdirs-4.2.2
