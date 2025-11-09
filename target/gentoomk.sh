@@ -139,7 +139,7 @@ dev-util/pkgconf  # replaces files, dev-lang/python ebuild requires "--keep-syst
 net-misc/rsync
 sys-apps/findutils  # replaces files, portage requires 4.9, live-bootstrap provides 4.2.33
 sys-apps/gentoo-functions
-sys-apps/portage
+<sys-apps/portage-3.0.66.1
 sys-devel/binutils-config
 sys-devel/gcc-config
 sys-devel/gnuconfig
