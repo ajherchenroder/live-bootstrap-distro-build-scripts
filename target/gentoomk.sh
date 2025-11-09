@@ -198,7 +198,7 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
-CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_12"    ./portage/bin/emerge -D1n dev-lang/python
+CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_13"    ./portage/bin/emerge -D1n dev-lang/python
 exit 0
 
 # Upgrade python and install portag
