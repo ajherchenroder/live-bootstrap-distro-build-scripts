@@ -205,8 +205,8 @@ CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x8
 
 # Upgrade python and install portag
 
-CFLAGS="-std=gnu11" USE="python_targets_python3_11"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
-CFLAGS="-std=gnu11" USE="python_targets_python3_11"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
+CFLAGS="-std=gnu11" USE="python_targets_python3_12"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
+CFLAGS="-std=gnu11" USE="python_targets_python3_12"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
 exit 0
 
 # Install BDEPENDs for cross-toolchain
