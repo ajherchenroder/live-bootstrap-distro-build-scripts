@@ -197,22 +197,22 @@ fi
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n app-arch/lzip 
 MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
-CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
+CFLAGS="-std=gnu11" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 ln -s   /usr/bin/i686-unknown-linux-musl-gcc /usr/bin/i386-unknown-linux-musl-gcc 
-#CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
-#CFLAGS="-std=gnu17" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
+#CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
+#CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
 #exit 0
 
 # Upgrade python and install portag
 
-CFLAGS="-std=gnu17" USE="python_targets_python3_11"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
-CFLAGS="-std=gnu17" USE="python_targets_python3_11"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
+CFLAGS="-std=gnu11" USE="python_targets_python3_11"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
+CFLAGS="-std=gnu11" USE="python_targets_python3_11"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
 exit 0
 
 # Install BDEPENDs for cross-toolchain
-CFLAGS="-std=gnu17" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
-CFLAGS="-std=gnu17" emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
-CFLAGS="-std=gnu17" emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+CFLAGS="-std=gnu11" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
+CFLAGS="-std=gnu11" emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
+CFLAGS="-std=gnu11" emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
 #
 exit 0
 
