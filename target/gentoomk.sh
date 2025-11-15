@@ -118,7 +118,7 @@ dev-build/make  # replaces files
 dev-build/meson
 dev-build/meson-format-array
 dev-build/ninja
-<dev-lang/python-3.12
+dev-lang/python-3.12
 dev-lang/python-exec  # replaces files
 dev-lang/python-exec-conf
 dev-libs/expat
@@ -139,7 +139,7 @@ dev-util/pkgconf  # replaces files, dev-lang/python ebuild requires "--keep-syst
 net-misc/rsync
 sys-apps/findutils  # replaces files, portage requires 4.9, live-bootstrap provides 4.2.33
 sys-apps/gentoo-functions
-<sys-apps/portage-3.0.66.1
+sys-apps/portage-3.0.66.1
 sys-devel/binutils-config
 sys-devel/gcc-config
 sys-devel/gnuconfig
@@ -184,7 +184,6 @@ sys-devel/patch-0
 sys-libs/zlib-1.2.12
 virtual/libcrypt-0
 virtual/libintl-0
-dev-build/make
 EOF
 
 # Turn /bin/bzip2 into a symlink to avoid failures in app-arch/bzip2
