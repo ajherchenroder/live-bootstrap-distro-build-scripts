@@ -319,7 +319,9 @@ print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.buil
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-apps/baselayout \
     sys-kernel/linux-headers \
+    sys-devel/gettext \
     sys-libs/glibc 
+    
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 
