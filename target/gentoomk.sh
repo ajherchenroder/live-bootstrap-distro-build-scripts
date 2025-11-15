@@ -252,21 +252,14 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
 
-exit 0
-
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
 *link:
 + %{!shared:%{!static:%{!static-pie:-dynamic-linker %{m32:/lib/ld-linux.so.2;:/lib64/ld-linux-x86-64.so.2}}}}
 EOF
-for tool in gcc g++; do
-rm -f /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
-cat > /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool << EOF
-#!/bin/sh
-exec /cross/usr/i686-unknown-linux-musl/x86_64-bootstrap-linux-gnu/gcc-bin/*/x86_64-bootstrap-linux-gnu-$tool --sysroot=/gentoo "\$@"
-EOF
-chmod +x /cross/usr/bin/x86_64-bootstrap-linux-gnu-$tool
-done
+
+#Deleted not required#
+
 cat > /cross/usr/bin/x86_64-bootstrap-linux-gnu-pkg-config << 'EOF'
 #!/bin/sh
 export PKG_CONFIG_SYSROOT_DIR=/gentoo
@@ -320,12 +313,10 @@ print(*portage.util.stack_lists([portage.util.grabfile_package("%s/packages.buil
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-apps/baselayout \
     sys-kernel/linux-headers \
-    sys-devel/gettext #\
-
-exit 0
-
+    sys-devel/gettext \
     sys-libs/glibc 
-    
+ 
+exit 0   
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 
