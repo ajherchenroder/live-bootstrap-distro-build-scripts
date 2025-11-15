@@ -252,7 +252,6 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
 
-exit 0
 
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
@@ -285,7 +284,7 @@ FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L 
 RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
-CBUILD="i386-unknown-linux-musl"
+CBUILD="i686-unknown-linux-musl"
 CHOST="x86_64-bootstrap-linux-gnu"
 CFLAGS_x86="$CFLAGS_x86 -msse"  # https://bugs.gentoo.org/937637
 CONFIG_SITE="$PORTAGE_CONFIGROOT/etc/portage/config.site"
@@ -324,7 +323,7 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
 
 
-
+exit 0
 
 
 
