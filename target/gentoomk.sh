@@ -201,13 +201,11 @@ CFLAGS="-std=gnu11" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 ln -s   /usr/bin/i686-unknown-linux-musl-gcc /usr/bin/i386-unknown-linux-musl-gcc 
 CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
 #CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
-#exit 0
 
 # Upgrade python and install portag
 
 CFLAGS="-std=gnu11" USE="python_targets_python3_12"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
 CFLAGS="-std=gnu11" USE="python_targets_python3_12"  ./portage/bin/emerge -D1n --keep-going  sys-apps/portage
-exit 0
 
 # Install BDEPENDs for cross-toolchain
 CFLAGS="-std=gnu11" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
