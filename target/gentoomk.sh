@@ -144,6 +144,7 @@ sys-devel/binutils-config
 sys-devel/gcc-config
 sys-devel/gnuconfig
 virtual/pkgconfig
+dev-python/backports-tarfile
 EOF
 cat > /etc/portage/profile/package.provided << 'EOF'
 acct-user/portage-0
