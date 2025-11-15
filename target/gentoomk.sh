@@ -82,7 +82,7 @@ ARCH="x86"
 ABI="$ARCH"
 DEFAULT_ABI="$ARCH"
 ACCEPT_KEYWORDS="$ARCH"
-CHOST="i386-unknown-linux-musl"
+CHOST="i686-unknown-linux-musl"
 LIBDIR_x86="lib/$CHOST"
 PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
@@ -199,7 +199,7 @@ MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-util/pkgconf
 CFLAGS="-std=gnu17" MAKEOPTS=-j1 ./portage/bin/emerge -D1n dev-build/make
 CFLAGS="-std=gnu11" MAKEOPTS=-j1 ./portage/bin/emerge -D1n -O app-arch/bzip2
 ln -s   /usr/bin/i686-unknown-linux-musl-gcc /usr/bin/i386-unknown-linux-musl-gcc 
-#CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
+CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
 #CFLAGS="-std=gnu11" MAKEOPTS=-j1 USE="-sqlite -ssl python_targets_python3_11 ~x86"    ./portage/bin/emerge -D1n --keep-going  =dev-lang/python-3.11.11_p1
 #exit 0
 
