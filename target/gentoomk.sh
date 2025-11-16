@@ -224,7 +224,7 @@ env-update
 mkdir -p /cross/etc/portage
 ln -sf /etc/portage/make.profile /cross/etc/portage/make.profile
 cat > /cross/etc/portage/make.conf << 'EOF'
-USE="prefix multilib"
+USE="prefix multilib multilib-bootstrap"
 CTARGET="x86_64-bootstrap-linux-gnu"
 LIBDIR_x86="lib"
 LIBDIR_amd64="lib64"
