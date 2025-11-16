@@ -219,7 +219,7 @@ CFLAGS="-std=gnu11" emerge -D1n sys-libs/readline
 
 # Add cross compiler to PATH
 cat > /etc/env.d/50baselayout << 'EOF'
-PATH=/cross/usr/bin:/usr/bin
+PATH=/cross/usr/bin:/usr/bin:/cross/usr/include:/cross/user/lib:
 EOF
 env-update
 
