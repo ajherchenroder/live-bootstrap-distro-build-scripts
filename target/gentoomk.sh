@@ -212,6 +212,8 @@ CFLAGS="-std=gnu11" USE="python_targets_python3_12"  ./portage/bin/emerge -D1n -
 CFLAGS="-std=gnu11" emerge -D1n sys-devel/binutils-config  # sys-devel/binutils
 CFLAGS="-std=gnu11" emerge -D1n sys-devel/gcc-config  # sys-devel/gcc
 CFLAGS="-std=gnu11" emerge -D1n net-misc/rsync  # sys-kernel/linux-headers
+CFLAGS="-std=gnu11" emerge -D1n sys-libs/ncurses
+CFLAGS="-std=gnu11" emerge -D1n sys-libs/readline
 #
 
 
@@ -253,7 +255,7 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 dev-libs/gmp
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 dev-libs/mpfr
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-libs/ncurses
 
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
@@ -323,7 +325,9 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 dev-libs/g
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo MAKEOPTS=-j1 CFLAGS="-std=gnu11" emerge -1 sys-apps/gawk
 
 
-PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 $pkgs_build
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo CFLAGS="-std=gnu11" emerge -1 --keep-going $pkgs_build
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo CFLAGS="-std=gnu11" emerge -1 --keep-going $pkgs_build
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo CFLAGS="-std=gnu11" emerge -1 --keep-going $pkgs_build
 
 
 exit 0
