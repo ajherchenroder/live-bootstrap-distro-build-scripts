@@ -320,9 +320,7 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 sys-libs/glibc 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 dev-libs/gmp
-#copy some things into the right directories
-#cp /usr/lib/i686-unknown-linux-musl/gcc/i686-unknown-linux-musl/15.2.0/include/gmp.h /cross/#usr/x86_64-bootstrap-linux-gnu/usr/include/gmp.h 
-#cp /gentoo/usr/lib64/libgmp.*  /cross/usr/x86_64-bootstrap-linux-gnu/usr/lib64/
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo MAKEOPTS=-j1 CFLAGS="-std=gnu11" emerge -1 sys-apps/gawk
 
 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 $pkgs_build
