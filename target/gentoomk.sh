@@ -251,6 +251,7 @@ PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -O1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 dev-libs/gmp
 
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
@@ -315,10 +316,9 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-kernel/linux-headers \
     sys-devel/gettext
 
-PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n  sys-libs/glibc 
- 
-exit 0   
-PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 sys-libs/glibc 
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 dev-libs/gmp
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 $pkgs_build
 
 
 exit 0
