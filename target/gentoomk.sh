@@ -278,7 +278,7 @@ FETCHCOMMAND="curl -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L 
 RESUMECOMMAND="curl -C - -k --retry 3 -m 60 --ftp-pasv -o \"\${DISTDIR}/\${FILE}\" -L \"\${URI}\""
 FEATURES="-news -sandbox -usersandbox -pid-sandbox -parallel-fetch"
 BINPKG_COMPRESS="bzip2"
-CBUILD="i686-unknown-linux-musl"
+CBUILD="x86_64-bootstrap-linux-gnu"
 CHOST="x86_64-bootstrap-linux-gnu"
 CFLAGS_x86="$CFLAGS_x86 -msse"  # https://bugs.gentoo.org/937637
 CONFIG_SITE="$PORTAGE_CONFIGROOT/etc/portage/config.site"
@@ -315,7 +315,7 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
     sys-kernel/linux-headers \
     sys-devel/gettext
 
-PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n USE='multilib-bootstrap' sys-libs/glibc 
+PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n  sys-libs/glibc 
  
 exit 0   
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -D1n $pkgs_build
