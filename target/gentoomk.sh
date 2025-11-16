@@ -245,14 +245,15 @@ cat > /cross/etc/portage/package.mask << 'EOF'
 EOF
 # TODO: Build using gcc 14
 
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only' emerge -O1 sys-kernel/linux-headers
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only -multilib' emerge -O1 sys-libs/glibc 
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/binutils
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -O1 sys-devel/gcc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-kernel/linux-headers
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-libs/glibc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 sys-devel/gcc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -O1 dev-libs/gmp
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only' emerge -1 sys-kernel/linux-headers
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only -multilib' emerge -1 sys-libs/glibc 
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-devel/binutils
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-kernel/linux-headers
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-libs/glibc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 dev-libs/gmp
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 dev-libs/mpfr
 
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
@@ -319,6 +320,11 @@ PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -O1n \
 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 sys-libs/glibc 
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 dev-libs/gmp
+#copy some things into the right directories
+#cp /usr/lib/i686-unknown-linux-musl/gcc/i686-unknown-linux-musl/15.2.0/include/gmp.h /cross/#usr/x86_64-bootstrap-linux-gnu/usr/include/gmp.h 
+#cp /gentoo/usr/lib64/libgmp.*  /cross/usr/x86_64-bootstrap-linux-gnu/usr/lib64/
+
+
 PORTAGE_CONFIGROOT=/gentoo.cfg ROOT=/gentoo SYSROOT=/gentoo emerge -1 $pkgs_build
 
 
