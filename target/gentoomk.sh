@@ -88,6 +88,7 @@ PKG_CONFIG_PATH="/usr/lib/$CHOST/pkgconfig"
 IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest"
 IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64"  # dev-libs/gmp
 IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib
+IUSE_IMPLICIT="$IUSE_IMPLICIT elibc_Darwin"
 USE_EXPAND="PYTHON_TARGETS PYTHON_SINGLE_TARGET"
 USE="kernel_linux elibc_musl build"
 SKIP_KERNEL_CHECK=y  # linux-info.eclass
@@ -234,6 +235,10 @@ LIBDIR_amd64="lib64"
 DEFAULT_ABI="amd64"
 MULTILIB_ABIS="amd64 x86"
 ACCEPT_KEYWORDS="amd64"
+IUSE_IMPLICIT="kernel_linux elibc_glibc elibc_musl prefix prefix-guest" #test
+IUSE_IMPLICIT="$IUSE_IMPLICIT x86 amd64"  # dev-libs/gmp #test
+IUSE_IMPLICIT="$IUSE_IMPLICIT sparc"  # sys-libs/zlib #test
+IUSE_IMPLICIT="$IUSE_IMPLICIT elibc_Darwin" #test
 EOF
 cat > /cross/etc/portage/package.use << 'EOF'
 sys-devel/gcc -sanitize -fortran
@@ -247,16 +252,17 @@ cat > /cross/etc/portage/package.mask << 'EOF'
 EOF
 # TODO: Build using gcc 14
 
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only' emerge -1 sys-kernel/linux-headers
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='headers-only -multilib' emerge -1 sys-libs/glibc 
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-devel/binutils
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross USE='-cxx' emerge -1 sys-devel/gcc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-kernel/linux-headers
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-libs/glibc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 sys-devel/gcc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross emerge -1 dev-libs/gmp
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='headers-only' emerge -1 sys-kernel/linux-headers
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='headers-only -multilib' emerge -1 sys-libs/glibc 
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-devel/binutils
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='-cxx' emerge -1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-kernel/linux-headers
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-libs/glibc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 dev-libs/gmp
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-libs/ncurses
 
+exit 0
 # Reconfigure cross toolchain for final system
 cat > /cross/usr/lib/gcc/x86_64-bootstrap-linux-gnu/specs << 'EOF'
 *link:
