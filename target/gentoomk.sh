@@ -229,6 +229,7 @@ mkdir -p /cross/etc/portage
 ln -sf /etc/portage/make.profile /cross/etc/portage/make.profile
 cat > /cross/etc/portage/make.conf << 'EOF'
 USE="prefix multilib multilib-bootstrap"
+CHOST="x86_64-bootstrap-linux-gnu"
 CTARGET="x86_64-bootstrap-linux-gnu"
 LIBDIR_x86="lib"
 LIBDIR_amd64="lib64"
@@ -255,11 +256,10 @@ EOF
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='headers-only' emerge -1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='headers-only -multilib' emerge -1 sys-libs/glibc 
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-devel/binutils
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='-cxx' emerge -1 sys-devel/gcc
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" USE='-cxx' emerge -O1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-kernel/linux-headers
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-libs/glibc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-devel/gcc
-PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 dev-libs/gmp
+PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -O1 sys-devel/gcc
 PORTAGE_CONFIGROOT=/cross EPREFIX=/cross CFLAGS="-std=gnu11" emerge -1 sys-libs/ncurses
 
 exit 0
